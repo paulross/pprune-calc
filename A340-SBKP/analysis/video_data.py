@@ -9,7 +9,8 @@ Other notes (times are mm:ss::ff @ 30 f.p.s)
 
 Nose wheel off at around 00:17:27
 Main gear off at around 00:25:19
-Nose over the end of the asphalt at around 00:38:11
+Nose over the end of the asphalt at around 00:27:24
+Last usable frame 00:33:20
 
 Aircraft:
 ---------
@@ -41,8 +42,11 @@ https://www.google.com/maps/@-23.0148861,-47.1181774,3a,75y,270h,90t/data=!3m6!1
 
 import collections
 
+FRAMES_PER_SECOND = 30
 # +/- error in time measurements
-ERROR_TIMESTAMP = 0.5
+ERROR_TIMESTAMP_FRAMES = 5.0
+ERROR_TIMESTAMP = ERROR_TIMESTAMP_FRAMES / FRAMES_PER_SECOND
+
 
 class VideoTime(collections.namedtuple('VideoTime', 'min, sec, frame')):
 
@@ -52,7 +56,7 @@ class VideoTime(collections.namedtuple('VideoTime', 'min, sec, frame')):
 
 
 VIDEO_BEGIN = VideoTime(0, 0, 0)
-VIDEO_END = VideoTime(0, 33, 16)
+VIDEO_END = VideoTime(0, 33, 20)
 VIDEO_MAX_AS_INT = int(VIDEO_END.time + 1)
 
 
@@ -63,7 +67,7 @@ AIRCRAFT_ASPECTS = (
     AircraftAspect(VideoTime(0, 4, 1), 360 - 21.5, 'Nose to front centre of number 3.'),
     AircraftAspect(VideoTime(0, 6, 24), 360 - 23.7, 'Nose to RH front of number 3.'),
     AircraftAspect(VideoTime(0, 15, 15), 360 - 29.4, 'Number 1 to tailfin tip.'),
-    # Original measurments at same point in time:
+    # Original measurements at same point in time:
     # AircraftAspect(VideoTime(0, 16, 9), 360 - 32.9, 'Nose to front centre number 4.'),
     # AircraftAspect(VideoTime(0, 16, 9), 360 - 32.0, 'Front right number 1 to left tail L/E root.'),
     # Replace by average:
@@ -105,6 +109,7 @@ AIRCRAFT_PITCHES = (
 # +/- error in pitch measurements in degrees
 ERROR_PITCH = 1.0
 
+
 class AircraftTransit(collections.namedtuple('AircraftTransit', 'video_from, video_to, note')):
 
     @property
@@ -134,11 +139,42 @@ AIRCRAFT_TRANSITS = (
     AircraftTransit(VideoTime(0, 9, 3), VideoTime(0, 10, 0), 'Far comms tower number 5.'),
     AircraftTransit(VideoTime(0, 9, 11), VideoTime(0, 10, 8), 'Near lamp post number 5.'),
     AircraftTransit(VideoTime(0, 9, 23), VideoTime(0, 10, 20), 'Far comms tower number 6.'),
-
-
+    AircraftTransit(VideoTime(0, 10, 3), VideoTime(0, 11, 0), 'Far floodlight number 7.'),
+    AircraftTransit(VideoTime(0, 10, 8), VideoTime(0, 11, 5), 'Near lamp post number 6.'),
+    AircraftTransit(VideoTime(0, 10, 12), VideoTime(0, 11, 9), 'Far comms tower number 6.'),
+    AircraftTransit(VideoTime(0, 11, 2), VideoTime(0, 11, 29), 'Far comms tower number 7.'),
+    AircraftTransit(VideoTime(0, 11, 19), VideoTime(0, 12, 15), 'Far comms tower number 8.'),
+    AircraftTransit(VideoTime(0, 12, 0), VideoTime(0, 12, 26), 'Far comms tower number 9.'),
+    AircraftTransit(VideoTime(0, 12, 19), VideoTime(0, 13, 16), 'Far comms tower number 10.'),
+    AircraftTransit(VideoTime(0, 13, 1), VideoTime(0, 13, 27), 'Left edge of distant building.'),
+    AircraftTransit(VideoTime(0, 13, 8), VideoTime(0, 14, 4), 'Far comms tower number 11.'),
+    AircraftTransit(VideoTime(0, 13, 11), VideoTime(0, 14, 6), 'Near lamp post number 7.'),
+    AircraftTransit(VideoTime(0, 13, 12), VideoTime(0, 14, 8), 'Near lamp post number 8.'),
+    AircraftTransit(VideoTime(0, 13, 25), VideoTime(0, 14, 21), 'Left palm tree of a pair (tail cone obscured).'),
+    AircraftTransit(VideoTime(0, 14, 14), VideoTime(0, 15, 1), 'Palm tree (tail cone obscured).'),
+    AircraftTransit(VideoTime(0, 15, 5), VideoTime(0, 16, 0), 'Far comms tower number 12.'),
+    AircraftTransit(VideoTime(0, 15, 11), VideoTime(0, 16, 6), 'Near lamp post number 9.'),
+    AircraftTransit(VideoTime(0, 15, 24), VideoTime(0, 16, 18.5), 'Near lamp post number 10.'),
+    AircraftTransit(VideoTime(0, 16, 3), VideoTime(0, 16, 27), 'Far comms tower number 12.'),
+    AircraftTransit(VideoTime(0, 16, 16.5), VideoTime(0, 17, 11), 'Far comms tower number 13.'),
+    AircraftTransit(VideoTime(0, 16, 27), VideoTime(0, 17, 21), 'Far comms tower number 14.'),
+    AircraftTransit(VideoTime(0, 17, 9), VideoTime(0, 18, 3), 'Centre of control tower (also near lamp post number 11.'),
+    AircraftTransit(VideoTime(0, 18, 2), VideoTime(0, 18, 26), 'Far comms tower number 15.'),
+    AircraftTransit(VideoTime(0, 18, 11), VideoTime(0, 19, 5), 'Far comms tower number 16.'),
+    AircraftTransit(VideoTime(0, 19, 9), VideoTime(0, 20, 2), 'Extreme right edge of near signage #1.'),
+    AircraftTransit(VideoTime(0, 19, 26.5), VideoTime(0, 20, 19), 'Extreme left edge of near signage #1.'),
+    AircraftTransit(VideoTime(0, 20, 20), VideoTime(0, 21, 12.5), 'Centre of chequered control point.'),
+    AircraftTransit(VideoTime(0, 21, 15), VideoTime(0, 22, 8), 'Near lamp post number 11.'),
+    AircraftTransit(VideoTime(0, 21, 28), VideoTime(0, 22, 20), 'Antenna.'),
+    AircraftTransit(VideoTime(0, 22, 6), VideoTime(0, 22, 29), 'Antenna.'),
+    AircraftTransit(VideoTime(0, 22, 29), VideoTime(0, 23, 21.5), 'Antenna beyond chequered building.'),
+    AircraftTransit(VideoTime(0, 24, 3), VideoTime(0, 24, 25), 'Right edge of far tree.'),
+    AircraftTransit(VideoTime(0, 24, 14), VideoTime(0, 25, 4), 'Right edge of far treeline.'),
+    AircraftTransit(VideoTime(0, 26, 6.5), VideoTime(0, 26, 28.5), 'Extreme left edge of near signage #2.'),
+    AircraftTransit(VideoTime(0, 27, 20), VideoTime(0, 28, 11), 'Distant large radio tower.'),
     AircraftTransit(VideoTime(0, 28, 22), VideoTime(0, 29, 13), 'Large tower.'),
     AircraftTransit(VideoTime(0, 31, 23), VideoTime(0, 32, 13), 'Edge of cables in the foreground.'),
-    AircraftTransit(VideoTime(0, 32, 2), VideoTime(0, 32, 22), 'Poll for cables in the foreground.'),
+    AircraftTransit(VideoTime(0, 32, 2), VideoTime(0, 32, 22), 'Right edge of poll for cables in the foreground.'),
 )
 
 # Nose to tailcone in metres

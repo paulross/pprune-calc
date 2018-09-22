@@ -192,9 +192,9 @@ def print_func(func: typing.Callable, lim: int) -> None:
         prev = func(t, 0)
 
 
-def integrate_ground_speed(min_max_t: int) -> typing.List[float]:
+def integrate_ground_speed(min_max_t: int) -> typing.Tuple[typing.List[int], typing.List[float]]:
     # TODO: Make general integration function or numpy.trapz()
-    times = list(range(video_data.VIDEO_MAX_AS_INT))
+    times: typing.List[int] = list(range(video_data.VIDEO_MAX_AS_INT))
     gsS: typing.List[float] = [ground_speed(t, min_max_t) for t in times]
     result: typing.List[float] = [0.0,]
     for t in range(1, len(gsS)):
