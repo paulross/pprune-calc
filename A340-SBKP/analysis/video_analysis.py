@@ -8,6 +8,7 @@ import typing
 import numpy
 
 from analysis import video_data
+from analysis.plot import print_gnuplot
 
 
 def m_p_s_to_knots(v: float) -> float:
@@ -102,7 +103,7 @@ def interpolate(xS: typing.List[float], yS: typing.List[float], x: float) -> flo
     return y
 
 
-def _apply_min_max_error(func: typing.Callable, t: float, min_max_t: int, err: float) -> float:
+def apply_min_max_error(func: typing.Callable, t: float, min_max_t: int, err: float) -> float:
     """If min_max_t is zero this returns the function called with t.
     If min_max_t non zero this applies worst time and measurement error"""
     if min_max_t == 0:
@@ -130,7 +131,7 @@ def _aspect(t: float) -> float:
 def aspect(t: float, min_max_t: int) -> float:
     """If min_max_t is zero this returns the angle between the axis of the aircraft and the observer at time t.
     If min_max_t non zero this applies worst time and measuremnt error"""
-    return _apply_min_max_error(_aspect, t, min_max_t, video_data.ERROR_ASPECT)
+    return apply_min_max_error(_aspect, t, min_max_t, video_data.ERROR_ASPECT)
 
 
 def _pitch(t: float) -> float:
@@ -145,7 +146,7 @@ def pitch(t: float, min_max_t: int) -> float:
     """Returns the apparent pitch angle of the aircraft at time t.
     Due to camera roll this may not be accurate.
     If min_max_t non zero this applies worst time and measuremnt error"""
-    return _apply_min_max_error(_pitch, t, min_max_t, video_data.ERROR_PITCH)
+    return apply_min_max_error(_pitch, t, min_max_t, video_data.ERROR_PITCH)
 
 
 def _transit(t: float) -> float:
@@ -158,7 +159,7 @@ def _transit(t: float) -> float:
 def transit(t: float, min_max_t: int) -> float:
     """Returns the apparent transit time of the aircraft at time t
     If min_max_t non zero this applies worst time and measurement error"""
-    return _apply_min_max_error(_transit, t, min_max_t, video_data.ERROR_TRANSIT)
+    return apply_min_max_error(_transit, t, min_max_t, video_data.ERROR_TRANSIT)
 
 
 def ground_speed(t: float, min_max_t: int) -> float:
@@ -166,6 +167,16 @@ def ground_speed(t: float, min_max_t: int) -> float:
     If min_max_t non zero this applies worst time and measurement error"""
     p = pitch(t, min_max_t)
     dt = transit(t, -min_max_t)
+    result = math.cos(math.radians(p)) * video_data.TRANSIT_REFERENCE_LENGTH / dt
+    return result
+
+
+def ground_speed_raw(t: float, dt: float, min_max_t: int) -> float:
+    p = pitch(t, min_max_t)
+    if min_max_t < 0:
+        dt += video_data.ERROR_TRANSIT
+    elif min_max_t > 0:
+        dt -= video_data.ERROR_TRANSIT
     result = math.cos(math.radians(p)) * video_data.TRANSIT_REFERENCE_LENGTH / dt
     return result
 
@@ -186,7 +197,7 @@ def print_func(func: typing.Callable, lim: int) -> None:
     for t in range(lim):
         print(
             '{:2d} {:8.3f} {:8.3f} {:8.3f} {:8.3f} {:8.3f}'.format(
-                t, func(t, 0), func(t, 0) - prev, func(t, -1), func(t, 1), func(t, -1) - func(t, 1)
+                t, func(t, 0), func(t, 0) - prev, func(t, -1), func(t, 1), func(t, 1) - func(t, -1)
             )
         )
         prev = func(t, 0)
@@ -204,9 +215,13 @@ def integrate_ground_speed(min_max_t: int) -> typing.Tuple[typing.List[int], typ
 
 
 def print_raw_transits():
-    for transit in video_data.AIRCRAFT_TRANSITS:
-        print('{:8.3f} {:8.3f} {:8.1f}'.format(transit.time, transit.dt, transit.dt * 30))
-
+    prev_frames = 0
+    for tran in video_data.AIRCRAFT_TRANSITS:
+        frames = tran.dt * 30
+        print('{} {:8.3f} {:8.3f} {:8.1f} {:8.1f}'.format(
+            tran.start, tran.time, tran.dt, frames, frames - prev_frames)
+        )
+        prev_frames = frames
 
 def print_observer_postions_combinations_per_second_data() -> numpy.ndarray:
     times, dS = integrate_ground_speed(0)
@@ -290,10 +305,10 @@ def main():
     # print_func(transit, 34)
     # print()
 
-    # print('Ground speed (m/s)')
-    # print_func(ground_speed, 34)
-    # # print_gnuplot(ground_speed, 10)
-    # print_raw_transits()
+    print('Ground speed (m/s)')
+    print_func(ground_speed, 34)
+    print_gnuplot(ground_speed, slice(0, 34, 1), 'Title', ['Notes',])
+    print_raw_transits()
 
     # ground_speeds = [ground_speed(t, 0) for t in range(video_data.VIDEO_MAX_AS_INT)]
     # dist_false = integrate_ground_speed(0, use_mid_pos=False)
@@ -304,7 +319,7 @@ def main():
     # for i, (gs, d_f, d_t) in enumerate(zip(ground_speeds, dist_false, dist_true)):
     #     print('{:2d} {:8.3f} {:8.3f} {:8.3f}'.format(i, gs, d_f, d_t))
 
-    print_observer_postions_combinations()
+    # print_observer_postions_combinations()
 
     print('Bye, bye!')
     return 0

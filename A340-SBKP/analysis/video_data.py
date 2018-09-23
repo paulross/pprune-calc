@@ -114,11 +114,21 @@ class AircraftTransit(collections.namedtuple('AircraftTransit', 'video_from, vid
 
     @property
     def time(self):
+        """Time in seconds of mid point."""
         return (self.video_to.time + self.video_from.time) / 2.0
 
     @property
     def dt(self):
+        """Delta time in seconds."""
         return self.video_to.time - self.video_from.time
+
+    @property
+    def start(self) -> str:
+        """Start time as mm:ss:ff string."""
+        mins = int(self.video_from.time) // 60
+        secs = int(self.video_from.time) - mins * 60
+        frms = int((FRAMES_PER_SECOND * self.video_from.time) % FRAMES_PER_SECOND)
+        return '{:02d}:{:02d}:{:02d}'.format(mins, secs, frms)
 
 
 # Nose to tailcone
@@ -151,7 +161,7 @@ AIRCRAFT_TRANSITS = (
     AircraftTransit(VideoTime(0, 13, 11), VideoTime(0, 14, 6), 'Near lamp post number 7.'),
     AircraftTransit(VideoTime(0, 13, 12), VideoTime(0, 14, 8), 'Near lamp post number 8.'),
     AircraftTransit(VideoTime(0, 13, 25), VideoTime(0, 14, 21), 'Left palm tree of a pair (tail cone obscured).'),
-    AircraftTransit(VideoTime(0, 14, 14), VideoTime(0, 15, 1), 'Palm tree (tail cone obscured).'),
+    AircraftTransit(VideoTime(0, 14, 14), VideoTime(0, 15, 10), 'Palm tree (tail cone obscured).'),
     AircraftTransit(VideoTime(0, 15, 5), VideoTime(0, 16, 0), 'Far comms tower number 12.'),
     AircraftTransit(VideoTime(0, 15, 11), VideoTime(0, 16, 6), 'Near lamp post number 9.'),
     AircraftTransit(VideoTime(0, 15, 24), VideoTime(0, 16, 18.5), 'Near lamp post number 10.'),
@@ -169,7 +179,7 @@ AIRCRAFT_TRANSITS = (
     AircraftTransit(VideoTime(0, 22, 6), VideoTime(0, 22, 29), 'Antenna.'),
     AircraftTransit(VideoTime(0, 22, 29), VideoTime(0, 23, 21.5), 'Antenna beyond chequered building.'),
     AircraftTransit(VideoTime(0, 24, 3), VideoTime(0, 24, 25), 'Right edge of far tree.'),
-    AircraftTransit(VideoTime(0, 24, 14), VideoTime(0, 25, 4), 'Right edge of far treeline.'),
+    AircraftTransit(VideoTime(0, 24, 14), VideoTime(0, 25, 5), 'Right edge of far treeline.'),
     AircraftTransit(VideoTime(0, 26, 6.5), VideoTime(0, 26, 28.5), 'Extreme left edge of near signage #2.'),
     AircraftTransit(VideoTime(0, 27, 20), VideoTime(0, 28, 11), 'Distant large radio tower.'),
     AircraftTransit(VideoTime(0, 28, 22), VideoTime(0, 29, 13), 'Large tower.'),
