@@ -1,131 +1,129 @@
 """
 Plots video data.
 """
-import math
-import os
+import shutil
 import sys
-import typing
-
-from analysis import video_data
-from analysis import video_analysis
-
-PLOT_DIRECTORY = 'plots'
 
 
-def plot_filepath(name: str) -> str:
-    """Return a path to a file."""
-    plot_dir: str = os.path.join(os.path.dirname(__file__), PLOT_DIRECTORY)
-    if not os.path.exists(plot_dir):
-        os.makedirs(plot_dir)
-    return os.path.join(plot_dir, name)
+from analysis import plot_acceleration
+from analysis import plot_aspect
+from analysis import plot_common
+from analysis import plot_constants
+from analysis import plot_distance
+from analysis import plot_events
+from analysis import plot_ground_speed
+from analysis import plot_observer
+from analysis import plot_pitch
+from analysis import plot_svg
+from analysis import plot_transits
+from analysis import plot_yaw
 
 
-def print_gnuplot(func: typing.Callable,
-                  slc: slice,
-                  title: str,
-                  notes: typing.Tuple[str],
-                  stream=sys.stdout) -> None:
-    """Print gnuplot data suitable for plotting with xyerrorbars.
-
-    Example of invocation in gnuplot::
-
-        plot "data" using 1:2:3:4:5:6 w xyerrorbars # ( x, y, xlow, xhigh, ylow, yhigh )
-    """
-    stream.write('# "{}"\n'.format(title))
-    if len(notes):
-        stream.write('#\n# Notes:\n')
-    for note in notes:
-        stream.write('# {}\n'.format(note))
-    stream.write('# {:>2} {:>8} {:>8} {:>8} {:>8} {:>8}\n'.format(
-            't', 'y', 't_low', 't_high', 'y_low', 'y_high'
-        )
-    )
-    for t in range(slc.start, slc.stop, slc.step):
-        stream.write('{:<4d} {:8.3f} {:8.3f} {:8.3f} {:8.3f} {:8.3f}\n'.format(
-                t,
-                func(t, 0),
-                t - video_data.ERROR_TIMESTAMP,
-                t + video_data.ERROR_TIMESTAMP,
-                func(t, -1),
-                func(t, 1),
-            )
-        )
-
-
-PLT_SPEED = """set logscale x
-set grid
-set title "{title}."
-set xlabel "Time (seconds)"
-set xtics
-#set format x ""
-
-# set logscale y
-set ylabel "Speed (Knots)."
-# set yrange [8:35]
-# set ytics 8,35,3
-# set logscale y2
-# set y2label "Bytes"
-# set y2range [1:1e9]
-# set y2tics
-
-set pointsize 1
-set datafile separator whitespace#"	"
-set datafile missing "NaN"
-
-# Curve fit
-#cost(x) = a + (b / (x/1024))
-#fit cost(x) "{file_name}.dat" using 1:2 via a,b
-
-set terminal svg size 750,550           # choose the file format
-
-set output "{file_name}.svg"   # choose the output device
-#set key title "Window Length"
-#  lw 2 pointsize 2
-
-plot "{file_name}.svg" using 1:2:3:4:5:6 w xyerrorbars # ( x, y, xlow, xhigh, ylow, yhigh )
-reset
-
-"""
-
-
-def gnuplot_raw_transits(stream: typing.TextIO=sys.stdout) -> None:
-    plot_data = []
-    for transit in video_data.AIRCRAFT_TRANSITS:
-        t = transit.time
-        dt = transit.dt
-        plot_data.append(
-            [
-                t,
-                video_analysis.m_p_s_to_knots(video_analysis.ground_speed_raw(t, dt, 0)),
-                t - video_data.ERROR_TIMESTAMP,
-                t + video_data.ERROR_TIMESTAMP,
-                video_analysis.m_p_s_to_knots(video_analysis.ground_speed_raw(t, dt, -1)),
-                video_analysis.m_p_s_to_knots(video_analysis.ground_speed_raw(t, dt, 1)),
-            ]
-        )
-    stream.write('# "{}"\n'.format('Raw transits in Knots with error estimate.'))
-    notes = [
-    ]
-    if len(notes):
-        stream.write('#\n# Notes:\n')
-    for note in notes:
-        stream.write('# {}\n'.format(note))
-    stream.write('# {:>2} {:>8} {:>8} {:>8} {:>8} {:>8}\n'.format(
-            't', 'speed', 't_low', 't_high', 'speed_low', 'speed_high'
-        )
-    )
-    for data in plot_data:
-        stream.write('{:.1f} {:8.3f} {:8.3f} {:8.3f} {:8.3f} {:8.3f}\n'.format(*data)
-        )
-
-
-def create_plots():
-    # Scan for .plt files and call gnuplot on them.
-    pass
+# from analysis.plot_acceleration import gnuplot_acceleration, gnuplot_acceleration_plt
+# from analysis.plot_aspect import gnuplot_aspect, gnuplot_aspect_plt
+# from analysis.plot_common import write_dat_plt_call
+# from analysis.plot_distance import gnuplot_distance, gnuplot_distance_runway_end, gnuplot_distance_plt, \
+#     gnuplot_distance_runway_end_plt, gnuplot_distance_from_transits, gnuplot_distance_from_transits_plt
+# from analysis.plot_events import gen_event_data, print_event_table_markdown
+# from analysis.plot_ground_speed import gnuplot_ground_speed, gnuplot_ground_speed_plt, \
+#     gnuplot_ground_speed_extrapolated, gnuplot_ground_speed_extrapolated_plt
+# from analysis.plot_observer import gnuplot_observer_time_distance_bearing, \
+#     gnuplot_observer_time_distance_bearing_with_yaw, gnuplot_observer_time_distance_bearing_plt, gnuplot_observer_xy, \
+#     gnuplot_observer_xy_plt
+# from analysis.plot_pitch import gnuplot_pitch, gnuplot_pitch_plt
+# from analysis.plot_svg import modify_svg_as_text_and_copy
+# from analysis.plot_transits import gnuplot_ground_transits, gnuplot_ground_transits_plt
+# from analysis.plot_yaw import gnuplot_aircraft_yaw, gnuplot_aircraft_yaw_plt
 
 
 def main():
-    gnuplot_raw_transits()
+    if shutil.which('gnuplot') is None:
+        print('ERROR: gnuplot is not installed or not on the PATH')
+        return -1
+
+    plot_common.write_dat_plt_call(
+        'ground_speed',
+        plot_ground_speed.gnuplot_ground_speed,
+        plot_ground_speed.gnuplot_ground_speed_plt,
+    )
+    plot_common.write_dat_plt_call(
+        'ground_speed_extrapolated',
+        plot_ground_speed.gnuplot_ground_speed_extrapolated,
+        plot_ground_speed.gnuplot_ground_speed_extrapolated_plt,
+    )
+    plot_common.write_dat_plt_call(
+        'acceleration',
+        plot_acceleration.gnuplot_acceleration,
+        plot_acceleration.gnuplot_acceleration_plt,
+    )
+    plot_common.write_dat_plt_call(
+        'distance',
+        plot_distance.gnuplot_distance,
+        plot_distance.gnuplot_distance_plt,
+    )
+    plot_common.write_dat_plt_call(
+        'distance_runway_end',
+        plot_distance.gnuplot_distance_runway_end,
+        plot_distance.gnuplot_distance_runway_end_plt
+    )
+    plot_common.write_dat_plt_call(
+        'distance_from_transits',
+        plot_distance.gnuplot_distance_from_transits,
+        plot_distance.gnuplot_distance_from_transits_plt,
+    )
+    plot_common.write_dat_plt_call(
+        'pitch',
+        plot_pitch.gnuplot_pitch,
+        plot_pitch.gnuplot_pitch_plt,
+    )
+    plot_common.write_dat_plt_call(
+        'aspect',
+        plot_aspect.gnuplot_aspect,
+        plot_aspect.gnuplot_aspect_plt,
+    )
+    plot_common.write_dat_plt_call(
+        'time_distance_bearing',
+        plot_observer.gnuplot_observer_time_distance_bearing,
+        plot_observer.gnuplot_observer_time_distance_bearing_plt,
+    )
+    plot_common.write_dat_plt_call(
+        'observer_xy',
+        plot_observer.gnuplot_observer_xy,
+        plot_observer.gnuplot_observer_xy_plt,
+    )
+    # FIXME:
+    plot_common.write_dat_plt_call(
+        'time_distance_bearing_with_yaw',
+        plot_observer.gnuplot_observer_time_distance_bearing_with_yaw,
+        plot_observer.gnuplot_observer_time_distance_bearing_plt,
+    )
+    plot_common.write_dat_plt_call(
+        'aircraft_yaw',
+        plot_yaw.gnuplot_aircraft_yaw,
+        plot_yaw.gnuplot_aircraft_yaw_plt,
+    )
+
+    plot_common.write_dat_plt_call(
+        'ground_transits',
+        plot_transits.gnuplot_ground_transits,
+        plot_transits.gnuplot_ground_transits_plt,
+    )
+
+    # TODO: Write angle of view
+
+    # print('\n'.join(create_svg()))
+
+    plot_svg.modify_svg_as_text_and_copy(
+        plot_constants.OSM_SVG_FILENAME,
+        '../plots/OpenStreetmap_SBKP_01_annotated.svg',
+    )
+
+    for v in plot_events.gen_event_data():
+        print(v)
+
+    # table = create_event_table()
+    # pprint.pprint(table, width=180)
+    plot_events.print_event_table_markdown()
 
     print('Bye, bye!')
     return 0

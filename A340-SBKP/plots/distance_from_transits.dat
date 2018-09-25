@@ -1,0 +1,19 @@
+#
+# Notes:
+# Distance of aircraft down the runway from integrating ground speed and transit lines.
+# time x_ref(m) x_min(m) x_mid(m) x_max(m) x_transit(m)
+2.4    1832.3 1309.4 1321.9 1334.5 # "Tower 1"
+2.9    1855.6 1334.8 1349.7 1364.7 # "Tower 2"
+3.4    1878.4 1360.5 1377.9 1395.2 # "Tower 3"
+3.8    1901.2 1385.6 1405.3 1424.9 # "Tower 4"
+4.3    1923.5 1412.0 1434.0 1456.1 # "Tower 5"
+4.7    1945.7 1437.7 1462.0 1486.4 # "Tower 6"
+17.7   2461.9 2293.5 2384.6 2475.7 # "Control tower base"
+23.3   2789.1 2723.2 2843.0 2962.8 # "Chequer board hut"
+24.9   2844.0 2852.9 2980.9 3108.9 # "Factory interior corner"
+24.9   2824.5 2852.9 2980.9 3108.9 # "Trees right of Fedex"
+25.1   2883.4 2869.3 2998.3 3127.4 # "Fedex right"
+25.3   2897.7 2891.2 3021.6 3152.0 # "Fedex left"
+27.2   3129.7 3046.6 3186.7 3326.7 # "Factory extreme left"
+28.0   3268.1 3114.3 3258.4 3402.5 # "Tall radio tower"
+29.1   3355.7 3205.4 3355.0 3504.6 # "Second control tower"

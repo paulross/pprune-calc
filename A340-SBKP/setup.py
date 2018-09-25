@@ -27,7 +27,11 @@ setup(
     description='Video analysis',
     long_description='',
     # ext_modules=ext_modules,
-    install_requires=['numpy',],
+    install_requires=[
+        'numpy',
+        'scipy',
+        # 'Pillow',
+    ],
     tests_require=test_requirements,
     # cmdclass={'build_ext': BuildExt},
     zip_safe=False,

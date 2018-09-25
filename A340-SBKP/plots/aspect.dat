@@ -1,0 +1,85 @@
+# Notes:
+# "Aspects, errors, and polynomial fit."
+# Columns:
+# 1: time (s)
+# 2: aspect_from_transits (deg)
+# 3: -dt
+# 4: +dt
+# 5: -dy (deg)
+# 6: +dy (deg)
+# 7: aspect_from_transit_fit (deg)
+# 8: aspect_from_wingtips (deg)
+# 9: -dt
+# 10: +dt
+# 11: -dy (deg)
+# 12: +dy (deg)
+# 13: aspect_from_wingtips_fit (deg)
+0.0      NaN      NaN      NaN      NaN      NaN      NaN      NaN      NaN      NaN      NaN      NaN       341.131
+0.7      NaN      NaN      NaN      NaN      NaN      NaN       341.659    0.533    0.867  338.706  344.612 NaN     
+1.0      NaN      NaN      NaN      NaN      NaN       340.145 NaN      NaN      NaN      NaN      NaN       340.825
+1.2       341.200    1.000    1.333  336.200  346.200 NaN      NaN      NaN      NaN      NaN      NaN      NaN     
+1.5      NaN      NaN      NaN      NaN      NaN      NaN       341.256    1.300    1.633  338.345  344.167 NaN     
+2.0      NaN      NaN      NaN      NaN      NaN       339.871 NaN      NaN      NaN      NaN      NaN       340.505
+2.7      NaN      NaN      NaN      NaN      NaN      NaN       340.845    2.500    2.833  338.013  343.677 NaN     
+3.0      NaN      NaN      NaN      NaN      NaN       339.571  340.529    2.833    3.167  337.725  343.332  340.157
+4.0      NaN      NaN      NaN      NaN      NaN       339.234  339.582    3.833    4.167  336.818  342.345  339.768
+4.0       338.500    3.867    4.200  333.500  343.500 NaN      NaN      NaN      NaN      NaN      NaN      NaN     
+5.0      NaN      NaN      NaN      NaN      NaN       338.845  338.867    4.833    5.167  336.172  341.562  339.324
+6.0      NaN      NaN      NaN      NaN      NaN       338.394  337.749    5.833    6.167  335.114  340.385  338.811
+6.8      NaN      NaN      NaN      NaN      NaN      NaN       337.399    6.600    6.933  334.828  339.971 NaN     
+6.8       336.300    6.633    6.967  331.300  341.300 NaN      NaN      NaN      NaN      NaN      NaN      NaN     
+7.0      NaN      NaN      NaN      NaN      NaN       337.867 NaN      NaN      NaN      NaN      NaN       338.218
+8.0      NaN      NaN      NaN      NaN      NaN       337.251  336.362    7.833    8.167  333.877  338.848  337.529
+9.0      NaN      NaN      NaN      NaN      NaN       336.535  336.062    8.833    9.167  333.645  338.479  336.733
+9.7      NaN      NaN      NaN      NaN      NaN      NaN       335.681    9.567    9.900  333.329  338.033 NaN     
+10.0     NaN      NaN      NaN      NaN      NaN       335.705 NaN      NaN      NaN      NaN      NaN       335.814
+11.0     NaN      NaN      NaN      NaN      NaN       334.750 NaN      NaN      NaN      NaN      NaN       334.761
+12.0     NaN      NaN      NaN      NaN      NaN       333.656  333.415   11.833   12.167  329.755  337.075  333.559
+13.0     NaN      NaN      NaN      NaN      NaN       332.410 NaN      NaN      NaN      NaN      NaN       332.195
+14.0     NaN      NaN      NaN      NaN      NaN       331.001  330.802   13.833   14.167  327.472  334.132  330.656
+15.0     NaN      NaN      NaN      NaN      NaN       329.416 NaN      NaN      NaN      NaN      NaN       328.929
+15.5      330.600   15.333   15.667  325.600  335.600 NaN      NaN      NaN      NaN      NaN      NaN      NaN     
+16.0     NaN      NaN      NaN      NaN      NaN       327.642  327.723   15.833   16.167  324.653  330.793  326.999
+16.3      327.550   16.133   16.467  322.550  332.550 NaN      NaN      NaN      NaN      NaN      NaN      NaN     
+17.0     NaN      NaN      NaN      NaN      NaN       325.667 NaN      NaN      NaN      NaN      NaN       324.854
+17.8      323.500   17.600   17.933  318.500  328.500 NaN      NaN      NaN      NaN      NaN      NaN      NaN     
+18.0     NaN      NaN      NaN      NaN      NaN       323.478  323.703   17.833   18.167  320.894  326.513  322.480
+18.7     NaN      NaN      NaN      NaN      NaN      NaN       322.080   18.567   18.900  319.359  324.801 NaN     
+19.0     NaN      NaN      NaN      NaN      NaN      NaN       321.680   18.800   19.133  318.988  324.373 NaN     
+19.0     NaN      NaN      NaN      NaN      NaN       321.062 NaN      NaN      NaN      NaN      NaN       319.864
+20.0     NaN      NaN      NaN      NaN      NaN       318.408 NaN      NaN      NaN      NaN      NaN       316.993
+21.0     NaN      NaN      NaN      NaN      NaN       315.502 NaN      NaN      NaN      NaN      NaN       313.852
+21.6      315.500   21.433   21.767  310.500  320.500 NaN      NaN      NaN      NaN      NaN      NaN      NaN     
+22.0     NaN      NaN      NaN      NaN      NaN       312.331 NaN      NaN      NaN      NaN      NaN       310.429
+23.0     NaN      NaN      NaN      NaN      NaN       308.884 NaN      NaN      NaN      NaN      NaN       306.710
+23.9      304.700   23.767   24.100  299.700  309.700 NaN      NaN      NaN      NaN      NaN      NaN      NaN     
+24.0     NaN      NaN      NaN      NaN      NaN       305.148 NaN      NaN      NaN      NaN      NaN       302.682
+25.0     NaN      NaN      NaN      NaN      NaN       301.110 NaN      NaN      NaN      NaN      NaN       298.331
+25.6      294.900   25.467   25.800  289.900  299.900 NaN      NaN      NaN      NaN      NaN      NaN      NaN     
+26.0     NaN      NaN      NaN      NaN      NaN       296.758 NaN      NaN      NaN      NaN      NaN       293.644
+27.0     NaN      NaN      NaN      NaN      NaN      NaN       288.677   26.800   27.133  286.028  291.326 NaN     
+27.0     NaN      NaN      NaN      NaN      NaN       292.079 NaN      NaN      NaN      NaN      NaN       288.608
+27.3     NaN      NaN      NaN      NaN      NaN      NaN       286.592   27.133   27.467  284.092  289.091 NaN     
+27.6     NaN      NaN      NaN      NaN      NaN      NaN       285.878   27.467   27.800  283.442  288.313 NaN     
+28.0     NaN      NaN      NaN      NaN      NaN       287.060 NaN      NaN      NaN      NaN      NaN       283.209
+28.1     NaN      NaN      NaN      NaN      NaN      NaN       282.572   27.967   28.300  280.238  284.906 NaN     
+28.5     NaN      NaN      NaN      NaN      NaN      NaN       280.606   28.300   28.633  278.344  282.867 NaN     
+28.8     NaN      NaN      NaN      NaN      NaN      NaN       278.384   28.633   28.967  276.190  280.579 NaN     
+29.0     NaN      NaN      NaN      NaN      NaN       281.690 NaN      NaN      NaN      NaN      NaN       277.434
+30.0     NaN      NaN      NaN      NaN      NaN      NaN       270.241   29.800   30.133  267.544  272.939 NaN     
+30.0     NaN      NaN      NaN      NaN      NaN       275.954 NaN      NaN      NaN      NaN      NaN       271.270
+30.3     NaN      NaN      NaN      NaN      NaN      NaN       267.795   30.133   30.467  265.079  270.511 NaN     
+30.6     NaN      NaN      NaN      NaN      NaN      NaN       265.664   30.467   30.800  262.865  268.463 NaN     
+31.0     NaN      NaN      NaN      NaN      NaN      NaN       263.578   30.800   31.133  260.690  266.466 NaN     
+31.0     NaN      NaN      NaN      NaN      NaN       269.842 NaN      NaN      NaN      NaN      NaN       264.702
+31.3     NaN      NaN      NaN      NaN      NaN      NaN       261.476   31.133   31.467  258.506  264.446 NaN     
+31.6     NaN      NaN      NaN      NaN      NaN      NaN       259.308   31.467   31.800  256.246  262.371 NaN     
+32.0     NaN      NaN      NaN      NaN      NaN      NaN       257.403   31.800   32.133  254.296  260.510 NaN     
+32.0      270.000   31.833   32.167  265.000  275.000  263.340 NaN      NaN      NaN      NaN      NaN       257.718
+32.3     NaN      NaN      NaN      NaN      NaN      NaN       255.435   32.133   32.467  252.834  258.037 NaN     
+32.6      254.200   32.433   32.767  249.200  259.200 NaN       253.871   32.433   32.767  251.224  256.518 NaN     
+33.0     NaN      NaN      NaN      NaN      NaN      NaN       251.762   32.800   33.133  249.045  254.478 NaN     
+33.0     NaN      NaN      NaN      NaN      NaN       256.436 NaN      NaN      NaN      NaN      NaN       250.305
+33.3     NaN      NaN      NaN      NaN      NaN      NaN       249.779   33.133   33.467  246.986  252.573 NaN     
+33.6     NaN      NaN      NaN      NaN      NaN      NaN       248.046   33.433   33.767  245.186  250.907 NaN     
+34.0     NaN      NaN      NaN      NaN      NaN      NaN      NaN      NaN      NaN      NaN      NaN       242.448

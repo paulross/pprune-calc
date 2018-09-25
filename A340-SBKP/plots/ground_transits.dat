@@ -1,0 +1,18 @@
+#
+# Notes:
+# time x(m) y(m) x(y=0)(m) y==0(m) Name
+2.4      79.6  706.7 1832.3 0.0 # Tower 1
+2.9     125.3  707.9 1855.6 0.0 # Tower 2
+3.4     171.3  708.4 1878.4 0.0 # Tower 3
+3.8     216.2  709.5 1901.2 0.0 # Tower 4
+4.3     261.9  709.8 1923.5 0.0 # Tower 5
+4.7     307.6  710.1 1945.7 0.0 # Tower 6
+17.7    960.3  988.3 2461.9 0.0 # Control tower base
+23.3   2917.4 -125.8 2789.1 0.0 # Chequer board hut
+24.9   3178.0 -356.7 2844.0 0.0 # Factory interior corner
+24.9   2453.0  384.5 2824.5 0.0 # Trees right of Fedex
+25.1   2535.5  396.9 2883.4 0.0 # Fedex right
+25.3   2560.0  395.1 2897.7 0.0 # Fedex left
+27.2   3253.3 -246.9 3129.7 0.0 # Factory extreme left
+28.0   3032.1  815.0 3268.1 0.0 # Tall radio tower
+29.1   3247.3  694.7 3355.7 0.0 # Second control tower
