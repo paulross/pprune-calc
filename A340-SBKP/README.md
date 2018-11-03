@@ -1,10 +1,12 @@
-
+    
 # Technical Analysis of an A340 Takeoff Video
 
 I came across a video of an A340 taking off from Viracopos International Airport in South America where the aircraft only just gets airborne before the end of the runway. You can see the video here, it starts part way through the take off:
 
 <center>
-[![A-340](http://img.youtube.com/vi/Y6PNFzVvlWo/0.jpg)](https://www.youtube.com/watch?v=Y6PNFzVvlWo "A-340")
+
+[![A-340](https://img.youtube.com/vi/Y6PNFzVvlWo/0.jpg)](https://www.youtube.com/watch?v=Y6PNFzVvlWo "A-340 at SBKP")
+
 </center>
 
 I was curious about what objective information such as speed and distance data could be extracted from the video by looking at individual frames.
