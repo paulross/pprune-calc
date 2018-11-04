@@ -29,6 +29,15 @@ set terminal svg size 800,600
 
 set output "aircraft_yaw.svg"
 
+
+# Nose wheel off at around 00:17:27 i.e. 17.9s
+set arrow from 17.9,-5.5 to 17.9,1.5 lw 2 lc rgb "black"
+set label 3 "Nose wheel off" at 17.9,-6 font ",12" center
+
+# Main gear off at around 00:25:19 i.e. 25.63
+set arrow from 25.6,-5.5 to 25.6,2.5 lw 2 lc rgb "black"
+set label 4 "Main wheels off" at 25.6,-6 font ",12" center
+
 plot "aircraft_yaw.dat" using 1:2:3:4 title "Estimated" w yerrorbars ps 1.25, \
-    "aircraft_yaw.dat" using 1:2 title "Fit of best estimate" w linespoints ps 1.25 smooth csplines#bezier
+    "aircraft_yaw.dat" using 1:2 title "Fit of estimate" w linespoints ps 1.25 smooth csplines#bezier
 reset

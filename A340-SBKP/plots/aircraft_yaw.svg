@@ -141,7 +141,7 @@
 	</g>
 </g>
 <g style="fill:none; color:gray; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M571.7,542.4 L571.7,108.1 M571.7,63.1 L571.7,54.1  h0.01'/></g>
+	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M571.7,542.4 L571.7,54.1  h0.01'/></g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<path stroke='black'  d='M571.7,542.4 L571.7,533.4 M571.7,54.1 L571.7,63.1  h0.01'/>	<g transform="translate(571.7,564.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
 		<text> 25</text>
@@ -169,6 +169,17 @@
 	<g transform="translate(419.3,31.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
 		<text>Aircraft Deviation from Runway Heading</text>
 	</g>
+	<g transform="translate(427.4,492.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
+		<text>Nose wheel off</text>
+	</g>
+	<g transform="translate(583.9,492.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
+		<text>Main wheels off</text>
+	</g>
+</g>
+<g style="fill:none; color:black; stroke:currentColor; stroke-width:2.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path stroke='rgb(  0,   0,   0)'  d='M432.0,302.0 L427.4,284.7 L422.8,302.0 M427.4,474.6 L427.4,284.7 M588.5,274.9 L583.9,257.6 L579.3,274.9 
+		M583.9,474.6 L583.9,257.6  h0.01'/></g>
+<g style="fill:none; color:black; stroke:rgb(  0,   0,   0); stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 </g>
 	<g id="gnuplot_plot_1" ><title>gnuplot_plot_1</title>
 <g style="fill:none; color:red; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
@@ -243,7 +254,7 @@
 	<g id="gnuplot_plot_2" ><title>gnuplot_plot_2</title>
 <g style="fill:none; color:green; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<g transform="translate(698.9,101.3)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
-		<text>Fit of best estimate</text>
+		<text>Fit of estimate</text>
 	</g>
 	<path  d='M707.2,96.8 L758.4,96.8 M77.8,309.4 L84.6,310.6 L91.3,311.8 L98.1,313.1 L104.8,314.4 L111.6,315.7 
 		L118.4,317.2 L125.1,318.7 L131.9,320.1 L138.6,321.5 L145.4,322.8 L152.1,324.1 L158.9,325.3 L165.6,326.5 
