@@ -39,7 +39,9 @@ def gnuplot_observer_time_distance_bearing(stream: typing.TextIO=sys.stdout) -> 
     gs_fit = video_analysis.ground_speed_curve_fit(video_data.ErrorDirection.MID)
     # These are ndarrays of (time, distance, aspect, aspect_error)
     # time_dist_brng = video_analysis.observer_time_distance_bearing(gs_fit, video_data.ErrorDirection.MID)
-    time_dist_brng = video_analysis.observer_time_distance_bearing_from_wing_tips(gs_fit, video_data.ErrorDirection.MID)
+
+    # time_dist_brng = video_analysis.observer_time_distance_bearing_from_wing_tips(gs_fit, video_data.ErrorDirection.MID)
+
     # Get the errors in bearing. This produces three ndarrays of (time, distance, aspect, aspect_error)
     # where the time and distance are the same (and probably the aspect error) so we can combine them
     # to create an list of (time, distance, bearing_min, bearing_mid, bearing_max)
@@ -74,10 +76,10 @@ def gnuplot_observer_time_distance_bearing(stream: typing.TextIO=sys.stdout) -> 
     y_0 = 0.0
     arrow_texts = []
     label_texts = []
-    for i in range(len(time_dist_brng)):
-        t = time_dist_brng[i, 0]
-        x_0 = time_dist_brng[i, 1]
-        bearing = time_dist_brng[i, 2]
+    for i in range(len(time_dist_brng_s[1])):
+        t = time_dist_brng_s[1][i, 0]
+        x_0 = time_dist_brng_s[1][i, 1]
+        bearing = time_dist_brng_s[1][i, 2]
         if abs(math.sin(math.radians(bearing))) < 0.01:
             radius = abs(y_value - y_0)
         else:
@@ -112,7 +114,7 @@ def gnuplot_observer_time_distance_bearing(stream: typing.TextIO=sys.stdout) -> 
         label_texts.append(
             # Gnuplot label numbering starts from 1
             'set label {} "t={:.1f}" at {:.0f},20 right rotate by 60 font ",9"'.format(
-                i + 1, time_dist_brng[i, 0], x_0# - 25
+                i + 1, time_dist_brng_s[1][i, 0], x_0# - 25
             )
         )
     # print('# Arrows:')
@@ -364,11 +366,11 @@ def gnuplot_observer_xy(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
             x_err=x_std,#(x_max - x_min) / 2,
             y_mean=y_mean,
             y_err=y_std,#(y_max - y_min) / 2,
-            x=x_mean-100,
+            x=x_mean-50,
             y=y_mean+45,
         ),
         'set arrow from {:.0f},{:.0f} to {:.0f},{:.0f} lt -1 lw 2 empty'.format(
-            x_mean-90, y_mean+45-8, x_mean, y_mean,
+            x_mean-40, y_mean+45-8, x_mean, y_mean,
         ),
     ]
 
@@ -378,19 +380,19 @@ def gnuplot_observer_xy_plt() -> str:
 set grid
 set xlabel "X (m)"
 #set xtics 2100,100,2400
-#set xtics autofreq
-set xtics 100
+# set xtics 100
+set xtics autofreq
 set mxtics 2
-#set xrange [2000:2500]
+set xrange [2150:2350]
 #set format x ""
 
 # set logscale y
 set ylabel "Y (m)"
-set yrange [:] reverse
-#set yrange [-600:-900] reverse
-set ytics 100
-set mytics 2
+# set yrange [] reverse
+set yrange [-650:-850] reverse
+# set ytics 100
 set ytics autofreq
+set mytics 2
 # set ytics 8,35,3
 # set logscale y2
 # set y2label "Bytes"
@@ -403,15 +405,15 @@ set datafile missing "NaN"
 
 # set key off
 
-set terminal svg size 800,600
+set terminal svg size 600,600
 
 {computed_data}
 
 set output "{file_name}.svg"
 
-plot "{file_name}.dat" using 1:2 title "With -ve error" w points ps 0.75, \\
-    "{file_name}.dat" using 1:3 title "No error" w points ps 1.0, \\
-    "{file_name}.dat" using 1:4 title "With +ve error" w points ps 0.75
+plot "{file_name}.dat" using 1:2 title "With -ve error" w points ps 0.5, \\
+    "{file_name}.dat" using 1:3 title "No error" w points ps 0.5, \\
+    "{file_name}.dat" using 1:4 title "With +ve error" w points ps 0.5
 #plot "{file_name}.dat" using 1:3 title "Mid data" w points lt 6 ps 1
 reset
 """

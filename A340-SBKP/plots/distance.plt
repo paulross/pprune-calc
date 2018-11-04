@@ -29,10 +29,10 @@ set output "distance.svg"   # choose the output device
 set arrow from -30.057,0 to -30.057,-787.367 lt 1
 set arrow from -32.829,200 to -32.829,-949.243 lt 2
 set arrow from -35.571,400 to -35.571,-1125.311 lt 3
-set label "Calculated start at -30.1s, -787m" at -30.1,100 left font ",10"
-set label "Calculated start at -32.8s, -949m" at -32.8,300 left font ",10"
-set label "Calculated start at -35.6s, -1125m" at -35.6,500 left font ",10"
-# End asphalt data
+set label "Calculated start at -30.1s, -787m" at -30.1,100 left font ",9"
+set label "Calculated start at -32.8s, -949m" at -32.8,300 left font ",9"
+set label "Calculated start at -35.6s, -1125m" at -35.6,500 left font ",9"
+# End labels at start of take off
 set arrow from 27.800,1000 to 27.800,1850 lt -1
 set label "End asphalt 27.8s" at 27.8,900 center font ",10"
 set arrow from 17.800,1915.300 to 27.800,1915.300 lt 1

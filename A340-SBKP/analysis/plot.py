@@ -5,7 +5,7 @@ import shutil
 import sys
 
 
-from analysis import plot_acceleration
+from analysis import plot_acceleration, plot_angle_of_view
 from analysis import plot_aspect
 from analysis import plot_common
 from analysis import plot_constants
@@ -17,23 +17,6 @@ from analysis import plot_pitch
 from analysis import plot_svg
 from analysis import plot_transits
 from analysis import plot_yaw
-
-
-# from analysis.plot_acceleration import gnuplot_acceleration, gnuplot_acceleration_plt
-# from analysis.plot_aspect import gnuplot_aspect, gnuplot_aspect_plt
-# from analysis.plot_common import write_dat_plt_call
-# from analysis.plot_distance import gnuplot_distance, gnuplot_distance_runway_end, gnuplot_distance_plt, \
-#     gnuplot_distance_runway_end_plt, gnuplot_distance_from_transits, gnuplot_distance_from_transits_plt
-# from analysis.plot_events import gen_event_data, print_event_table_markdown
-# from analysis.plot_ground_speed import gnuplot_ground_speed, gnuplot_ground_speed_plt, \
-#     gnuplot_ground_speed_extrapolated, gnuplot_ground_speed_extrapolated_plt
-# from analysis.plot_observer import gnuplot_observer_time_distance_bearing, \
-#     gnuplot_observer_time_distance_bearing_with_yaw, gnuplot_observer_time_distance_bearing_plt, gnuplot_observer_xy, \
-#     gnuplot_observer_xy_plt
-# from analysis.plot_pitch import gnuplot_pitch, gnuplot_pitch_plt
-# from analysis.plot_svg import modify_svg_as_text_and_copy
-# from analysis.plot_transits import gnuplot_ground_transits, gnuplot_ground_transits_plt
-# from analysis.plot_yaw import gnuplot_aircraft_yaw, gnuplot_aircraft_yaw_plt
 
 
 def main():
@@ -102,14 +85,16 @@ def main():
         plot_yaw.gnuplot_aircraft_yaw,
         plot_yaw.gnuplot_aircraft_yaw_plt,
     )
-
     plot_common.write_dat_plt_call(
         'ground_transits',
         plot_transits.gnuplot_ground_transits,
         plot_transits.gnuplot_ground_transits_plt,
     )
-
-    # TODO: Write angle of view
+    plot_common.write_dat_plt_call(
+        'angle_of_view',
+        plot_angle_of_view.gnuplot_angle_of_view,
+        plot_angle_of_view.gnuplot_angle_of_view_plt,
+    )
 
     # print('\n'.join(create_svg()))
 

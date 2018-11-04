@@ -41,42 +41,42 @@ set style line 1 lc rgb "blue" lw 0.5
 
 #set style arrow 1 nohead ls 1
 
-set arrow from 39,0 to 2786,-950 ls 4 nohead
-set arrow from 83,0 to 2793,-950 ls 4 nohead
-set arrow from 154,0 to 2804,-950 ls 4 nohead
-set arrow from 174,0 to 2806,-950 ls 4 nohead
-set arrow from 235,0 to 2812,-950 ls 4 nohead
-set arrow from 297,0 to 2814,-950 ls 7 nohead
-set arrow from 360,0 to 2811,-950 ls 7 nohead
-set arrow from 410,0 to 2805,-950 ls 7 nohead
-set arrow from 492,0 to 2789,-950 ls 7 nohead
-set arrow from 559,0 to 2769,-950 ls 7 nohead
-set arrow from 610,0 to 2751,-950 ls 7 nohead
-set arrow from 770,0 to 2681,-950 ls 7 nohead
-set arrow from 918,0 to 2607,-950 ls 7 nohead
-set arrow from 1070,0 to 2532,-950 ls 7 nohead
-set arrow from 1226,0 to 2464,-950 ls 6 nohead
-set arrow from 1285,0 to 2441,-950 ls 6 nohead
-set arrow from 1304,0 to 2434,-950 ls 6 nohead
-set arrow from 1984,0 to 2307,-950 ls 14 nohead
-set arrow from 2014,0 to 2305,-950 ls 14 nohead
-set arrow from 2043,0 to 2302,-950 ls 14 nohead
-set arrow from 2088,0 to 2298,-950 ls 14 nohead
+set arrow from 39,0 to 2905,-950 ls 4 nohead
+set arrow from 83,0 to 2883,-950 ls 4 nohead
+set arrow from 154,0 to 2889,-950 ls 4 nohead
+set arrow from 174,0 to 2861,-950 ls 4 nohead
+set arrow from 235,0 to 2787,-950 ls 4 nohead
+set arrow from 297,0 to 2755,-950 ls 7 nohead
+set arrow from 360,0 to 2682,-950 ls 7 nohead
+set arrow from 410,0 to 2692,-950 ls 7 nohead
+set arrow from 492,0 to 2662,-950 ls 7 nohead
+set arrow from 559,0 to 2699,-950 ls 7 nohead
+set arrow from 610,0 to 2712,-950 ls 7 nohead
+set arrow from 770,0 to 2669,-950 ls 7 nohead
+set arrow from 918,0 to 2618,-950 ls 7 nohead
+set arrow from 1070,0 to 2574,-950 ls 7 nohead
+set arrow from 1226,0 to 2520,-950 ls 6 nohead
+set arrow from 1285,0 to 2505,-950 ls 6 nohead
+set arrow from 1304,0 to 2506,-950 ls 6 nohead
+set arrow from 1984,0 to 2305,-950 ls 14 nohead
+set arrow from 2014,0 to 2297,-950 ls 14 nohead
+set arrow from 2043,0 to 2314,-950 ls 14 nohead
+set arrow from 2088,0 to 2300,-950 ls 14 nohead
 set arrow from 2119,0 to 2296,-950 ls 14 nohead
-set arrow from 2149,0 to 2293,-950 ls 14 nohead
-set arrow from 2255,0 to 2280,-950 ls 14 nohead
-set arrow from 2286,0 to 2275,-950 ls 14 nohead
-set arrow from 2317,0 to 2270,-950 ls 14 nohead
-set arrow from 2348,0 to 2263,-950 ls 14 nohead
-set arrow from 2379,0 to 2256,-950 ls 14 nohead
-set arrow from 2410,0 to 2248,-950 ls 14 nohead
-set arrow from 2441,0 to 2238,-950 ls 14 nohead
-set arrow from 2472,0 to 2227,-950 ls 14 nohead
-set arrow from 2500,0 to 2216,-950 ls 14 nohead
-set arrow from 2535,0 to 2200,-950 ls 14 nohead
-set arrow from 2566,0 to 2182,-950 ls 14 nohead
-set arrow from 2595,0 to 2165,-950 ls 14 nohead
-set arrow from 1791,-745 to 2266,-745 lw 3
+set arrow from 2149,0 to 2289,-950 ls 14 nohead
+set arrow from 2255,0 to 2259,-950 ls 14 nohead
+set arrow from 2286,0 to 2249,-950 ls 14 nohead
+set arrow from 2317,0 to 2245,-950 ls 14 nohead
+set arrow from 2348,0 to 2241,-950 ls 14 nohead
+set arrow from 2379,0 to 2236,-950 ls 14 nohead
+set arrow from 2410,0 to 2230,-950 ls 14 nohead
+set arrow from 2441,0 to 2229,-950 ls 14 nohead
+set arrow from 2472,0 to 2225,-950 ls 14 nohead
+set arrow from 2500,0 to 2226,-950 ls 14 nohead
+set arrow from 2535,0 to 2222,-950 ls 14 nohead
+set arrow from 2566,0 to 2216,-950 ls 14 nohead
+set arrow from 2595,0 to 2212,-950 ls 14 nohead
+set arrow from 1791,-763 to 2266,-763 lw 3
 set label 1 "t=0.7" at 39,20 right rotate by 60 font ",9"
 set label 2 "t=1.5" at 83,20 right rotate by 60 font ",9"
 set label 3 "t=2.7" at 154,20 right rotate by 60 font ",9"
@@ -112,7 +112,7 @@ set label 32 "t=32.6" at 2500,20 right rotate by 60 font ",9"
 set label 33 "t=33.0" at 2535,20 right rotate by 60 font ",9"
 set label 34 "t=33.3" at 2566,20 right rotate by 60 font ",9"
 set label 35 "t=33.6" at 2595,20 right rotate by 60 font ",9"
-set label "Mean position at x=2266, y=-745" at 1766,-745 right font ",14"
+set label "Mean position at x=2266, y=-763" at 1766,-763 right font ",14"
 
 plot "time_distance_bearing.dat" using 2:(y_base_value)
 reset

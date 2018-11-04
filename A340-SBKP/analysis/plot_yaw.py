@@ -38,6 +38,14 @@ def gnuplot_aircraft_yaw(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
         t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
     )
     observer_error = math.sqrt(x_std**2 + y_std**2)
+    # Observer from bearings    : x=3480.0 y=-763.0
+    # Observer from google earth: x=3457.9 y=-655.5
+    #       Diff (bearings - ge): x=  22.1 y=-107.5
+    # x_mean = 3457.9 - 1214
+    # y_mean = -655.5
+    # y_mean = -744.88
+    # y_mean = -754.88
+    # y_mean = -764.88
     for t, x_distance, aspect, aspect_error in time_dist_brng:
         # Calculate the bearing from the observers assumed position to the aircraft position
         x_obs_aircraft = x_mean - x_distance
@@ -74,10 +82,11 @@ set xtics autofreq
 
 # set logscale y
 set ylabel "Deviation (degrees, +ve right, -ve left)"
-set yrange [:10]
+set yrange [:8]
 #set yrange [-600:-900] reverse
-#set ytics 100
-set ytics autofreq
+set ytics 1
+# set mytics 0.5
+# set ytics autofreq
 # set ytics 8,35,3
 # set logscale y2
 # set y2label "Bytes"
@@ -96,14 +105,15 @@ set output "{file_name}.svg"
 
 
 # Nose wheel off at around 00:17:27 i.e. 17.9s
-set arrow from 17.9,-5.5 to 17.9,1.5 lw 2 lc rgb "black"
-set label 3 "Nose wheel off" at 17.9,-6 font ",12" center
+set arrow from 17.9,-4.5 to 17.9,0.0 lw 2 lc rgb "black"
+set label 3 "Nose wheel off" at 17.9,-5 font ",12" center
 
 # Main gear off at around 00:25:19 i.e. 25.63
-set arrow from 25.6,-5.5 to 25.6,2.5 lw 2 lc rgb "black"
-set label 4 "Main wheels off" at 25.6,-6 font ",12" center
+set arrow from 25.6,-4.5 to 25.6,0.5 lw 2 lc rgb "black"
+set label 4 "Main wheels off" at 25.6,-5 font ",12" center
 
+# linespoints  ps 1.25
 plot "{file_name}.dat" using 1:2:3:4 title "Estimated" w yerrorbars ps 1.25, \\
-    "{file_name}.dat" using 1:2 title "Fit of estimate" w linespoints ps 1.25 smooth csplines#bezier
+    "{file_name}.dat" using 1:2 title "Fit of estimate" w lines lw 2 smooth bezier# csplines#bezier
 reset
 """

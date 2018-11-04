@@ -164,7 +164,7 @@
 		<text>Pitch (degrees)</text>
 	</g>
 	<g transform="translate(369.3,491.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
-		<text>Time (s)</text>
+		<text>Video Time (s)</text>
 	</g>
 	<g transform="translate(369.3,31.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
 		<text>Pitch Angle.</text>

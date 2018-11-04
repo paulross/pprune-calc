@@ -1,7 +1,7 @@
     
-# Technical Analysis of an A340 Takeoff Video
+# Analysis of an A340 Takeoff Video
 
-I came across a video of an A340 taking off from Viracopos International Airport in South America where the aircraft only just gets airborne before the end of the runway. You can see the video here, it starts part way through the take off:
+I came across a video of an A340 taking off from Viracopos International Airport in South America where the aircraft airborne only just before before the end of the runway. You can see the video here, it starts part way through the take off:
 
 <center>
 
@@ -9,23 +9,23 @@ I came across a video of an A340 taking off from Viracopos International Airport
 
 </center>
 
-I was curious about what objective information such as speed and distance data could be extracted from the video by looking at individual frames.
+It seemed an unusual take off to me and I was curious about what objective information such as speed and distance data could be extracted from the video by looking at individual frames.
 
 # Data
 
-The aircraft was identified [on youtube](https://www.youtube.com/watch?v=XbWaXdA5jY0&feature=youtu.be) as an A340-300 registration [9H-BIG](https://www.planespotters.net/airframe/Airbus/A340/9H-BIG-AIR-X-Charter/RJgIaj) operated by Air-X. I used Wikipedia to get some [drawings of the A340-300](https://en.wikipedia.org/wiki/Airbus_A340).
+The aircraft was identified [on youtube](https://www.youtube.com/watch?v=XbWaXdA5jY0&feature=youtu.be) as an A340-300 registration [9H-BIG](https://www.planespotters.net/airframe/Airbus/A340/9H-BIG-AIR-X-Charter/RJgIaj) operated by Air-X. It was taking off from runway 15. I used Wikipedia to get some [drawings of the A340-300](https://en.wikipedia.org/wiki/Airbus_A340). And of course OpenStreetMap and Google Earth and Google Street View.
 
 ## Unknowns
 
 I don't know the following:
 
-* Anything about A340 operations, reference speeds, field limits etc.
+* Anything about A340 operations, reference speeds, limits, screen heights etc.
 * The date and time of this video.
 * The metrological conditions existed at the take off time.
 * The terrain, especially runway slope.
-* The movement of the observer (I have assumed that the observer is stationary).
+* Any movement of the observer (I have assumed that the observer is stationary).
 * Any details of the video camera or operator.
-* Any editing of the video that alters its fidelity (so the video is taken in good faith).
+* Any editing of the video that alters its fidelity (the video is taken in good faith).
 
 If any of these assumptions are wrong it will affect this analysis greatly.
 
@@ -33,11 +33,18 @@ If any of these assumptions are wrong it will affect this analysis greatly.
 
 Three measurements seemed practical and useful:
 
-* Ground speed; the aircraft transits multiple fixed objects such as lampposts, lighting towers and so on. Taking transit points such as the aircraft nose and tail cone and knowing the length of the fuselage gives the ground speed.
-* Aspect; this is the relative bearing of the observer from the axis of the aircraft. The measurement is made by observing when parts of the aircraft line up (for example the nose with number 3 engine).
+* Ground speed; the aircraft transits multiple fixed objects such as lampposts, lighting towers and so on. Taking transit points such as the aircraft nose and tail cone and knowing the length of the fuselage gives the ground speed. Some of the transit points can be identified on publicly available aerial photography. These transits can be used to determine the aircraft position once the observers position is known.
+* Aspect; this is the relative bearing of the observer from the axis of the aircraft. The measurement is made by observing when parts of the aircraft line up (for example the nose with number 3 engine). A more accurate method is to measure the apparent span and length of the aircraft in a single frame.
 * Pitch; The pitch of the aircraft was measured by comparing the line of cabin windows relative to the video frame. This is not a very reliable measurement as it is vulnerable to camera roll, which is unknown. Still, some conclusions can be drawn.
 
 An estimate of the error was made for each measurement.
+
+## Terminology
+
+* 'Time' is video time in seconds, unless specified otherwise.
+* 'Distance' is in metres from either the start of the video or the start of the runway (as specified).
+* 'X axis' is along runway 15 with x=0 at the threshold of runway 15. Values in metres.
+* 'Y axis' is at right angles to runway 15 +ve to the right, -ve to the left. Values in metres.
 
 # Analysis
 
@@ -51,36 +58,20 @@ An estimate of the error was made for each measurement.
 Here are the calculated ground speed in knots with the errors and a best fit to the mid value:
 
 <center>
-<img src="plots/ground_speed.svg" width="500" />
+<img src="plots/ground_speed.svg" width="600" />
 </center>
 
-For the rest of this analysis the ground speed is the fit to mid value ±10 knots.
+The ground speed error is ±10 knots.
 
 ### Extrapolating Before the Video Starts
 
 The best fit curve can be extrapolated back to the start of the take off:
 
 <center>
-<img width="500" src="plots/ground_speed_extrapolated.svg" />
+<img src="plots/ground_speed_extrapolated.svg" width="600" />
 </center>
 
 This is a large extrapolation, with its consequent dangers, but the data seems reasonable. This extrapolation gives a start of take off (video) time of -33 ±3 seconds.
-
-## Acceleration
-
-This can be calculated by taking the derivative of the ground speed, the ±10 knot speed error does not affect the acceleration calculation.
-
-Given constant thrust the acceleration would be expected to decline in several stages:
-
-* As parasitic drag increases: 0 <= t < 18
-* Additionally it falls further as induced drag increases as the nose wheel comes off: 18 <= t < 25.5
-* Additionally it falls even further as the aircraft starts to climb: 25.5 <= t < 33.7
-
-None of these specific events are visible in the analysis, likely due to smoothing of the ground speed data but the calculated acceleration shows the expected (general) decline.
-
-<center>
-<img width="500" src="plots/acceleration.svg" />
-</center>
 
 ## Distance
 
@@ -92,46 +83,36 @@ This graph shows the distance traveled for:
 * Ground speed from mid values.
 * Ground speed from mid values +10 knots.
 
+The graph is centered around t=0 and distance from start of video = 0.
+
 <center>
-<img width="500" src="plots/distance.svg" />
+<img src="plots/distance.svg" width="600" />
 </center>
 
 ### Calculating the Location of the Start of Take Off
 
-Since it is observed that the aircraft crosses the and of asphalt at t=27.8, d=3240m seconds we can work back from that for each scenario and calculate the position from the start of the runway. This is equivalent to adjusting the distance curves such that they all cross a t=27.8s, d=3240m. This shows the estimate of the start of the take off.
+The distance curves can be shifted such that the estimates intersect when the aircraft crosses the end of the asphalt at t=27.8s. This is d=3240m from the start of the runway. Now the graph shows video time on the x axis and the estimated distance from the runway start on the y axis.
 
 <center>
-<img width="500" src="plots/distance_runway_end.svg" />
+<img src="plots/distance_runway_end.svg" width="600" />
 </center>
 
-| Calculation | Start time (s, video time) | Distance from start of Runway (m) |
-| --- | --- | --- |
-| Mid speed -10 knots | -30.1 | 529 |
-| Mid speed | -32.8 | 232 |
-| Mid speed +10 knots | -35.5 | -77 |
-| **Range, worst error case** | **-33 ± 3** | **232 ± 310**  |
+This graph shows:
 
-[Some rounding differences may be present.]
+| Calculation | Start time (s, video time) | Distance from start of Runway (m) | Distance from start of Runway t=0 (m) |
+| --- | --- | --- | --- |
+| Mid speed -10 knots | -30.1 | 537 | 1325 |
+| Mid speed | -32.8 | 232 | 1182 |
+| Mid speed +10 knots | -35.6 | -87 | 1038 |
+| **Range, worst error case** | **-33 ± 3** | **232 ± 319**  | **1182 ± 144**  |
+
 
 The mid position looks entirely plausible as from OpenStreetMap there are two entry points to runway 15:
 
 * Taxiway D which is at the runway start.
 * Taxiway H which is about 200m from runway start.
 
-Either could have been used, the accuracy of distance calculation is too poor to say which.
-
-Further confidence can be gained in this ground speed / distance calculation by looking at the calculation of observer position, of which more later.
-
-## Pitch
-
-Pitch is the least reliable measurement from the video as it is directly affected by camera roll angle of which we know nothing.
-
-The graph below shows the estimated pitch. At t=18 rotation starts at 1.4 degrees/second until a pitch angle of +8 degrees (relative to the nose wheel on the runway). A further increase to +12 degrees relative is observed at t=29 to 31.
-
-<center>
-<img width="500" src="plots/pitch.svg" />
-</center>
-
+Either could have been used, the accuracy of distance calculation is too poor to say which at the moment. However further confidence and accuracy can be gained in this ground speed / distance calculation by looking at the calculation of observer position.
 
 ## Bearings to the Observer
 
@@ -141,32 +122,38 @@ The value of this measurement is it contributes to an error estimate for ground 
 
 11 measurements of aspect were made and the [Wikipedia plan drawing](https://en.wikipedia.org/wiki/Airbus_A340) of the A340-300 was used to estimate the bearing of the observer from the fore and aft axis. The error in aspect/bearing is assumed to be ±3 degrees.
 
+Another set of measurements were made by comparing the relative size of the apparent span and apparent length. This is believed to be less sensitive to errors due to the larger baseline involved in the measurement.
+
+Initially we assume that the aircraft has a constant heading with no yaw but once we have identified the observers position we can examine any yaw that developed, for example to compensate for a crosswind.
+
 Here is a graph of those bearings with the estimated errors and best fit of the data:
 
 <center>
-<img width="500" src="plots/aspect.svg" />
+<img src="plots/aspect.svg" width="800" />
 </center>
+
+The wing tip data is more sensitive than the transit data and will be used from here on.
 
 ### Combining Bearings and Distance Data
 
-Using the best fit of the bearing and the distance estimate the bearings can be plotted:
+The bearings to the observer are plotted here:
 
 <center>
-<img width="800" src="plots/time_distance_bearing.svg" />
+<img src="plots/time_distance_bearing.svg" width="800" />
 </center>
 
 These bearings are filtered:
 
-* The first three bearings (shown in orange above) are ignored as the angle is too small for accurate estimation.
-* Pairs of bearings are ignored unless the baseline between them is > 500m
+* The Cyan bearings are ignored as the angle is too small to be accurate.
+* Pairs of bearings are ignored unless the baseline between them is >1250m
 
-Selecting all the combinations of remaining bearing pairs gives the following 17 observer positions. X is distance from start of video, Y is the distance to the left or right of the aircraft axis +ve right and -ve left.
+Selecting all the combinations of remaining bearing pairs gives the following observer positions. X is distance from start of video, Y is the distance to the left or right of the aircraft axis +ve right and -ve left.
 
 <center>
-<img width="600" src="plots/observer_xy.svg" />
+<img src="plots/observer_xy.svg" width="600" />
 </center>
 
-The observers position is (2250, -750) ±50m. 
+The observers position is given above, given our estimate of the position of the aircraft at t=27.8s at the end of the asphalt. 
 
 Here is a Google StreetView image of that area facing towards the extended centreline. Features that match are:
 
@@ -175,10 +162,94 @@ Here is a Google StreetView image of that area facing towards the extended centr
 * The power cables on the left that are seen at t=32 where they are extremely foreshortened as they are in line with the camera.
 
 <center>
-<img width="800" src="plots/MapsGoogle.png" />
+<img src="plots/MapsGoogle.png" width="800" />
+(Copyright Google)
 </center>
 
 The observer is to the left of this Google StreetView image and at an elevation about half way up the power poles to be able to see the runway.
+
+
+## Using Transits to Improve the Distance Calculation
+
+<center>
+<img src="plots/ground_transits.svg" width="600" />
+</center>
+
+Runway transit distances:
+
+<center>
+<img src="plots/distance_from_transits.svg" width="600" />
+</center>
+
+This additional calculation suggests that our ground speed estimate is low by 3 knots but the accuracy has improved to ±5 knots. This also suggests that the distance estimate is correct ±25m for the duration of the video.
+
+## Acceleration
+
+This can be calculated by taking the derivative of the ground speed. Given constant thrust the acceleration would be expected to decline in several stages:
+
+* As parasitic drag increases: 0 <= t < 18
+* Additionally it falls further as induced drag is added as the nose wheel comes off: 18 <= t < 25.5
+* Additionally it falls even further as the aircraft starts to climb: 25.5 <= t < 33.7
+
+None of these specific events are visible in the analysis, likely due to smoothing of the ground speed data but the calculated acceleration shows the expected (general) decline.
+
+<center>
+<img src="plots/acceleration.svg" width="600" />
+</center>
+
+### Errors in acceleration
+
+The acceleration from our ground speed model is identical whether a -10 or +10 knot error is assumed. However an error estimate can be made by looking at the time and distance error estimates.
+
+| Speed Error | Time from start take off to end asphalt (s) | Final Speed (knots) | Mean Acceleration (knots/s) | Mean Acceleration Error (knots/s) | Distance from start take off to end asphalt (m) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| -10 knots | 57.9 | 165 | 2.85 | -0.04 | 2703 |
+| 0 knots | 60.6 | 175 | 2.89 | 0 | 3008 |
+| +10 knots | 63.4 | 185 | 2.92 | +0.03 | 3327 |
+
+
+This suggests that the acceleration figures are likely correct to ±0.04 knots/second.
+
+The extreme worst case is when the time estimate and speed estimate are reversed:
+
+| Speed Error | Time from start take off to end asphalt (s) | Final Speed (knots) | Mean Acceleration (knots/s) | Mean Acceleration Error (knots/s) | Distance from start take off to end asphalt (m) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| -10 knots | 63.4 | 165 | 2.60 | -0.29 | 2692 |
+| 0 knots | 60.6 | 175 | 2.89 | 0 | 2729 |
+| +10 knots | 57.9 | 185 | 3.20 | +0.31 | 2756 |
+
+
+## Aircraft Yaw
+
+Assuming now we know the observers position we can re-plot the bearings through the observers position and calculate the yaw of the aircraft. The bearings now look like this:
+
+<center>
+<img src="plots/time_distance_bearing_with_yaw.svg" width="800" />
+</center>
+
+And the calculated yaw is the adjustment made to the bearing data to make it coincide with the observers position, the errors are calculated as the sump of the error in the observers position plus the error in establishing the bearing of the observer from the aircraft:
+
+<center>
+<img src="plots/aircraft_yaw.svg" width="600" />
+</center>
+
+The error term vastly exceeds the calculated data but, even so, there seems an interesting, but tentative, story in the estimated values. At t=30 the aircraft yaws at about 0.6 degree/second to the right reaching -1.3 degrees at the end of the video.
+
+These conclusions are tentative because the error terms vastly exceed the trend.
+
+## Aircraft Pitch
+
+Pitch is regarded as the least reliable measurement as it is directly affected by camera roll angle of which we know nothing.
+
+The graph below shows the estimated pitch. At t=17.9 rotation starts at 1.4 degrees/second until a pitch angle of +8 degrees (relative to the nose wheel on the runway). A further increase to +12 degrees relative is observed at t=29 to 31.
+
+<center>
+<img src="plots/pitch.svg" width="600" />
+</center>
+
+## Angle of View
+
+TODO
 
 # Conclusions
 
@@ -191,7 +262,7 @@ The observer is to the left of this Google StreetView image and at an elevation 
 | Nose wheel off | 17.9 | 50.7 | 154 ± 10 | 2.2 | 2400 ± 51 | 840 ± 51 | Rotation of ~1.4 °/s to t=23 |
 | Main wheels off | 25.6 | 58.5 | 171 ± 10 | 1.9 | 3048 ± 11 | 192 ± 11 |  |
 | End asphalt | 27.8 | 60.6 | 175 ± 10 | 1.8 | 3240 ± 0 | 0 ± 0 | Defined datum |
-| Video ends | 33.7 | 66.5 | 185 ± 10 | 1.6 | 3783 ± 30 | -543 ± 30 |  |
+| Video ends | 35.7 | 68.5 | 188 ± 10 | 1.5 | 3974 ± 40 | -734 ± 40 |  |
 
 
 ## Mapping
@@ -207,7 +278,11 @@ The annotations in blue contain:
 * [...] The time as estimated time from start of take off in seconds.
 
 <center>
-<img width="800" src="plots/OpenStreetmap_SBKP_01_work.png" />
+<img src="plots/OpenStreetmap_SBKP_01_annotated.svg" width="800" />
+</center>
+
+<center>
+<img src="plots/OpenStreetmap_SBKP_01_work.png" width="800" />
 </center>
 
 # Resources

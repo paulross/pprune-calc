@@ -183,14 +183,23 @@
 	<g transform="translate(377.6,31.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
 		<text>Distance from runway start.</text>
 	</g>
-	<g transform="translate(153.8,321.8)" style="stroke:none; fill:black; font-family:Arial; font-size:10.00pt; text-anchor:start">
+	<g transform="translate(153.8,321.5)" style="stroke:none; fill:black; font-family:Arial; font-size:9.00pt; text-anchor:start">
 		<text>Calculated start at -30.1s, 537m</text>
 	</g>
-	<g transform="translate(133.7,306.3)" style="stroke:none; fill:black; font-family:Arial; font-size:10.00pt; text-anchor:start">
+	<g transform="translate(133.7,306.0)" style="stroke:none; fill:black; font-family:Arial; font-size:9.00pt; text-anchor:start">
 		<text>Calculated start at -32.8s, 232m</text>
 	</g>
-	<g transform="translate(112.9,290.8)" style="stroke:none; fill:black; font-family:Arial; font-size:10.00pt; text-anchor:start">
+	<g transform="translate(112.9,290.5)" style="stroke:none; fill:black; font-family:Arial; font-size:9.00pt; text-anchor:start">
 		<text>Calculated start at -35.6s, -87m</text>
+	</g>
+	<g transform="translate(422.2,304.1)" style="stroke:none; fill:black; font-family:Arial; font-size:9.00pt; text-anchor:start">
+		<text>t=0.0s, d=1325m</text>
+	</g>
+	<g transform="translate(422.2,315.2)" style="stroke:none; fill:black; font-family:Arial; font-size:9.00pt; text-anchor:start">
+		<text>t=0.0s, d=1182m</text>
+	</g>
+	<g transform="translate(422.2,326.3)" style="stroke:none; fill:black; font-family:Arial; font-size:9.00pt; text-anchor:start">
+		<text>t=0.0s, d=1038m</text>
 	</g>
 	<g transform="translate(584.3,237.2)" style="stroke:none; fill:black; font-family:Arial; font-size:10.00pt; text-anchor:middle">
 		<text>End asphalt 27.8s</text>
@@ -208,6 +217,12 @@
 	<path stroke='green'  d='M128.9,368.2 L133.5,385.5 L138.1,368.2 M133.5,310.4 L133.5,385.5  h0.01'/></g>
 <g style="fill:none; color:blue; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<path stroke='blue'  d='M108.5,393.0 L113.1,410.3 L117.7,393.0 M113.1,294.8 L113.1,410.3  h0.01'/></g>
+<g style="fill:none; color:red; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path stroke='red'  d='M390.5,297.3 L377.6,300.7 L390.5,304.1 M422.2,300.7 L377.6,300.7  h0.01'/></g>
+<g style="fill:none; color:green; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path stroke='green'  d='M390.5,308.4 L377.6,311.8 L390.5,315.2 M422.2,311.8 L377.6,311.8  h0.01'/></g>
+<g style="fill:none; color:blue; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path stroke='blue'  d='M390.5,319.5 L377.6,322.9 L390.5,326.3 M422.2,322.9 L377.6,322.9  h0.01'/></g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<path stroke='black'  d='M588.9,177.0 L584.3,159.7 L579.7,177.0 M584.3,225.7 L584.3,159.7  h0.01'/></g>
 <g style="fill:none; color:green; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">

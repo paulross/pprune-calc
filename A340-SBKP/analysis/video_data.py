@@ -254,7 +254,7 @@ AIRCRAFT_ASPECTS: typing.Tuple[AircraftAspect] = (
 
 #: +/- error in aspect measurements from wing tips in pixels.
 #: This is added to length/span to compute the error
-_ERROR_ASPECT_FROM_WING_TIPS_PX = 32
+_ERROR_ASPECT_FROM_WING_TIPS_PX = 18
 
 
 # Measuring aspect from the relative separation of the wing tips compared to the aircraft length
@@ -306,6 +306,9 @@ class AircraftAspectWingTips(collections.namedtuple('AircraftAspect', 'video_tim
         return self.video_time.time < other.video_time.time
 
 
+AIRCRAFT_ASPECTS_FROM_WING_TIPS_VIDEO_FRAME_WIDTH = 1280
+AIRCRAFT_ASPECTS_FROM_WING_TIPS_VIDEO_FRAME_HEIGHT = 720
+
 AIRCRAFT_ASPECTS_FROM_WING_TIPS: typing.Tuple[AircraftAspectWingTips] = (
     # Measured by selecting tip to tip and noting width and height of selection in pixels
     # and then computing the diagonal.
@@ -355,153 +358,6 @@ AIRCRAFT_ASPECTS_FROM_WING_TIPS: typing.Tuple[AircraftAspectWingTips] = (
     AircraftAspectWingTips(ffmpeg_name_to_video_time('image000991.png'), -269, -861, ''),
     AircraftAspectWingTips(ffmpeg_name_to_video_time('image001001.png'), -293, -839, ''),
     AircraftAspectWingTips(ffmpeg_name_to_video_time('image001010.png'), -313, -819, 'Last usable frame.'),
-)
-
-# Strictly speaking this is not data measured from the video but it is the assumed yaw profile
-# that applies to the aspects.
-# A 2-d array of (video time, yaw in degrees[+ve right])
-YAW_PROFILE = np.array(
-    (
-        (0.0, 0.0),
-        (TIME_VIDEO_NOSEWHEEL_OFF.time - 1.0 / FRAMES_PER_SECOND, 0.0), # Just before t~18
-        (TIME_VIDEO_NOSEWHEEL_OFF.time, 2.5), # t~18
-        (TIME_VIDEO_MAINWHEEL_OFF.time - 1.0 / FRAMES_PER_SECOND, 2.5), # t~25.5
-        (TIME_VIDEO_MAINWHEEL_OFF.time, 2.5), # t~25.5
-        (TIME_VIDEO_MAINWHEEL_OFF.time, 15), # t~25.5
-        (30.0, 15.0),
-        (TIME_VIDEO_END.time, 8.0), # t~33.5
-    )
-)
-
-YAW_PROFILE = np.array(
-    (
-        (0.0, 0.0),
-        (TIME_VIDEO_NOSEWHEEL_OFF.time - 1.0 / FRAMES_PER_SECOND, 0.0), # t~18
-        (TIME_VIDEO_NOSEWHEEL_OFF.time, 2.5), # t~18
-        (TIME_VIDEO_MAINWHEEL_OFF.time, 2.5), # t~25.5
-        (30.0, 1.5), # t~30.0
-        (TIME_VIDEO_END.time, 5), # t~33.5
-    )
-)
-
-YAW_PROFILE = np.array(
-    [
-        (0.7, 0.4164168681860474),
-        (1.4666666666666668, 0.31188568644483894),
-        (2.6666666666666665, 0.13535699538499557),
-        (3.0, 0.08553449600708518),
-        (4.0, -0.06039964742774373),
-        (5.0, -0.19363658364557068),
-        (6.0, -0.3051111839396299),
-        (6.766666666666667, -0.37053270183400855),
-        (8.0, -0.4296781649251784),
-        (9.0, -0.4281407742569172),
-        (9.733333333333333, -0.3950515891407349),
-        (12.0, -0.10153660704156664),
-        (14.0, 0.41280327021672747),
-        (16.0, 1.1548576446803622),
-        (18.0, 2.06773484900674),
-        (18.733333333333334, 2.424273394739373),
-        (18.966666666666665, 2.5380806647709164),
-        (26.966666666666665, 3.597117678722043),
-        (27.3, 3.415851103997454),
-        (27.633333333333333, 3.2181685467159014),
-        (28.133333333333333, 2.8977387815313023),
-        (28.466666666666665, 2.6739232392872623),
-        (28.8, 2.4474877126436922),
-        (29.966666666666665, 1.7201289125505355),
-        (30.3, 1.559405819321512),
-        (30.633333333333333, 1.433608996740361),
-        (30.966666666666665, 1.3508043548319506),
-        (31.3, 1.3191103900106782),
-        (31.633333333333333, 1.346548981497449),
-        (31.966666666666665, 1.4409008710690046),
-        (32.3, 1.6095726453928307),
-        (32.6, 1.830649127636093),
-        (32.96666666666667, 2.19695887240988),
-        (33.3, 2.6276853894834176),
-        (33.6, 3.099198554286346)
-    ]
-)
-
-YAW_PROFILE = np.array(
-    [
-        (0.7, 0.2882498067709207),
-        (1.4666666666666668, 0.1748777942237325),
-        (2.6666666666666665, -0.017009560809640334),
-        (3.0, -0.0714616946521005),
-        (4.0, -0.23234355456639832),
-        (5.0, -0.38229283076731235),
-        (6.0, -0.5125042370561346),
-        (6.766666666666667, -0.5938510896971252),
-        (8.0, -0.6819001977234507),
-        (9.0, -0.7072482582203179),
-        (9.733333333333333, -0.6961540573475986),
-        (12.0, -0.4856965446655863),
-        (14.0, -0.06952508035601568),
-        (16.0, 0.5413348509584353),
-        (18.0, 1.2765967280476502),
-        (18.733333333333334, 1.5529074154586624),
-        (18.966666666666665, 1.6391980610538326),
-        (26.966666666666665, 0.9980800018125819),
-        (27.3, 0.7264367061037547),
-        (27.633333333333333, 0.44114611595693987),
-        (28.133333333333333, -0.0032574307372215117),
-        (28.466666666666665, -0.3032109310903479),
-        (28.8, -0.5993327109144388),
-        (29.966666666666665, -1.5058065150033713),
-        (30.3, -1.695960172724881),
-        (30.633333333333333, -1.840567146581975),
-        (30.966666666666665, -1.9313602535017367),
-        (31.3, -1.9602333440012103),
-        (31.633333333333333, -1.9193871409775625),
-        (31.966666666666665, -1.8014603854293796),
-        (32.3, -1.5996407647426736),
-        (32.6, -1.3411556381092282),
-        (32.96666666666667, -0.9203136192116403),
-        (33.3, -0.43257778386077916),
-        (33.6, 0.09546607272429242),
-    ]
-)
-
-YAW_PROFILE = np.array(
-    [
-        (0.7, 0.2566510435863165),
-        (1.4666666666666668, 0.14212553585463183),
-        (2.6666666666666665, -0.05174285385112398),
-        (3.0, -0.1067868718012619),
-        (4.0, -0.26956449189447085),
-        (5.0, -0.42160797620232415),
-        (6.0, -0.5541387639785285),
-        (6.766666666666667, -0.6374356116359081),
-        (8.0, -0.7289792318095465),
-        (9.0, -0.757531960500728),
-        (9.733333333333333, -0.7490303252845933),
-        (12.0, -0.5481633626199027),
-        (14.0, -0.14300058679697258),
-        (16.0, 0.453569760631126),
-        (18.0, 1.1700852576699958),
-        (18.733333333333334, 1.43811763929898),
-        (18.966666666666665, 1.5215935766050848),
-        (26.966666666666665, 0.7284797710458406),
-        (27.3, 0.45031925676261153),
-        (27.633333333333333, 0.1589857016070937),
-        (28.133333333333333, -0.2933898336730749),
-        (28.466666666666665, -0.597797631682738),
-        (28.8, -0.8975870973691258),
-        (29.966666666666665, -1.8097593228724236),
-        (30.3, -1.99933513870252),
-        (30.633333333333333, -2.142364823670789),
-        (30.966666666666665, -2.2306028421475617),
-        (31.3, -2.2559836414488927),
-        (31.633333333333333, -2.210765677837628),
-        (31.966666666666665, -2.0876600010374204),
-        (32.3, -1.8799380847910925),
-        (32.6, -1.6155982277912244),
-        (32.96666666666667, -1.1870083528174291),
-        (33.3, -0.6917666149386719),
-        (33.6, -0.15667338000037034),
-    ]
 )
 
 AircraftPitch = collections.namedtuple('AircraftPitch', 'video_time, angle, note')
@@ -564,33 +420,33 @@ AIRCRAFT_TRANSITS = (
     AircraftTransit(VideoTime(0, 4, 20), VideoTime(0, 5, 20), 'Near lamp post 3.'),
     AircraftTransit(VideoTime(0, 5, 16), VideoTime(0, 6, 16), 'Near lamp post 4.'),
     AircraftTransit(VideoTime(0, 6, 12), VideoTime(0, 7, 11), 'Far comms tower number 1.'),
-    AircraftTransit(VideoTime(0, 7, 24), VideoTime(0, 8, 22), 'Far comms tower number 3.'),
-    AircraftTransit(VideoTime(0, 8, 14), VideoTime(0, 9, 11), 'Far comms tower number 4.'),
-    AircraftTransit(VideoTime(0, 9, 3), VideoTime(0, 10, 0), 'Far comms tower number 5.'),
+    AircraftTransit(VideoTime(0, 7, 24), VideoTime(0, 8, 22), 'Far comms tower number 2.'),
+    AircraftTransit(VideoTime(0, 8, 14), VideoTime(0, 9, 11), 'Far comms tower number 3.'),
+    AircraftTransit(VideoTime(0, 9, 3), VideoTime(0, 10, 0), 'Far comms tower number 4.'),
     AircraftTransit(VideoTime(0, 9, 11), VideoTime(0, 10, 8), 'Near lamp post number 5.'),
-    AircraftTransit(VideoTime(0, 9, 23), VideoTime(0, 10, 20), 'Far comms tower number 6.'),
+    AircraftTransit(VideoTime(0, 9, 23), VideoTime(0, 10, 20), 'Far comms tower number 5.'),
     AircraftTransit(VideoTime(0, 10, 3), VideoTime(0, 11, 0), 'Far floodlight number 7.'),
     AircraftTransit(VideoTime(0, 10, 8), VideoTime(0, 11, 5), 'Near lamp post number 6.'),
-    AircraftTransit(VideoTime(0, 10, 12), VideoTime(0, 11, 9), 'Far comms tower number 7.'),
-    AircraftTransit(VideoTime(0, 11, 2), VideoTime(0, 11, 29), 'Far comms tower number 8.'),
-    AircraftTransit(VideoTime(0, 11, 19), VideoTime(0, 12, 15), 'Far comms tower number 9.'),
-    AircraftTransit(VideoTime(0, 12, 0), VideoTime(0, 12, 26), 'Far comms tower number 10.'),
-    AircraftTransit(VideoTime(0, 12, 19), VideoTime(0, 13, 16), 'Far comms tower number 11.'),
+    AircraftTransit(VideoTime(0, 10, 12), VideoTime(0, 11, 9), 'Far comms tower number 6.'),
+    AircraftTransit(VideoTime(0, 11, 2), VideoTime(0, 11, 29), 'Far comms tower number 7.'),
+    AircraftTransit(VideoTime(0, 11, 19), VideoTime(0, 12, 15), 'Far comms tower number 8.'),
+    AircraftTransit(VideoTime(0, 12, 0), VideoTime(0, 12, 26), 'Far comms tower number 9.'),
+    AircraftTransit(VideoTime(0, 12, 19), VideoTime(0, 13, 16), 'Far comms tower number 10.'),
     AircraftTransit(VideoTime(0, 13, 1), VideoTime(0, 13, 27), 'Left edge of distant building.'),
-    AircraftTransit(VideoTime(0, 13, 8), VideoTime(0, 14, 4), 'Far comms tower number 12.'),
+    AircraftTransit(VideoTime(0, 13, 8), VideoTime(0, 14, 4), 'Far comms tower number 11.'),
     AircraftTransit(VideoTime(0, 13, 11), VideoTime(0, 14, 6), 'Near lamp post number 7.'),
     AircraftTransit(VideoTime(0, 13, 12), VideoTime(0, 14, 8), 'Near lamp post number 8.'),
     AircraftTransit(VideoTime(0, 13, 25), VideoTime(0, 14, 21), 'Left palm tree of a pair (tail cone obscured).'),
     AircraftTransit(VideoTime(0, 14, 14), VideoTime(0, 15, 10), 'Palm tree (tail cone obscured).'),
-    AircraftTransit(VideoTime(0, 15, 5), VideoTime(0, 16, 0), 'Far comms tower number 13.'),
+    AircraftTransit(VideoTime(0, 15, 5), VideoTime(0, 16, 0), 'Far comms tower number 12.'),
     AircraftTransit(VideoTime(0, 15, 11), VideoTime(0, 16, 6), 'Near lamp post number 9.'),
     AircraftTransit(VideoTime(0, 15, 24), VideoTime(0, 16, 18.5), 'Near lamp post number 10.'),
-    AircraftTransit(VideoTime(0, 16, 3), VideoTime(0, 16, 27), 'Far comms tower number 14.'),
-    AircraftTransit(VideoTime(0, 16, 16.5), VideoTime(0, 17, 11), 'Far comms tower number 15.'),
-    AircraftTransit(VideoTime(0, 16, 27), VideoTime(0, 17, 21), 'Far comms tower number 16.'),
+    AircraftTransit(VideoTime(0, 16, 3), VideoTime(0, 16, 27), 'Far comms tower number 13.'),
+    AircraftTransit(VideoTime(0, 16, 16.5), VideoTime(0, 17, 11), 'Far comms tower number 14.'),
+    AircraftTransit(VideoTime(0, 16, 27), VideoTime(0, 17, 21), 'Far comms tower number 15.'),
     AircraftTransit(VideoTime(0, 17, 9), VideoTime(0, 18, 3), 'Centre of control tower (also near lamp post number 11.'),
-    AircraftTransit(VideoTime(0, 18, 2), VideoTime(0, 18, 26), 'Far comms tower number 17.'),
-    AircraftTransit(VideoTime(0, 18, 11), VideoTime(0, 19, 5), 'Far comms tower number 18.'),
+    AircraftTransit(VideoTime(0, 18, 2), VideoTime(0, 18, 26), 'Far comms tower number 16.'),
+    AircraftTransit(VideoTime(0, 18, 11), VideoTime(0, 19, 5), 'Far comms tower number 17.'),
     AircraftTransit(VideoTime(0, 19, 9), VideoTime(0, 20, 2), 'Extreme right edge of near signage #1.'),
     AircraftTransit(VideoTime(0, 19, 26.5), VideoTime(0, 20, 19), 'Extreme left edge of near signage #1.'),
     AircraftTransit(VideoTime(0, 20, 20), VideoTime(0, 21, 12.5), 'Centre of chequered control point.'),
@@ -683,42 +539,65 @@ Tower 6: https://www.google.com/maps/@-23.003107,-47.147108,59m/data=!3m1!1e3?hl
 # Tower positions furthest to the northeast wing of terminal 1
 # Adjustment to Tower 2 by -1 metre heading 150 dlat=7.8e-6 dlong=-4.5e-6:
 # Was:
-# Tower 2: https://www.google.com/maps/@-23.0042240,-47.1502493,59m/data=!3m1!1e3?hl=en
-# Tower 2: https://www.google.com/maps/@-23.0042162,-47.1502538,59m/data=!3m1!1e3?hl=en
+# Tower 8: https://www.google.com/maps/@-23.0042240,-47.1502493,59m/data=!3m1!1e3?hl=en
+# Tower 8: https://www.google.com/maps/@-23.0042162,-47.1502538,59m/data=!3m1!1e3?hl=en
 # Maybe .5 m more
-# Tower 2: https://www.google.com/maps/@-23.0042123,-47.1502560,59m/data=!3m1!1e3?hl=en
+# Tower 8: https://www.google.com/maps/@-23.0042123,-47.1502560,59m/data=!3m1!1e3?hl=en
 """
-Tower 1: https://www.google.com/maps/@-23.0039523,-47.1506005,59m/data=!3m1!1e3?hl=en
+Tower 7: https://www.google.com/maps/@-23.0039523,-47.1506005,59m/data=!3m1!1e3?hl=en
 # Adjustment to even tower spacing to average of 45.6 m, was:
-# Tower 2: https://www.google.com/maps/@-23.0042240,-47.1502493,59m/data=!3m1!1e3?hl=en
-Tower 2: https://www.google.com/maps/@-23.0042123,-47.1502560,59m/data=!3m1!1e3?hl=en
+# Tower 8: https://www.google.com/maps/@-23.0042240,-47.1502493,59m/data=!3m1!1e3?hl=en
+Tower 8: https://www.google.com/maps/@-23.0042123,-47.1502560,59m/data=!3m1!1e3?hl=en
 # Adjustment to even tower spacing to average of 45.6 m, was:
-#Tower 3: https://www.google.com/maps/@-23.0044624,-47.1498953,59m/data=!3m1!1e3?hl=en
-Tower 3: https://www.google.com/maps/@-23.0044700,-47.1499050,59m/data=!3m1!1e3?hl=en
-Tower 4: https://www.google.com/maps/@-23.0047257,-47.1495659,59m/data=!3m1!1e3?hl=en
-Tower 5: https://www.google.com/maps/@-23.0049800,-47.1492158,59m/data=!3m1!1e3?hl=en
-Tower 6: https://www.google.com/maps/@-23.0052343,-47.1488650,59m/data=!3m1!1e3?hl=en
+#Tower 9: https://www.google.com/maps/@-23.0044624,-47.1498953,59m/data=!3m1!1e3?hl=en
+Tower 9: https://www.google.com/maps/@-23.0044700,-47.1499050,59m/data=!3m1!1e3?hl=en
+Tower 10: https://www.google.com/maps/@-23.0047257,-47.1495659,59m/data=!3m1!1e3?hl=en
+Tower 11: https://www.google.com/maps/@-23.0049800,-47.1492158,59m/data=!3m1!1e3?hl=en
+Tower 12: https://www.google.com/maps/@-23.0052343,-47.1488650,59m/data=!3m1!1e3?hl=en
 """
 
 # Tower positions furthest to the southwest wing of terminal 1
 """
-Tower 1: https://www.google.com/maps/@-23.005718,-47.151876,59m/data=!3m1!1e3?hl=en
-Tower 2: https://www.google.com/maps/@-23.005967,-47.151523,59m/data=!3m1!1e3?hl=en
-Tower 3: https://www.google.com/maps/@-23.006215,-47.151173,59m/data=!3m1!1e3?hl=en
-Tower 4: https://www.google.com/maps/@-23.006463,-47.150828,59m/data=!3m1!1e3?hl=en
-Tower 5: https://www.google.com/maps/@-23.006715,-47.150475,59m/data=!3m1!1e3?hl=en
-Tower 6: https://www.google.com/maps/@-23.006960,-47.150124,59m/data=!3m1!1e3?hl=en
-Tower 7: https://www.google.com/maps/@-23.007207,-47.149788,59m/data=!3m1!1e3?hl=en
+Tower 13: https://www.google.com/maps/@-23.005718,-47.151876,59m/data=!3m1!1e3?hl=en
+Tower 14: https://www.google.com/maps/@-23.005967,-47.151523,59m/data=!3m1!1e3?hl=en
+Tower 16: https://www.google.com/maps/@-23.006215,-47.151173,59m/data=!3m1!1e3?hl=en
+Tower 16: https://www.google.com/maps/@-23.006463,-47.150828,59m/data=!3m1!1e3?hl=en
+Tower 17: https://www.google.com/maps/@-23.006715,-47.150475,59m/data=!3m1!1e3?hl=en
+Tower 18: https://www.google.com/maps/@-23.006960,-47.150124,59m/data=!3m1!1e3?hl=en
+Tower 19: https://www.google.com/maps/@-23.007207,-47.149788,59m/data=!3m1!1e3?hl=en
 """
 
-# Lat long: 1m on earths surface is 1 / 6378.137e3 radians or about 9e-6 degrees
+# Lat long: 1m on earths surface is 1 / 6378.137e3 radians latitude or about 9e-6 degrees
+# Lat long: 9e-6 degrees latitude is around 1.323e-05 degrees longitude
 GOOGLE_EARTH_URLS = """
+# Tower positions in the open nearest 15 threshold
 Tower 1: https://www.google.com/maps/@-23.001859,-47.148885,59m/data=!3m1!1e3?hl=en
 Tower 2: https://www.google.com/maps/@-23.002109,-47.148531,59m/data=!3m1!1e3?hl=en
 Tower 3: https://www.google.com/maps/@-23.002358,-47.148179,59m/data=!3m1!1e3?hl=en
 Tower 4: https://www.google.com/maps/@-23.002612,-47.147815,59m/data=!3m1!1e3?hl=en
 Tower 5: https://www.google.com/maps/@-23.002856,-47.147467,59m/data=!3m1!1e3?hl=en
 Tower 6: https://www.google.com/maps/@-23.003107,-47.147108,59m/data=!3m1!1e3?hl=en
+
+# Tower positions furthest to the northeast wing of terminal 1
+Tower 7: https://www.google.com/maps/@-23.0039523,-47.1506005,59m/data=!3m1!1e3?hl=en
+# Adjustment to even tower spacing to average of 45.6 m, was:
+# Tower 8: https://www.google.com/maps/@-23.0042240,-47.1502493,59m/data=!3m1!1e3?hl=en
+Tower 8: https://www.google.com/maps/@-23.0042123,-47.1502560,59m/data=!3m1!1e3?hl=en
+# Adjustment to even tower spacing to average of 45.6 m, was:
+#Tower 9: https://www.google.com/maps/@-23.0044624,-47.1498953,59m/data=!3m1!1e3?hl=en
+Tower 9: https://www.google.com/maps/@-23.0044700,-47.1499050,59m/data=!3m1!1e3?hl=en
+Tower 10: https://www.google.com/maps/@-23.0047257,-47.1495659,59m/data=!3m1!1e3?hl=en
+Tower 11: https://www.google.com/maps/@-23.0049800,-47.1492158,59m/data=!3m1!1e3?hl=en
+Tower 12: https://www.google.com/maps/@-23.0052343,-47.1488650,59m/data=!3m1!1e3?hl=en
+
+# Tower positions furthest to the southwest wing of terminal 1
+Tower 13: https://www.google.com/maps/@-23.005718,-47.151876,59m/data=!3m1!1e3?hl=en
+Tower 14: https://www.google.com/maps/@-23.005967,-47.151523,59m/data=!3m1!1e3?hl=en
+Tower 15: https://www.google.com/maps/@-23.006215,-47.151173,59m/data=!3m1!1e3?hl=en
+Tower 16: https://www.google.com/maps/@-23.006463,-47.150828,59m/data=!3m1!1e3?hl=en
+Tower 17: https://www.google.com/maps/@-23.006715,-47.150475,59m/data=!3m1!1e3?hl=en
+Tower 18: https://www.google.com/maps/@-23.006960,-47.150124,59m/data=!3m1!1e3?hl=en
+Tower 19: https://www.google.com/maps/@-23.007207,-47.149788,59m/data=!3m1!1e3?hl=en
 
 Threshold 15: https://www.google.com/maps/@-22.9985032,-47.1469772,61m/data=!3m1!1e3?hl=en
 End asphalt 15: https://www.google.com/maps/@-23.0163963,-47.1219874,63m/data=!3m1!1e3?hl=en
@@ -729,6 +608,8 @@ Fedex right: https://www.google.com/maps/@-23.0153072,-47.1298295,61m/data=!3m1!
 
 # Simultanous transit at VideoTime(0, 24, 26)
 Trees right of Fedex: https://www.google.com/maps/@-23.0147636,-47.1303907,104m/data=!3m1!1e3
+# Displaced roughly +100m in x axis.
+# Trees right of Fedex: https://www.google.com/maps/@-23.0148536,-47.1290707,104m/data=!3m1!1e3
 Factory interior corner: https://www.google.com/maps/@-23.0135093,-47.1203631,50m/data=!3m1!1e3
 
 Control tower base: https://www.google.com/maps/@-23.010773,-47.145509,61m/data=!3m1!1e3?hl=en
@@ -800,6 +681,21 @@ GOOGE_EARTH_EVENT_TOWER_MAP = {
     'Tower 4' : 'Far floodlight number 4.',
     'Tower 5' : 'Far floodlight number 5.',
     'Tower 6' : 'Far floodlight number 6.',
+    # Second line of lighting towers
+    'Tower 7' : 'Far comms tower number 1.',
+    'Tower 8' : 'Far comms tower number 2.',
+    'Tower 9' : 'Far comms tower number 3.',
+    'Tower 10' : 'Far comms tower number 4.',
+    'Tower 11' : 'Far comms tower number 5.',
+    'Tower 12' : 'Far comms tower number 6.',
+    # Third line of lighting towers
+    'Tower 13' : 'Far comms tower number 7.',
+    'Tower 14' : 'Far comms tower number 8.',
+    'Tower 15' : 'Far comms tower number 9.',
+    'Tower 16' : 'Far comms tower number 10.',
+    'Tower 17' : 'Far comms tower number 11.',
+    'Tower 18' : 'Far comms tower number 12.',
+    'Tower 19' : 'Far comms tower number 13.',
 }
 
 GOOGLE_EARTH_EVENT_TRANSIT_TIMES = {
@@ -842,54 +738,6 @@ GOOGLE_EARTH_OBSERVER_POSIITON_URL = 'https://www.google.com/maps/@-23.0129344,-
 GOOGLE_EARTH_OBSERVER_POSIITON = video_utils.google_earth_url_to_lat_long(
     'Observer: https://www.google.com/maps/@-23.0129344,-47.1164164,94m/data=!3m1!1e3'
 )[1:]
-
-# The 'Fedex building transit'
-# This is a special transit as we can line up the Fedex building (with an offset)
-# Measurements in pixels of GoogleEarth_FedexTransit.png
-FEDEX_SCREENSHOT_WIDTH = 167
-FEDEX_SCREENSHOT_ADDITIONAL_OFFSET = 239
-# In x/y metres
-FEDEX_BUILDING_WIDTH = math.sqrt(
-    (GOOGLE_EARTH_POSITIONS_XY['Fedex left'][0] - GOOGLE_EARTH_POSITIONS_XY['Fedex right'][0])**2
-    +
-    (GOOGLE_EARTH_POSITIONS_XY['Fedex left'][1] - GOOGLE_EARTH_POSITIONS_XY['Fedex right'][1])**2
-)
-# Heading of the front wall from right to left relative to the x axis.
-FEDEX_BUILDING_BEARING_RIGHT_LEFT = math.degrees(
-    math.atan2(
-        GOOGLE_EARTH_POSITIONS_XY['Fedex left'][1] - GOOGLE_EARTH_POSITIONS_XY['Fedex right'][1],
-        GOOGLE_EARTH_POSITIONS_XY['Fedex left'][0] - GOOGLE_EARTH_POSITIONS_XY['Fedex right'][0],
-    )
-)
-FEDEX_OFFSET_POSITION = (
-    # x
-    GOOGLE_EARTH_POSITIONS_XY['Fedex right'][0] \
-        - math.cos(math.radians(FEDEX_BUILDING_BEARING_RIGHT_LEFT)) \
-            * FEDEX_BUILDING_WIDTH * FEDEX_SCREENSHOT_ADDITIONAL_OFFSET / FEDEX_SCREENSHOT_WIDTH,
-    # y
-    GOOGLE_EARTH_POSITIONS_XY['Fedex right'][1] \
-    - math.sin(math.radians(FEDEX_BUILDING_BEARING_RIGHT_LEFT)) \
-        * FEDEX_BUILDING_WIDTH * FEDEX_SCREENSHOT_ADDITIONAL_OFFSET / FEDEX_SCREENSHOT_WIDTH,
-)
-
-# FEDEX_BEARING_TO_FACTORY_INTERIOR_CORNER = math.degrees(
-#     math.atan2(
-#         GOOGLE_EARTH_POSITIONS_XY['Factory interior corner'][1] - FEDEX_OFFSET_POSITION[1],
-#         GOOGLE_EARTH_POSITIONS_XY['Factory interior corner'][0] - FEDEX_OFFSET_POSITION[0],
-#     )
-# )
-FEDEX_BEARING_TO_FACTORY_INTERIOR_CORNER = math.degrees(
-    math.atan2(
-        FEDEX_OFFSET_POSITION[1] - GOOGLE_EARTH_POSITIONS_XY['Factory interior corner'][1],
-        FEDEX_OFFSET_POSITION[0] - GOOGLE_EARTH_POSITIONS_XY['Factory interior corner'][0],
-    )
-)
-
-
-def fedex_x_from_y(y: float) -> float:
-    fedex_origin_x, fedex_origin_y = FEDEX_OFFSET_POSITION
-    bearing = FEDEX_BEARING_TO_FACTORY_INTERIOR_CORNER
-    return fedex_origin_x + math.cos(math.radians(bearing)) * (y - fedex_origin_y)
 
 #================== END: Data from Google Earth ==============
 

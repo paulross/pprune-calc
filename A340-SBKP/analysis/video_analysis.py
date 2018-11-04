@@ -160,6 +160,7 @@ def observer_position_combinations(
     We always use ground_speed_curve_fit(video_data.ErrorDirection.MID) but apply the error
     to observer_time_distance_bearing or observer_time_distance_bearing_from_wing_tips
     """
+    # Use the mid value of distance
     gs_fit = ground_speed_curve_fit(video_data.ErrorDirection.MID)
     # TODO: Only include measurements during a certain time from/to.
     # For example during the ground run and after the ground run - where a yaw into
@@ -329,17 +330,55 @@ def observer_time_distance_bearing(
         gs_fit: typing.List[float],
         min_mid_max: video_data.ErrorDirection,
         ) -> np.ndarray:
-    return _observer_time_distance_bearing(gs_fit, video_data.AIRCRAFT_ASPECTS, min_mid_max)
+    """
+    Returns a three column array of (time, distance, aspect, aspect_error) from the observed aspect data of
+    transits of parts of the aircraft. Distance is the integral of the ground speed (so from start of video).
+    Units are (seconds, metres, degrees, degrees).
+    """
+    temp = []
+    # aspects_fit = aspect.aspects_curve_fit(video_data.ErrorDirection.MID)
+    # aspects_fit = aspect.aspects_curve_fit_from_wing_tips(min_mid_max)
+    for asp in video_data.AIRCRAFT_ASPECTS:
+        t = asp.video_time.time
+        distance = ground_speed_integral(0, t, gs_fit)
+        # bearing = asp.angle
+        # Use the aspects fit for smoothness
+        # bearing = video_utils.polynomial_3(t, *aspects_fit)
+        # Allow for assumed yaw of the aircraft from video_date.YAW_PROFILE
+        # yaw = video_utils.interpolate(video_data.YAW_PROFILE[:, 0], video_data.YAW_PROFILE[:, 1], t)
+        # print('TRACE: t={:6.1f} yaw={:6.1f}'.format(t, yaw))
+        # bearing += yaw
+        temp.append((t, distance, asp.angle, asp.error))
+    array = np.asarray(temp)
+    return array
 
 def observer_time_distance_bearing_from_wing_tips(
         gs_fit: typing.List[float],
         min_mid_max: video_data.ErrorDirection,
         ) -> np.ndarray:
-    return _observer_time_distance_bearing(
-        gs_fit,
-        video_data.AIRCRAFT_ASPECTS_FROM_WING_TIPS,
-        min_mid_max
-    )
+    temp = []
+    # aspects_fit = aspect.aspects_curve_fit(video_data.ErrorDirection.MID)
+    # aspects_fit = aspect.aspects_curve_fit_from_wing_tips(min_mid_max)
+    for asp in video_data.AIRCRAFT_ASPECTS_FROM_WING_TIPS:
+        t = asp.video_time.time
+        distance = ground_speed_integral(0, t, gs_fit)
+        # bearing = asp.angle
+        # Use the aspects fit for smoothness
+        # bearing = video_utils.polynomial_3(t, *aspects_fit)
+        # Allow for assumed yaw of the aircraft from video_date.YAW_PROFILE
+        # yaw = video_utils.interpolate(video_data.YAW_PROFILE[:, 0], video_data.YAW_PROFILE[:, 1], t)
+        # print('TRACE: t={:6.1f} yaw={:6.1f}'.format(t, yaw))
+        # bearing += yaw
+        if min_mid_max == video_data.ErrorDirection.MIN:
+            temp.append((t, distance, asp.angle - asp.error, asp.error))
+        elif min_mid_max == video_data.ErrorDirection.MID:
+            temp.append((t, distance, asp.angle, asp.error))
+        elif min_mid_max == video_data.ErrorDirection.MAX:
+            temp.append((t, distance, asp.angle + asp.error, asp.error))
+        else:
+            assert 0
+    array = np.asarray(temp)
+    return array
 
 
 """Returns a three columns array of (time, distance, aspect) where time

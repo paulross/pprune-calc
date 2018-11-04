@@ -7,7 +7,7 @@ import numpy as np
 # from analysis.plot_constants import OBSERVER_XY_IGNORE_N_FIRST_BEARINGS, OBSERVER_XY_MINIMUM_BASELINE, OBSERVER_XY_TIME_RANGE
 
 
-from analysis import plot_common, video_data, video_analysis, plot_constants
+from analysis import plot_common, video_data, video_analysis, plot_constants, video_utils
 from analysis import plot_constants
 from analysis import video_analysis
 from analysis import video_data
@@ -54,15 +54,17 @@ def get_distances_min_mid_max(offset_distance_at_t: float) -> typing.Tuple[np.nd
 
 
 def gnuplot_distance(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
-    return _gnuplot_distance(0.0, stream)
+    return _gnuplot_distance(0.0, False, stream)
 
 
 def gnuplot_distance_runway_end(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
-    return _gnuplot_distance(video_data.TIME_VIDEO_END_ASPHALT.time, stream)
+    return _gnuplot_distance(video_data.TIME_VIDEO_END_ASPHALT.time, True, stream)
 
 
 def _gnuplot_distance(offset_distance_at_t: float,
-                      stream: typing.TextIO=sys.stdout) -> typing.List[str]:
+                      include_labels_t_0: bool,
+                      stream: typing.TextIO=sys.stdout,
+                      ) -> typing.List[str]:
     """
     If offset_distance_at_t is non-zero an offset wiil be applied that is the
     runway length - the distance at that offset time.
@@ -88,14 +90,34 @@ def _gnuplot_distance(offset_distance_at_t: float,
     plot_data.extend(
         [
             # set label 1 "Calculated start at -30s, -790m" at -30.137,100 left font ",10" # rotate by 45
-            'set label "Calculated start at {t:.1f}s, {d:.0f}m" at {t:.1f},{offset:d} left font ",10"'.format(
+            'set label "Calculated start at {t:.1f}s, {d:.0f}m" at {t:.1f},{offset:d} left font ",9"'.format(
                 t=three_dist_arrays[i][0, 0],
                 offset=text_offset + 100 + i * 200,
                 d=three_dist_arrays[i][0, 1],
             ) for i in range(len(three_dist_arrays))
         ]
     )
-    plot_data.append('# End asphalt data')
+    plot_data.append('# End labels at start of take off')
+    if include_labels_t_0:
+        plot_data.append('# Labels at t=0')
+        for i in range(len(three_dist_arrays)):
+            d = video_utils.interpolate(three_dist_arrays[i][:, 0], three_dist_arrays[i][:, 1], 0.0)
+            plot_data.append(
+                # set arrow from -30.137,0 to -30.137,-791.8 lt 1
+                'set arrow from {t:.3f},{d:.1f} to 0.0,{d:.3f} lt {lt:d}'.format(
+                    t=6.0,
+                    d=d,
+                    lt=i + 1,
+                )
+            )
+            plot_data.append(
+                # set label 1 "Calculated start at -30s, -790m" at -30.137,100 left font ",10" # rotate by 45
+                'set label "t=0.0s, d={d:.0f}m" at {t:.1f},{d:.1f} left font ",9"'.format(
+                    t=6.0,
+                    d=d,
+                )
+            )
+        plot_data.append('# End labels at t=0')
     if offset_distance_at_t == 0.0:
         d_to = 1850
     else:
@@ -356,9 +378,9 @@ set output "{file_name}.svg"   # choose the output device
 {computed_data}
 
 # linespoints
-plot "{file_name}.dat" using 1:($3-$4) title "Speed error: -10 knots" lt 1 lw 1.5 w lines, \\
-    "{file_name}.dat" using 1:($4-$4) title "Speed error: 0 knots" lt 2 lw 1.5 w lines, \\
-    "{file_name}.dat" using 1:($5-$4) title "Speed error: +10 knots" lt 3 lw 1.5 w lines, \\
+plot "{file_name}.dat" using 1:($3-$4) title "Mid estimate -10 knots" lt 1 lw 1.5 w lines, \\
+    "{file_name}.dat" using 1:($4-$4) title "Mid estimate" lt 2 lw 1.5 w lines, \\
+    "{file_name}.dat" using 1:($5-$4) title "Mid estimate +10 knots" lt 3 lw 1.5 w lines, \\
     "{file_name}.dat" using 1:($2-$4) title "From transits" lt 2 lw 1.5 ps 1.25 w points
 reset
 """

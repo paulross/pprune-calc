@@ -52,7 +52,7 @@ def gnuplot_pitch_plt() -> str:
     return """# set logscale x
 set grid
 set title "Pitch Angle."
-set xlabel "Time (s)"
+set xlabel "Video Time (s)"
 #set xrange [0:3000]
 #set xtics
 #set format x ""
@@ -94,9 +94,9 @@ set label 3 "Nose wheel off" at 17.9,6.5 font ",12" center
 set arrow from 25.6,10.5 to 25.6,8 lw 2 lc rgb "black"
 set label 4 "Main wheels off" at 25.6,11 font ",12" center
 
-# plot "pitch.dat" using 1:4 title "Bearing" lw 2 w linespoints
+# Smoothing the line does not seem to be meaningful
 plot "{file_name}.dat" using 1:2:3:4:5:6 title "Raw data" w xyerrorbars lw 1.5#, \\
-    "{file_name}.dat" using 1:2 with lines smooth bezier
+    "{file_name}.dat" using 1:2 with lines smooth csplines
 
 reset
 """

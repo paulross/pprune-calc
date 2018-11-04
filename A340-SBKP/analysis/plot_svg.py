@@ -1,4 +1,5 @@
 import collections
+import math
 import typing
 
 import numpy as np
@@ -114,7 +115,7 @@ def create_svg_observer_xy(d_video_starts: float, d_video_starts_error: float) -
     range_x = np.max(observer_xy[:, 0]) - np.min(observer_xy[:, 0])
     range_y = np.max(observer_xy[:, 1]) - np.min(observer_xy[:, 1])
     radius_m = max(range_x, range_y) / 2
-    radius_m = 75
+    radius_m = 100
     circle_pos = plot_constants.position_m_to_pixels(plot_constants.PosXY(mean_x + d_video_starts, mean_y))
     result.append(
         '<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" stroke="magenta" stroke-width="4" fill="none" />'.format(
@@ -146,6 +147,36 @@ def create_svg_transit_to_observer_xy() -> typing.List[str]:
     """
     result = []
     # TODO: Finish this
+    result.append('<!-- {} -->'.format('create_svg_transit_to_observer_xy()'.center(75)))
+    x_0, y_0 = video_data.GOOGLE_EARTH_POSITIONS_XY['Trees right of Fedex']
+    circle_pos_0 = plot_constants.position_m_to_pixels(plot_constants.PosXY(x_0, y_0))
+    result.append(
+        '<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" stroke="magenta" stroke-width="1" fill="none" />'.format(
+            cx=circle_pos_0.x,
+            cy=circle_pos_0.y,
+            r=plot_constants.distance_m_to_pixels(20),
+        )
+    )
+    x_1, y_1 = video_data.GOOGLE_EARTH_POSITIONS_XY['Factory interior corner']
+    circle_pos_1 = plot_constants.position_m_to_pixels(plot_constants.PosXY(x_1, y_1))
+    result.append(
+        '<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" stroke="magenta" stroke-width="1" fill="none" />'.format(
+            cx=circle_pos_1.x,
+            cy=circle_pos_1.y,
+            r=plot_constants.distance_m_to_pixels(20),
+        )
+    )
+    brng = video_utils.transit_bearing(x_0, y_0, x_1, y_1)
+    x_2 = x_0 + 2000 * math.cos(math.radians(brng))
+    y_2 = y_0 + 2000 * math.sin(math.radians(brng))
+    circle_pos_2 = plot_constants.position_m_to_pixels(plot_constants.PosXY(x_2, y_2))
+    result.append(
+        '<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="magenta" stroke-width="1" />'.format(
+            x1=circle_pos_0.x, y1=circle_pos_0.y,
+            x2=circle_pos_2.x, y2=circle_pos_2.y,
+        )
+    )
+    result.append('<!-- DONE {} -->'.format('create_svg_transit_to_observer_xy()'.center(75)))
     return result
 
 

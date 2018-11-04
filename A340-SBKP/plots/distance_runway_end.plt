@@ -29,10 +29,18 @@ set output "distance_runway_end.svg"   # choose the output device
 set arrow from -30.057,1000 to -30.057,537.333 lt 1
 set arrow from -32.829,1200 to -32.829,232.350 lt 2
 set arrow from -35.571,1400 to -35.571,-86.825 lt 3
-set label "Calculated start at -30.1s, 537m" at -30.1,1100 left font ",10"
-set label "Calculated start at -32.8s, 232m" at -32.8,1300 left font ",10"
-set label "Calculated start at -35.6s, -87m" at -35.6,1500 left font ",10"
-# End asphalt data
+set label "Calculated start at -30.1s, 537m" at -30.1,1100 left font ",9"
+set label "Calculated start at -32.8s, 232m" at -32.8,1300 left font ",9"
+set label "Calculated start at -35.6s, -87m" at -35.6,1500 left font ",9"
+# End labels at start of take off
+# Labels at t=0
+set arrow from 6.000,1324.7 to 0.0,1324.700 lt 1
+set label "t=0.0s, d=1325m" at 6.0,1324.7 left font ",9"
+set arrow from 6.000,1181.6 to 0.0,1181.593 lt 2
+set label "t=0.0s, d=1182m" at 6.0,1181.6 left font ",9"
+set arrow from 6.000,1038.5 to 0.0,1038.486 lt 3
+set label "t=0.0s, d=1038m" at 6.0,1038.5 left font ",9"
+# End labels at t=0
 set arrow from 27.800,2290 to 27.800,3140 lt -1
 set label "End asphalt 27.8s" at 27.8,2190 center font ",10"
 set arrow from 17.800,3240.000 to 27.800,3240.000 lt 2

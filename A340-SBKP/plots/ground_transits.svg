@@ -176,14 +176,106 @@
 	<g transform="translate(427.6,31.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
 		<text>Transits to Observer</text>
 	</g>
+	<g transform="translate(92.6,395.9) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 1</text>
+	</g>
+	<g transform="translate(101.2,395.8) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 2</text>
+	</g>
+	<g transform="translate(109.8,395.8) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 3</text>
+	</g>
+	<g transform="translate(118.5,395.6) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 4</text>
+	</g>
+	<g transform="translate(127.0,395.5) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 5</text>
+	</g>
+	<g transform="translate(135.6,395.4) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 6</text>
+	</g>
+	<g transform="translate(93.5,460.7) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 7</text>
+	</g>
+	<g transform="translate(102.0,460.9) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 8</text>
+	</g>
+	<g transform="translate(110.7,461.0) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 9</text>
+	</g>
+	<g transform="translate(119.1,461.3) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 10</text>
+	</g>
+	<g transform="translate(127.7,461.3) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 11</text>
+	</g>
+	<g transform="translate(136.3,461.4) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 12</text>
+	</g>
+	<g transform="translate(96.8,512.9) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 13</text>
+	</g>
+	<g transform="translate(105.3,512.8) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 14</text>
+	</g>
+	<g transform="translate(113.8,512.8) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 15</text>
+	</g>
+	<g transform="translate(122.2,512.8) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 16</text>
+	</g>
+	<g transform="translate(130.8,512.8) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 17</text>
+	</g>
+	<g transform="translate(139.3,512.6) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 18</text>
+	</g>
+	<g transform="translate(147.6,512.8) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 19</text>
+	</g>
+	<g transform="translate(258.3,522.5) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Control tower base</text>
+	</g>
+	<g transform="translate(606.7,303.8) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Chequer board hut</text>
+	</g>
+	<g transform="translate(630.7,303.8) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Factory interior corner</text>
+	</g>
+	<g transform="translate(539.1,389.1) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Trees right of Fedex</text>
+	</g>
+	<g transform="translate(554.6,391.9) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Fedex right</text>
+	</g>
+	<g transform="translate(559.2,391.5) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Fedex left</text>
+	</g>
+	<g transform="translate(671.9,303.8) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Factory extreme left</text>
+	</g>
+	<g transform="translate(647.9,484.7) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tall radio tower</text>
+	</g>
+	<g transform="translate(688.3,458.0) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Second control tower</text>
+	</g>
+	<g transform="translate(539.9,133.4)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
+		<text>Observer X=2266 ±13m Y=-763 ±12 m</text>
+	</g>
 </g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:20.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<path stroke='rgb(192, 192, 192)'  d='M80.2,298.2 L688.6,298.2  h0.01'/></g>
 <g style="fill:none; color:black; stroke:rgb(192, 192, 192); stroke-width:0.75; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='black'  d='M94.3,390.4 L729.6,152.6 M102.9,390.4 L729.6,152.6 M111.4,390.1 L729.6,152.6 M120.2,390.1 L729.6,152.6 
-		M128.6,389.9 L729.6,152.6 M137.3,389.9 L729.6,152.6 M260.1,516.9 L729.6,152.6 M603.9,298.2 L729.6,152.6 
-		 h0.01'/>	<path stroke='rgb(  0,   0, 255)'  d='M614.3,298.2 L729.6,152.6 M540.8,383.7 L729.6,152.6 M556.4,386.4 L729.6,152.6 M560.9,385.9 L729.6,152.6 
-		M668.0,298.2 L729.6,152.6 M649.6,479.1 L729.6,152.6 M689.9,452.5 L729.6,152.6  h0.01'/></g>
+	<path stroke='black'  d='M94.3,390.4 L727.7,128.9 M102.9,390.4 L727.7,128.9 M111.4,390.1 L727.7,128.9 M120.2,390.1 L727.7,128.9 
+		M128.6,389.9 L727.7,128.9 M137.3,389.9 L727.7,128.9 M95.2,455.2 L727.7,128.9 M103.7,455.4 L727.7,128.9 
+		M112.3,455.4 L727.7,128.9 M120.8,455.8 L727.7,128.9 M129.4,455.8 L727.7,128.9 M138.0,455.8 L727.7,128.9 
+		M98.4,507.3 L727.7,128.9 M107.1,507.3 L727.7,128.9 M115.5,507.3 L727.7,128.9 M124.0,507.3 L727.7,128.9 
+		M132.6,507.1 L727.7,128.9 M141.0,507.1 L727.7,128.9 M149.3,507.1 L727.7,128.9 M260.1,516.9 L727.7,128.9 
+		M608.4,298.2 L727.7,128.9  h0.01'/>	<path stroke='rgb(  0,   0, 255)'  d='M632.5,298.2 L727.7,128.9 M540.8,383.7 L727.7,128.9 M556.4,386.4 L727.7,128.9 M560.9,385.9 L727.7,128.9 
+		M673.6,298.2 L727.7,128.9 M649.6,479.1 L727.7,128.9 M689.9,452.5 L727.7,128.9  h0.01'/></g>
+<g style="fill:none; color:black; stroke:black; stroke-width:2.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path stroke='black'  d='M705.7,128.9 L705.7,133.5 L723.0,128.9 L705.7,124.3 L705.7,128.9 M539.9,128.9 L705.7,128.9  h0.01'/></g>
 <g style="fill:none; color:black; stroke:black; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 </g>
 	<g id="gnuplot_plot_1" ><title>gnuplot_plot_1</title>
@@ -197,6 +289,19 @@
 	<use xlink:href='#gpPt0' transform='translate(120.2,390.1) scale(6.75)'/>
 	<use xlink:href='#gpPt0' transform='translate(128.6,390.0) scale(6.75)'/>
 	<use xlink:href='#gpPt0' transform='translate(137.3,389.8) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(95.1,455.1) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(103.7,455.4) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(112.4,455.5) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(120.8,455.7) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(129.4,455.8) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(138.0,455.9) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(98.5,507.4) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(107.0,507.3) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(115.5,507.2) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(123.9,507.2) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(132.5,507.2) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(141.0,507.1) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(149.3,507.2) scale(6.75)'/>
 	<use xlink:href='#gpPt0' transform='translate(260.0,517.0) scale(6.75)'/>
 	<use xlink:href='#gpPt0' transform='translate(628.0,270.3) scale(6.75)'/>
 	<use xlink:href='#gpPt0' transform='translate(677.0,219.1) scale(6.75)'/>
@@ -214,21 +319,34 @@
 	<g transform="translate(698.9,101.3)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text>Runway intersection</text>
 	</g>
-	<use xlink:href='#gpPt1' transform='translate(340.5,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(345.7,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(350.8,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(356.0,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(361.0,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(366.1,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(542.0,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(603.9,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(614.3,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(610.6,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(621.7,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(624.3,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(667.9,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(693.9,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(710.3,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(317.4,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(322.9,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(328.3,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(333.8,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(339.1,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(344.6,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(399.3,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(404.1,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(408.6,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(413.3,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(417.8,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(422.3,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(446.2,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(449.9,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(453.7,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(457.5,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(461.3,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(465.0,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(468.8,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(523.6,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(608.4,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(632.4,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(603.5,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(615.0,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(617.8,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(673.6,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(690.0,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(708.0,298.2) scale(4.50)'/>
 	<use xlink:href='#gpPt1' transform='translate(732.8,96.8) scale(4.50)'/>
 </g>
 	</g>

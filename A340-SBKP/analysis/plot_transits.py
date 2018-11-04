@@ -27,10 +27,11 @@ def gnuplot_ground_transits(stream: typing.TextIO=sys.stdout) -> typing.List[str
         ignore_first_n=plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS,
         t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
     )
-
-    observer_xy_start_runway = observer_x_mean + 1182, observer_y_mean
+    # TODO: Remove hard-coded 1182
+    x_offset = 1182
+    observer_xy_start_runway = observer_x_mean + x_offset, observer_y_mean
     # Google earth
-    observer_xy_start_runway = (3457.9, -655.5)
+    # observer_xy_start_runway = (3457.9, -655.5)
     computed_data = []
     # Y range 2000m is 800px so a 50m wide runway would be 800 * 50 / 2000 = 20px
     computed_data.append(
@@ -69,6 +70,29 @@ def gnuplot_ground_transits(stream: typing.TextIO=sys.stdout) -> typing.List[str
                 colour=colour,
             )
         )
+        computed_data.append(
+            'set label "{label:}" at {x:.1f},{y:.1f} right font ",8" rotate by 60'.format(
+                label=k,
+                x=x_arrow_start-25,
+                y=y_arrow_start+25,
+            )
+        )
+    # Label observer
+    computed_data.append(
+        'set label "Observer X={x_mean:.0f} ±{x_err:.0f}m Y={y_mean:.0f} ±{y_err:.0f} m" at {x:.0f},{y:.0f} right font ",12"'.format(
+            x_mean=observer_x_mean,
+            x_err=observer_x_std,#(x_max - x_min) / 2,
+            y_mean=observer_y_mean,
+            y_err=observer_y_std,#(y_max - y_min) / 2,
+            x=observer_x_mean-1000+x_offset,
+            y=observer_y_mean,
+        )
+    )
+    computed_data.append(
+        'set arrow from {:.0f},{:.0f} to {:.0f},{:.0f} lt -1 lw 2 empty'.format(
+            observer_x_mean-1000+x_offset, observer_y_mean, observer_x_mean+x_offset-25, observer_y_mean,
+        )
+    )
     return computed_data
 
 
@@ -81,13 +105,14 @@ set xlabel "Distance from start of runway (m)"
 set xtics 500
 #set xtics autofreq
 set xrange [0:3700]
+# set xrange [2250:3700]
 #set format x ""
 
 # set logscale y
 set ylabel "Distance from runway centerline (+ve right, -ve left)"
 set yrange [-1100:1100] reverse
+# set yrange [400:-800] reverse
 #set yrange [:10]
-#set yrange [-600:-900] reverse
 set ytics 200
 #set ytics autofreq
 # set ytics 8,35,3

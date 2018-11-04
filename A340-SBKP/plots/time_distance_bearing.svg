@@ -249,29 +249,29 @@
 	<g transform="translate(857.6,386.9) rotate(-60)" style="stroke:none; fill:black; font-family:Arial; font-size:9.00pt; text-anchor:end">
 		<text>t=33.6</text>
 	</g>
-	<g transform="translate(606.9,156.0)" style="stroke:none; fill:black; font-family:Arial; font-size:14.00pt; text-anchor:end">
-		<text>Mean position at x=2266, y=-745</text>
+	<g transform="translate(606.9,150.4)" style="stroke:none; fill:black; font-family:Arial; font-size:14.00pt; text-anchor:end">
+		<text>Mean position at x=2266, y=-763</text>
 	</g>
 </g>
 <g style="fill:none; color:cyan; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='cyan'  d='M91.8,380.7 L911.2,87.5 M105.0,380.7 L913.3,87.5 M126.1,380.7 L916.5,87.5 M132.1,380.7 L917.1,87.5 
-		M150.3,380.7 L918.9,87.5  h0.01'/></g>
+	<path stroke='cyan'  d='M91.8,380.7 L946.7,87.5 M105.0,380.7 L940.1,87.5 M126.1,380.7 L941.9,87.5 M132.1,380.7 L933.5,87.5 
+		M150.3,380.7 L911.5,87.5  h0.01'/></g>
 <g style="fill:none; color:#FF9900; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='#FF9900'  d='M168.8,380.7 L919.5,87.5 M187.6,380.7 L918.6,87.5 M202.5,380.7 L916.8,87.5 M226.9,380.7 L912.1,87.5 
-		M246.9,380.7 L906.1,87.5 M262.1,380.7 L900.7,87.5 M309.9,380.7 L879.9,87.5 M354.0,380.7 L857.8,87.5 
-		M399.3,380.7 L835.4,87.5  h0.01'/></g>
+	<path stroke='#FF9900'  d='M168.8,380.7 L901.9,87.5 M187.6,380.7 L880.2,87.5 M202.5,380.7 L883.1,87.5 M226.9,380.7 L874.2,87.5 
+		M246.9,380.7 L885.2,87.5 M262.1,380.7 L889.1,87.5 M309.9,380.7 L876.3,87.5 M354.0,380.7 L861.1,87.5 
+		M399.3,380.7 L847.9,87.5  h0.01'/></g>
 <g style="fill:none; color:#000094; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='#000094'  d='M445.9,380.7 L815.1,87.5 M463.5,380.7 L808.3,87.5 M469.1,380.7 L806.2,87.5  h0.01'/></g>
+	<path stroke='#000094'  d='M445.9,380.7 L831.8,87.5 M463.5,380.7 L827.4,87.5 M469.1,380.7 L827.7,87.5  h0.01'/></g>
 <g style="fill:none; color:red; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='red'  d='M672.0,380.7 L768.3,87.5 M680.9,380.7 L767.7,87.5 M689.6,380.7 L766.8,87.5 M703.0,380.7 L765.6,87.5 
-		M712.2,380.7 L765.0,87.5 M721.2,380.7 L764.1,87.5 M752.8,380.7 L760.2,87.5 M762.0,380.7 L758.8,87.5 
-		M771.3,380.7 L757.3,87.5 M780.5,380.7 L755.2,87.5 M789.8,380.7 L753.1,87.5 M799.0,380.7 L750.7,87.5 
-		M808.3,380.7 L747.7,87.5 M817.5,380.7 L744.4,87.5 M825.9,380.7 L741.2,87.5 M836.3,380.7 L736.4,87.5 
-		M845.6,380.7 L731.0,87.5 M854.2,380.7 L725.9,87.5  h0.01'/></g>
+	<path stroke='red'  d='M672.0,380.7 L767.7,87.5 M680.9,380.7 L765.3,87.5 M689.6,380.7 L770.4,87.5 M703.0,380.7 L766.2,87.5 
+		M712.2,380.7 L765.0,87.5 M721.2,380.7 L762.9,87.5 M752.8,380.7 L754.0,87.5 M762.0,380.7 L751.0,87.5 
+		M771.3,380.7 L749.8,87.5 M780.5,380.7 L748.6,87.5 M789.8,380.7 L747.1,87.5 M799.0,380.7 L745.3,87.5 
+		M808.3,380.7 L745.0,87.5 M817.5,380.7 L743.8,87.5 M825.9,380.7 L744.1,87.5 M836.3,380.7 L742.9,87.5 
+		M845.6,380.7 L741.2,87.5 M854.2,380.7 L740.0,87.5  h0.01'/></g>
 <g style="fill:none; color:red; stroke:red; stroke-width:3.00; stroke-linecap:butt; stroke-linejoin:miter">
 </g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:3.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='black'  d='M738.8,155.4 L756.1,150.8 L738.8,146.2 M614.4,150.8 L756.1,150.8  h0.01'/></g>
+	<path stroke='black'  d='M738.8,149.8 L756.1,145.2 L738.8,140.6 M614.4,145.2 L756.1,145.2  h0.01'/></g>
 <g style="fill:none; color:black; stroke:black; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 </g>
 	<g id="gnuplot_plot_1" ><title>gnuplot_plot_1</title>
