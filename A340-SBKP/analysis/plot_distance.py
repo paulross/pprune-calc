@@ -276,7 +276,7 @@ def gnuplot_distance_from_transits(stream: typing.TextIO=sys.stdout) -> typing.L
     """
     notes = [
         'Distance of aircraft down the runway from integrating ground speed and transit lines.',
-        'time x_ref(m) x_min(m) x_mid(m) x_max(m) x_transit(m)',
+        'time x_transit(m) x_min(m) x_mid(m) x_max(m) x_transit(m)',
     ]
     if len(notes):
         stream.write('#\n')
@@ -284,18 +284,22 @@ def gnuplot_distance_from_transits(stream: typing.TextIO=sys.stdout) -> typing.L
         for note in notes:
             stream.write('# {}\n'.format(note))
 
-    # First extablish observer
+    # Get the min/mid/max ground speed fits
+    offset_distance_at_t = video_data.TIME_VIDEO_END_ASPHALT.time
+    gs_fits = get_gs_fits()
+    offsets = [
+        video_data.RUNWAY_LEN_M - video_analysis.ground_speed_integral(0, offset_distance_at_t, gs_fit)
+        for gs_fit in gs_fits
+    ]
+    # Establish observer
     ((observer_x_mean, observer_x_std), (observer_y_mean, observer_y_std)) = video_analysis.observer_position_mean_std(
         baseline=plot_constants.OBSERVER_XY_MINIMUM_BASELINE,
         ignore_first_n=plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS,
         t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
     )
-    observer_xy_start_runway = observer_x_mean + 1182, observer_y_mean
+    observer_xy_start_runway = observer_x_mean + offsets[1], observer_y_mean
     # Google earth
-    observer_xy_start_runway = (3457.9, -655.5)
-    offset_distance_at_t = video_data.TIME_VIDEO_END_ASPHALT.time
-    # Next get the min/mid/max ground speed fits
-    gs_fits = get_gs_fits()
+    # observer_xy_start_runway = (3457.9, -655.5)
 
     result = []
     for event in video_analysis.transit_x_axis_distances(*observer_xy_start_runway):
@@ -303,18 +307,19 @@ def gnuplot_distance_from_transits(stream: typing.TextIO=sys.stdout) -> typing.L
             '{t:<6.1f} {d_transit:.1f} {d_min:.1f} {d_mid:.1f} {d_max:.1f} # "{label:}"'.format(
                 t=event.time,
                 d_transit=event.distance,
-                d_min=video_analysis.ground_speed_integral(0.0, event.time, gs_fits[0]) + 1182,
-                d_mid=video_analysis.ground_speed_integral(0.0, event.time, gs_fits[1]) + 1182,
-                d_max=video_analysis.ground_speed_integral(0.0, event.time, gs_fits[2]) + 1182,
+                d_min=video_analysis.ground_speed_integral(0.0, event.time, gs_fits[0]) + offsets[0],
+                # 1182 metres
+                d_mid=video_analysis.ground_speed_integral(0.0, event.time, gs_fits[1]) + offsets[1],
+                d_max=video_analysis.ground_speed_integral(0.0, event.time, gs_fits[2]) + offsets[2],
                 label=event.label,
             )
         )
         stream.write('\n')
         result.append(
-            'set label "{label:} t={t:.1f}s ∆d={d:.0f}" at {t:.1f},{d:.1f} right font ",6" rotate by 30'.format(
+            'set label "{label:} t={t:.1f}s ∆d={d:.0f}" at {t:.1f},{d:.1f} right font ",6" rotate by 40'.format(
                 label=event.label,
-                t=event.time - 0.5,
-                d=event.distance - video_analysis.ground_speed_integral(0.0, event.time, gs_fits[1]) - 1182 - 20
+                t=event.time - 0.25,
+                d=event.distance - video_analysis.ground_speed_integral(0.0, event.time, gs_fits[1]) - 1182 - 10
             )
         )
     return result
@@ -323,15 +328,15 @@ def gnuplot_distance_from_transits(stream: typing.TextIO=sys.stdout) -> typing.L
 def gnuplot_distance_from_transits_plt() -> str:
     return """# set logscale x
 set grid
-# set_title
+set title "Distances down runway comparing estimates with transits."
 set xlabel "Video Time (s)"
 set xtics
 # set xrange [-33:-32]
 #set format x ""
 
 # set logscale y
-set ylabel "Distance (m)"
-# set_yrange
+set ylabel "Distance Compared to Mid Estimate (m)"
+set yrange [-250:250]
 # set ytics 8,35,3
 # set logscale y2
 # set y2label "Bytes"
@@ -351,8 +356,9 @@ set output "{file_name}.svg"   # choose the output device
 {computed_data}
 
 # linespoints
-plot "{file_name}.dat" using 1:($2-$4) title "From transits" lt 2 lw 1.0 w linespoints, \\
-    "{file_name}.dat" using 1:($3-$4) title "-10 knots" lt 1 lw 1.0 w linespoints, \\
-    "{file_name}.dat" using 1:($5-$4) title "+10 knots" lt 3 lw 1.0 w linespoints
+plot "{file_name}.dat" using 1:($3-$4) title "Speed error: -10 knots" lt 1 lw 1.5 w lines, \\
+    "{file_name}.dat" using 1:($4-$4) title "Speed error: 0 knots" lt 2 lw 1.5 w lines, \\
+    "{file_name}.dat" using 1:($5-$4) title "Speed error: +10 knots" lt 3 lw 1.5 w lines, \\
+    "{file_name}.dat" using 1:($2-$4) title "From transits" lt 2 lw 1.5 ps 1.25 w points
 reset
 """

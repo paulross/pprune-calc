@@ -670,14 +670,24 @@ ERROR_AIRCRAFT_LENGTH_IN_PIXELS = 10
 
 
 #================== Data from Google Earth ==============
-# Lat long: 1m on earths surface is 1 / 6378.137e3 radians or about 9e-6 degrees
+# Tower positions in the open nearest 15 threshold
+"""
+Tower 1: https://www.google.com/maps/@-23.001859,-47.148885,59m/data=!3m1!1e3?hl=en
+Tower 2: https://www.google.com/maps/@-23.002109,-47.148531,59m/data=!3m1!1e3?hl=en
+Tower 3: https://www.google.com/maps/@-23.002358,-47.148179,59m/data=!3m1!1e3?hl=en
+Tower 4: https://www.google.com/maps/@-23.002612,-47.147815,59m/data=!3m1!1e3?hl=en
+Tower 5: https://www.google.com/maps/@-23.002856,-47.147467,59m/data=!3m1!1e3?hl=en
+Tower 6: https://www.google.com/maps/@-23.003107,-47.147108,59m/data=!3m1!1e3?hl=en
+"""
+
+# Tower positions furthest to the northeast wing of terminal 1
 # Adjustment to Tower 2 by -1 metre heading 150 dlat=7.8e-6 dlong=-4.5e-6:
 # Was:
 # Tower 2: https://www.google.com/maps/@-23.0042240,-47.1502493,59m/data=!3m1!1e3?hl=en
 # Tower 2: https://www.google.com/maps/@-23.0042162,-47.1502538,59m/data=!3m1!1e3?hl=en
 # Maybe .5 m more
 # Tower 2: https://www.google.com/maps/@-23.0042123,-47.1502560,59m/data=!3m1!1e3?hl=en
-GOOGLE_EARTH_URLS = """
+"""
 Tower 1: https://www.google.com/maps/@-23.0039523,-47.1506005,59m/data=!3m1!1e3?hl=en
 # Adjustment to even tower spacing to average of 45.6 m, was:
 # Tower 2: https://www.google.com/maps/@-23.0042240,-47.1502493,59m/data=!3m1!1e3?hl=en
@@ -688,6 +698,27 @@ Tower 3: https://www.google.com/maps/@-23.0044700,-47.1499050,59m/data=!3m1!1e3?
 Tower 4: https://www.google.com/maps/@-23.0047257,-47.1495659,59m/data=!3m1!1e3?hl=en
 Tower 5: https://www.google.com/maps/@-23.0049800,-47.1492158,59m/data=!3m1!1e3?hl=en
 Tower 6: https://www.google.com/maps/@-23.0052343,-47.1488650,59m/data=!3m1!1e3?hl=en
+"""
+
+# Tower positions furthest to the southwest wing of terminal 1
+"""
+Tower 1: https://www.google.com/maps/@-23.005718,-47.151876,59m/data=!3m1!1e3?hl=en
+Tower 2: https://www.google.com/maps/@-23.005967,-47.151523,59m/data=!3m1!1e3?hl=en
+Tower 3: https://www.google.com/maps/@-23.006215,-47.151173,59m/data=!3m1!1e3?hl=en
+Tower 4: https://www.google.com/maps/@-23.006463,-47.150828,59m/data=!3m1!1e3?hl=en
+Tower 5: https://www.google.com/maps/@-23.006715,-47.150475,59m/data=!3m1!1e3?hl=en
+Tower 6: https://www.google.com/maps/@-23.006960,-47.150124,59m/data=!3m1!1e3?hl=en
+Tower 7: https://www.google.com/maps/@-23.007207,-47.149788,59m/data=!3m1!1e3?hl=en
+"""
+
+# Lat long: 1m on earths surface is 1 / 6378.137e3 radians or about 9e-6 degrees
+GOOGLE_EARTH_URLS = """
+Tower 1: https://www.google.com/maps/@-23.001859,-47.148885,59m/data=!3m1!1e3?hl=en
+Tower 2: https://www.google.com/maps/@-23.002109,-47.148531,59m/data=!3m1!1e3?hl=en
+Tower 3: https://www.google.com/maps/@-23.002358,-47.148179,59m/data=!3m1!1e3?hl=en
+Tower 4: https://www.google.com/maps/@-23.002612,-47.147815,59m/data=!3m1!1e3?hl=en
+Tower 5: https://www.google.com/maps/@-23.002856,-47.147467,59m/data=!3m1!1e3?hl=en
+Tower 6: https://www.google.com/maps/@-23.003107,-47.147108,59m/data=!3m1!1e3?hl=en
 
 Threshold 15: https://www.google.com/maps/@-22.9985032,-47.1469772,61m/data=!3m1!1e3?hl=en
 End asphalt 15: https://www.google.com/maps/@-23.0163963,-47.1219874,63m/data=!3m1!1e3?hl=en
@@ -700,7 +731,7 @@ Fedex right: https://www.google.com/maps/@-23.0153072,-47.1298295,61m/data=!3m1!
 Trees right of Fedex: https://www.google.com/maps/@-23.0147636,-47.1303907,104m/data=!3m1!1e3
 Factory interior corner: https://www.google.com/maps/@-23.0135093,-47.1203631,50m/data=!3m1!1e3
 
-Control tower base: https://www.google.com/maps/@-23.0108075,-47.1455067,61m/data=!3m1!1e3?hl=en
+Control tower base: https://www.google.com/maps/@-23.010773,-47.145509,61m/data=!3m1!1e3?hl=en
 
 # Transit at 00:23::08
 Chequer board hut: https://www.google.com/maps/@-23.0137084,-47.1237547,98m/data=!3m1!1e3
@@ -709,6 +740,22 @@ Factory extreme left: https://www.google.com/maps/@-23.0147028,-47.120441,55m/da
 Tall radio tower: https://www.google.com/maps/@-23.0210104,-47.1285102,97m/data=!3m1!1e3
 Second control tower: https://www.google.com/maps/@-23.0213449,-47.1261314,174m/data=!3m1!1e3
 """
+
+# Transit lines that are simultaneous
+GOOGLE_EARTH_SIMULTANEOUS_TRANSIT_LABELS = (
+    ('Trees right of Fedex', 'Factory interior corner'),
+)
+
+
+def transit_is_simultaneous(label: str) -> bool:
+    """Returns True if the transit line lable belongs to a pair that are simultaneous"""
+    for a, b in GOOGLE_EARTH_SIMULTANEOUS_TRANSIT_LABELS:
+        if label == a or label == b:
+            return True
+    return False
+
+
+GOOGLE_EARTH_URL_FORMAT = 'https://www.google.com/maps/@{:.7f},{:.7f},55m/data=!3m1!1e3'
 
 
 # Dict of {label : (latitude, longitude), ...}
@@ -922,3 +969,21 @@ if __name__ == '__main__':
     print('Observer from google earth: x={:6.1f} y={:6.1f}'.format(ge_obs_x, ge_obs_y))
     print('      Diff (bearings - ge): x={:6.1f} y={:6.1f}'.format(
         observer_xy_start_runway[0] - ge_obs_x, observer_xy_start_runway[1] - ge_obs_y))
+
+    # TODO: Fix x/y to lat/long
+    ge_obs_lat, ge_obs_long = video_utils.xy_to_lat_long(
+        GOOGLE_EARTH_DATUM_LAT_LONG[0],
+        GOOGLE_EARTH_DATUM_LAT_LONG[1],
+        GOOGLE_EARTH_X_AXIS,
+        *observer_xy_start_runway,
+    )
+    print('Google earth URL from x={:6.1f} y={:6.1f}'.format(*observer_xy_start_runway))
+    print(GOOGLE_EARTH_URL_FORMAT.format(ge_obs_lat, ge_obs_long))
+    ge_obs_lat, ge_obs_long = video_utils.xy_to_lat_long(
+        GOOGLE_EARTH_DATUM_LAT_LONG[0],
+        GOOGLE_EARTH_DATUM_LAT_LONG[1],
+        GOOGLE_EARTH_X_AXIS,
+        ge_obs_x, ge_obs_y,
+    )
+    print('Google earth URL from x={:6.1f} y={:6.1f}'.format(ge_obs_x, ge_obs_y))
+    print(GOOGLE_EARTH_URL_FORMAT.format(ge_obs_lat, ge_obs_long))

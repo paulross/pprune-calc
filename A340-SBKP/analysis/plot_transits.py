@@ -59,12 +59,14 @@ def gnuplot_ground_transits(stream: typing.TextIO=sys.stdout) -> typing.List[str
         )
         y_arrow_start = y if y > 0 else 0.0
         x_arrow_start = x if y > 0 else x_intercept
+        colour = 'lc rgb "#0000FF"' if video_data.transit_is_simultaneous(k) else 'lt -1'
         computed_data.append(
-            'set arrow from {x0:.0f},{y0:.0f} to {x1:.0f},{y1:.0f} lt -1 lw 0.75 nohead'.format(
+            'set arrow from {x0:.0f},{y0:.0f} to {x1:.0f},{y1:.0f} {colour:s} lw 0.75 nohead'.format(
                 x0=x_arrow_start,
                 y0=y_arrow_start,
                 x1=observer_xy_start_runway[0],
                 y1=observer_xy_start_runway[1],
+                colour=colour,
             )
         )
     return computed_data

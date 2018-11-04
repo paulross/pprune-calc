@@ -30,16 +30,16 @@ set datafile missing "NaN"
 set terminal svg size 800,600
 
 set arrow from 0,0 to 3240,0 nohead lw 20 lc rgb "#C0C0C0"
-set arrow from 80,707 to 3458,-656 lt -1 lw 0.75 nohead
-set arrow from 125,708 to 3458,-656 lt -1 lw 0.75 nohead
-set arrow from 171,708 to 3458,-656 lt -1 lw 0.75 nohead
-set arrow from 216,710 to 3458,-656 lt -1 lw 0.75 nohead
-set arrow from 262,710 to 3458,-656 lt -1 lw 0.75 nohead
-set arrow from 308,710 to 3458,-656 lt -1 lw 0.75 nohead
-set arrow from 960,988 to 3458,-656 lt -1 lw 0.75 nohead
+set arrow from 75,415 to 3458,-656 lt -1 lw 0.75 nohead
+set arrow from 121,415 to 3458,-656 lt -1 lw 0.75 nohead
+set arrow from 166,414 to 3458,-656 lt -1 lw 0.75 nohead
+set arrow from 213,414 to 3458,-656 lt -1 lw 0.75 nohead
+set arrow from 258,413 to 3458,-656 lt -1 lw 0.75 nohead
+set arrow from 304,413 to 3458,-656 lt -1 lw 0.75 nohead
+set arrow from 958,985 to 3458,-656 lt -1 lw 0.75 nohead
 set arrow from 2789,0 to 3458,-656 lt -1 lw 0.75 nohead
-set arrow from 2844,0 to 3458,-656 lt -1 lw 0.75 nohead
-set arrow from 2453,385 to 3458,-656 lt -1 lw 0.75 nohead
+set arrow from 2844,0 to 3458,-656 lc rgb "#0000FF" lw 0.75 nohead
+set arrow from 2453,385 to 3458,-656 lc rgb "#0000FF" lw 0.75 nohead
 set arrow from 2536,397 to 3458,-656 lt -1 lw 0.75 nohead
 set arrow from 2560,395 to 3458,-656 lt -1 lw 0.75 nohead
 set arrow from 3130,0 to 3458,-656 lt -1 lw 0.75 nohead

@@ -180,9 +180,9 @@
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:20.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<path stroke='rgb(192, 192, 192)'  d='M80.2,298.2 L688.6,298.2  h0.01'/></g>
 <g style="fill:none; color:black; stroke:rgb(192, 192, 192); stroke-width:0.75; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='black'  d='M95.2,455.2 L729.6,152.6 M103.7,455.4 L729.6,152.6 M112.3,455.4 L729.6,152.6 M120.8,455.8 L729.6,152.6 
-		M129.4,455.8 L729.6,152.6 M138.0,455.8 L729.6,152.6 M260.5,517.5 L729.6,152.6 M603.9,298.2 L729.6,152.6 
-		M614.3,298.2 L729.6,152.6 M540.8,383.7 L729.6,152.6 M556.4,386.4 L729.6,152.6 M560.9,385.9 L729.6,152.6 
+	<path stroke='black'  d='M94.3,390.4 L729.6,152.6 M102.9,390.4 L729.6,152.6 M111.4,390.1 L729.6,152.6 M120.2,390.1 L729.6,152.6 
+		M128.6,389.9 L729.6,152.6 M137.3,389.9 L729.6,152.6 M260.1,516.9 L729.6,152.6 M603.9,298.2 L729.6,152.6 
+		 h0.01'/>	<path stroke='rgb(  0,   0, 255)'  d='M614.3,298.2 L729.6,152.6 M540.8,383.7 L729.6,152.6 M556.4,386.4 L729.6,152.6 M560.9,385.9 L729.6,152.6 
 		M668.0,298.2 L729.6,152.6 M649.6,479.1 L729.6,152.6 M689.9,452.5 L729.6,152.6  h0.01'/></g>
 <g style="fill:none; color:black; stroke:black; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 </g>
@@ -191,13 +191,13 @@
 	<g transform="translate(698.9,78.8)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text>Transit points</text>
 	</g>
-	<use xlink:href='#gpPt0' transform='translate(95.1,455.1) scale(6.75)'/>
-	<use xlink:href='#gpPt0' transform='translate(103.7,455.4) scale(6.75)'/>
-	<use xlink:href='#gpPt0' transform='translate(112.4,455.5) scale(6.75)'/>
-	<use xlink:href='#gpPt0' transform='translate(120.8,455.7) scale(6.75)'/>
-	<use xlink:href='#gpPt0' transform='translate(129.4,455.8) scale(6.75)'/>
-	<use xlink:href='#gpPt0' transform='translate(138.0,455.9) scale(6.75)'/>
-	<use xlink:href='#gpPt0' transform='translate(260.5,517.6) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(94.3,390.3) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(102.9,390.3) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(111.4,390.2) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(120.2,390.1) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(128.6,390.0) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(137.3,389.8) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(260.0,517.0) scale(6.75)'/>
 	<use xlink:href='#gpPt0' transform='translate(628.0,270.3) scale(6.75)'/>
 	<use xlink:href='#gpPt0' transform='translate(677.0,219.1) scale(6.75)'/>
 	<use xlink:href='#gpPt0' transform='translate(540.8,383.6) scale(6.75)'/>
@@ -214,13 +214,13 @@
 	<g transform="translate(698.9,101.3)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text>Runway intersection</text>
 	</g>
-	<use xlink:href='#gpPt1' transform='translate(424.3,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(428.7,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(432.9,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(437.2,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(441.4,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(445.6,298.2) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(542.5,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(340.5,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(345.7,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(350.8,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(356.0,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(361.0,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(366.1,298.2) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(542.0,298.2) scale(4.50)'/>
 	<use xlink:href='#gpPt1' transform='translate(603.9,298.2) scale(4.50)'/>
 	<use xlink:href='#gpPt1' transform='translate(614.3,298.2) scale(4.50)'/>
 	<use xlink:href='#gpPt1' transform='translate(610.6,298.2) scale(4.50)'/>
