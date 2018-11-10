@@ -44,12 +44,7 @@ def gnuplot_angle_of_view(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
         for gs_fit in gs_fits
     ]
     # Establish observer
-    ((observer_x_mean, observer_x_std), (observer_y_mean, observer_y_std)) = video_analysis.observer_position_mean_std(
-        baseline=plot_constants.OBSERVER_XY_MINIMUM_BASELINE,
-        ignore_first_n=plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS,
-        t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
-    )
-    observer_xy_start_runway = observer_x_mean + offsets[1], observer_y_mean
+    observer_xy_start_runway = plot_common.observer_xy()
 
     notes = [
         '"{}"'.format('Aspects, errors, and polynomial fit.'),

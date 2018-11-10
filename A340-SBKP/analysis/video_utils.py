@@ -1,20 +1,79 @@
 """
 General calculation functions for video analysis.
 """
+import collections
 import bisect
 import math
 import re
 import typing
 
+import utm
+
+
+class XY(collections.namedtuple('XY', 'x, y')):
+    """For x/y position in any units."""
+    __slots__ = ()
+
+    def __eq__(self, other):
+        if self.__class__ == other.__class__:
+            return self.x == other.x and self.y == other.y
+        return False
+
+    def __str__(self):
+        return 'class XY: x={:.1f} y={:.1f}'.format(self.x, self.y)
+
+    def __format__(self, format_spec):
+        if format_spec:
+            return 'x={x:{format_spec}} y={y:{format_spec}}'.format(
+                x=self.x, y=self.y, format_spec=format_spec
+            )
+        return 'x={:.1f} y={:.1f}'.format(self.x, self.y)
+
+
+class LatLong(collections.namedtuple('LatLong', 'lat, long')):
+    """Latitude and Longitude."""
+    __slots__ = ()
+
+    def __eq__(self, other) -> bool:
+        if self.__class__ == other.__class__:
+            return self.lat == other.lat and self.long == other.long
+        return False
+
+    def __str__(self) -> str:
+        return 'lat={:.7f} long={:.7f}'.format(self.lat, self.long)
+
+    def __format__(self, format_spec: str) -> str:
+        if format_spec:
+            return 'lat={lat:{format_spec}} long={long:{format_spec}}'.format(
+                lat=self.lat, long=self.long, format_spec=format_spec
+            )
+        return 'lat={:.7f} long={:.7f}'.format(self.lat, self.long)
+
+    def _devDMM(self, v: float) -> typing.Tuple[int, float]:
+        if v >= 0:
+            return int(v), 60 * (v % 1.0)
+        return int(v), 60.0 - 60.0 * (v % 1.0)
+
+    @property
+    def latDMM(self) -> typing.Tuple[int, float]:
+        return self._devDMM(self.lat)
+
+    @property
+    def longDMM(self) -> typing.Tuple[int, float]:
+        return self._devDMM(self.long)
+
+
+MPS_TO_KNOTS = 3600.0 / 0.3048 / 6080
+
 
 def m_p_s_to_knots(v: float) -> float:
     """Convert m/s to knots."""
-    return 3600.0 * v / 0.3048 / 6080
+    return v * MPS_TO_KNOTS
 
 
 def knots_to_m_p_s(v: float) -> float:
     """Convert knots to m/s."""
-    return v * 6080 * 0.3048 / 3600
+    return v / MPS_TO_KNOTS
 
 
 def num_k_of_n(n: int, k: int) -> int:
@@ -99,6 +158,44 @@ def interpolate(xS: typing.List[float], yS: typing.List[float], x: float) -> flo
     return y
 
 
+def interpolate_between_two_points(x0: float, y0: float,
+                                   x1: float, y1: float,
+                                   proportion: float) -> typing.Tuple[float, float]:
+    """
+    Given two points and a proportion of the distance between them this return the interpolated point.
+    """
+    if proportion == 0:
+        return x0, y0
+    if proportion == 1:
+        return x1, y1
+    return x0 + (x1 - x0) * proportion,\
+           y0 + (y1 - y0) * proportion
+
+
+# def intersect_two_lines(x00: float, y00: float, x01: float, y01: float,
+#                         x10: float, y10: float, x11: float, y11: float) -> typing.Tuple[float, float]:
+#     """
+#     Given two lines, defined by two points each this returns the intersection point.
+#     """
+#     dydx0 = (y01 - y00) / (x01 - x00)
+#     dydx1 = (y11 - y10) / (x11 - x10)
+#     x = (x00 * dydx0 - x10 * dydx1 + y10 - y00) / (dydx0 - dydx1)
+#     y = (x - x00) * dydx0 + y00
+#     return x, y
+
+
+def intersect_two_lines(line1from: XY, line1to: XY,
+                        line2from: XY, line2to: XY,) -> XY:
+    """
+    Given two lines, defined by two points each this returns the intersection point.
+    """
+    dydx1 = (line1to.y - line1from.y) / (line1to.x - line1from.x)
+    dydx2 = (line2to.y - line2from.y) / (line2to.x - line2from.x)
+    x = (line1from.x * dydx1 - line2from.x * dydx2 + line2from.y - line1from.y) / (dydx1 - dydx2)
+    y = (x - line1from.x) * dydx1 + line1from.y
+    return XY(x, y)
+
+
 def polynomial_3(x, a, b, c, d):
     """Polynomial order 3 where f(x) = a + b * x + c * x**2 + d * x**3"""
     return a + x * (b + x * (c + x * d))
@@ -150,14 +247,15 @@ def polynomial_4_differential(x, a, b, c, d, e):
 RE_GOOGLE_EARTH_URL = re.compile(r'^(.+?): https://www.google.com/maps/@([-0-9.]+),([-0-9.]+).+$')
 
 
-def google_earth_url_to_lat_long(note_url: str) -> typing.Tuple[str, float, float]:
+def google_earth_url_to_lat_long(note_url: str) -> typing.Tuple[str, LatLong]:
     """
     Converts: Tower 1: https://www.google.com/maps/@-23.0039523,-47.1506005,59m/data=!3m1!1e3?hl=en
-    To: ('Tower 1', -23.0039523, -47.1506005)
+    To: ('Tower 1', LatLong(-23.0039523, -47.1506005))
     """
     m = RE_GOOGLE_EARTH_URL.match(note_url)
     if m is not None:
-        return (m.group(1), float(m.group(2)), float(m.group(3)))
+        return m.group(1), LatLong(float(m.group(2)), float(m.group(3)))
+    raise ValueError('Can not match: "{}"'.format(note_url))
 
 
 def haversine(angle: float) -> float:
@@ -165,29 +263,48 @@ def haversine(angle: float) -> float:
 
 
 # Equatorial radius
+# See: https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system
 EARTH_RADIUS_M = 6378.137e3
 
 
-def distance_lat_long(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+def distance_lat_long(pos1: LatLong, pos2: LatLong) -> float:
     """Distance in metres between two lat/long positions.
     Lat/long in degrees."""
-    t = haversine(lat2 - lat1) + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * haversine(lon2 - lon1)
-    d = 2 * EARTH_RADIUS_M * math.asin(math.sqrt(t))
-    return d
+    # (easting, northing, zone_num, zone_letter)
+    utm1 = utm.from_latlon(pos1.lat, pos1.long)
+    utm2 = utm.from_latlon(pos2.lat, pos2.long)
+    if utm1[2] == utm2[2]:
+        # Same zone
+        de = utm2[0] - utm1[0]
+        dn = utm2[1] - utm1[1]
+        return math.sqrt(de**2 + dn**2)
+    else:
+        t = haversine(pos2.lat - pos1.lat) \
+            + math.cos(math.radians(pos1.lat)) * math.cos(math.radians(pos2.lat)) * haversine(pos2.long - pos1.long)
+        d = 2 * EARTH_RADIUS_M * math.asin(math.sqrt(t))
+        return d
 
 
-def bearing_lat_long(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+def bearing_lat_long(pos1: LatLong, pos2: LatLong) -> float:
     """Bearing in degrees between two lat/long positons.
     Lat/long in degrees.
     https://en.wikipedia.org/wiki/Great-circle_navigation"""
-    y = math.cos(math.radians(lat2)) * math.sin(math.radians(lon2 - lon1))
-    x = math.cos(math.radians(lat1)) * math.sin(math.radians(lat2))
-    x -= math.sin(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.cos(math.radians(lon2 - lon1))
+    # (easting, northing, zone_num, zone_letter)
+    utm1 = utm.from_latlon(pos1.lat, pos1.long)
+    utm2 = utm.from_latlon(pos2.lat, pos2.long)
+    if utm1[2] == utm2[2]:
+        # Same zone
+        y = utm2[0] - utm1[0]
+        x = utm2[1] - utm1[1]
+    else:
+        y = math.cos(math.radians(pos2.lat)) * math.sin(math.radians(pos2.long - pos1.long))
+        x = math.cos(math.radians(pos1.lat)) * math.sin(math.radians(pos2.lat))
+        x -= math.sin(math.radians(pos1.lat)) * math.cos(math.radians(pos2.lat)) * math.cos(math.radians(pos2.long - pos1.long))
     bearing = math.atan2(y, x)
     return math.degrees(bearing) % 360
 
 
-def lat_long_bearing_distance_to_lat_long(lat: float, lon: float, dist: float, brng: float) -> typing.Tuple[float, float]:
+def lat_long_bearing_distance_to_lat_long(pos: LatLong, dist: float, brng: float) -> typing.Tuple[float, float]:
     """Given a lat/long and a bearing/distance this returns the new lat/long.
     We know c, a and B (i.e. two sides and included angle) and wish to
     compute A (dlong) and b (co-lat)
@@ -206,18 +323,18 @@ def lat_long_bearing_distance_to_lat_long(lat: float, lon: float, dist: float, b
     # FIXME: Failing round trip tests
     a = math.pi * dist / EARTH_RADIUS_M
     dlat = a * math.cos(math.degrees(brng))
-    dlon = a * math.sin(math.degrees(brng)) / math.cos(math.radians(lat) + dlat / 2.0)
-    return lat + math.degrees(dlat), lon + math.degrees(dlon)
+    dlon = a * math.sin(math.degrees(brng)) / math.cos(math.radians(pos.lat) + dlat / 2.0)
+    return pos.lat + math.degrees(dlat), pos.long + math.degrees(dlon)
 
 
-def lat_long_to_xy(latx: float, lonx: float,
+def lat_long_to_xy(datum: LatLong,
                    bearing_x_axis: float,
-                   lat: float, lon: float) -> typing.Tuple[float, float]:
+                   pos: LatLong) -> XY:
     """Given datum lat/long position and bearing of the X axis this returns the x/y
     position of a lat/long position.
     Lat/long/bearing in degrees. x/y is in metres."""
-    angle = bearing_lat_long(latx, lonx, lat, lon) - bearing_x_axis
-    radius = distance_lat_long(latx, lonx, lat, lon)
+    angle = bearing_lat_long(datum, pos) - bearing_x_axis
+    radius = distance_lat_long(datum, pos)
     # print(
     #     'TRACE: bearing={:8.3f} angle={:8.3f}, radius={:8.3f}'.format(
     #         bearing_lat_long(latx, lonx, lat, lon), angle, radius
@@ -225,21 +342,21 @@ def lat_long_to_xy(latx: float, lonx: float,
     # )
     x = radius * math.cos(math.radians(angle))
     y = radius * math.sin(math.radians(angle))
-    return x, y
+    return XY(x, y)
 
 
-def xy_to_lat_long(latx: float, lonx: float,
+def xy_to_lat_long(datum: LatLong,
                    bearing_x_axis: float,
-                   x: float, y: float) -> typing.Tuple[float, float]:
+                   xy: XY) -> LatLong:
     """
-    Given datum lat/long position and bearing of the X axis this returns the x/y
-    position of a lat/long position.
+    Given datum lat/long position and bearing of the X axis this returns the lat/long
+    position of a x/y position.
     Lat/long/bearing in degrees. x/y is in metres.
     """
-    angle = math.atan2(y, x) + bearing_x_axis
-    radius = math.sqrt(x**2 + y**2)
-    lat, lon = lat_long_bearing_distance_to_lat_long(latx, lonx, radius, angle)
-    return lat, lon
+    angle = math.atan2(xy.y, xy.x) + bearing_x_axis
+    radius = math.sqrt(xy.x**2 + xy.y**2)
+    result = lat_long_bearing_distance_to_lat_long(datum, radius, angle)
+    return result
 
 
 def transit_x_axis_intercept(px: float, py: float, ox: float, oy: float) -> float:
@@ -258,14 +375,14 @@ def transit_bearing(px: float, py: float, ox: float, oy: float) -> float:
 
 def transit_distance(px: float, py: float, ox: float, oy: float) -> float:
     """Given an object at position px, py and an observer as ox, oy this returns the
-    the distance p -> o on the transit line."""
+    the distance p -> o."""
     d = math.sqrt((oy - py)**2 + (ox - px)**2)
     return d
 
 
 def transit_distance_to_x(px: float, py: float, ox: float, oy: float) -> float:
     """Given an object at position px, py and an observer as ox, oy this returns the
-    the distance p -> x axis on the transit line."""
+    the distance p -> x axis on the line."""
     d = transit_distance(px, py, ox, oy)
     d = d * py / (py - oy)
     return d
@@ -278,3 +395,15 @@ def transit_x_axis_error(px: float, py: float, ox: float, oy: float, p_err: floa
     d_x = transit_distance_to_x(px, py, ox, oy)
     x_err = p_err - (p_err - o_err) * d_x / d
     return x_err
+
+
+def transit_line_past_observer(linefrom: XY, lineto: XY, observer: XY, extra: float) -> XY:
+    """
+    Given a transit line from/to positions and an observer this calculates the x, y position
+    of the line extended past the observer by extra amount.
+    """
+    bearing = transit_bearing(linefrom.x, linefrom.y, lineto.x, lineto.y)
+    distance = transit_distance(linefrom.x, linefrom.y, observer.x, observer.y) + extra
+    x = distance * math.cos(math.radians(bearing))
+    y = distance * math.sin(math.radians(bearing))
+    return XY(linefrom.x + x, linefrom.y + y)

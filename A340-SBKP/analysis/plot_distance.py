@@ -314,14 +314,7 @@ def gnuplot_distance_from_transits(stream: typing.TextIO=sys.stdout) -> typing.L
         for gs_fit in gs_fits
     ]
     # Establish observer
-    ((observer_x_mean, observer_x_std), (observer_y_mean, observer_y_std)) = video_analysis.observer_position_mean_std(
-        baseline=plot_constants.OBSERVER_XY_MINIMUM_BASELINE,
-        ignore_first_n=plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS,
-        t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
-    )
-    observer_xy_start_runway = observer_x_mean + offsets[1], observer_y_mean
-    # Google earth
-    # observer_xy_start_runway = (3457.9, -655.5)
+    observer_xy_start_runway = plot_common.observer_xy()
 
     result = []
     for event in video_analysis.transit_x_axis_distances(*observer_xy_start_runway):
@@ -358,7 +351,7 @@ set xtics
 
 # set logscale y
 set ylabel "Distance Compared to Mid Estimate (m)"
-set yrange [-250:250]
+# set yrange [-250:250]
 # set ytics 8,35,3
 # set logscale y2
 # set y2label "Bytes"

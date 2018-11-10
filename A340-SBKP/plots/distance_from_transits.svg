@@ -36,16 +36,30 @@
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 </g>
 <g style="fill:none; color:gray; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M71.9,403.6 L675.0,403.6  h0.01'/></g>
+	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M71.9,442.4 L675.0,442.4  h0.01'/></g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='black'  d='M71.9,403.6 L80.9,403.6 M675.0,403.6 L666.0,403.6  h0.01'/>	<g transform="translate(63.6,408.1)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
+	<path stroke='black'  d='M71.9,442.4 L80.9,442.4 M675.0,442.4 L666.0,442.4  h0.01'/>	<g transform="translate(63.6,446.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
+		<text>-250</text>
+	</g>
+</g>
+<g style="fill:none; color:gray; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M71.9,393.9 L675.0,393.9  h0.01'/></g>
+<g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path stroke='black'  d='M71.9,393.9 L80.9,393.9 M675.0,393.9 L666.0,393.9  h0.01'/>	<g transform="translate(63.6,398.4)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text>-200</text>
 	</g>
 </g>
 <g style="fill:none; color:gray; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M71.9,325.9 L675.0,325.9  h0.01'/></g>
+	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M71.9,345.3 L675.0,345.3  h0.01'/></g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='black'  d='M71.9,325.9 L80.9,325.9 M675.0,325.9 L666.0,325.9  h0.01'/>	<g transform="translate(63.6,330.4)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
+	<path stroke='black'  d='M71.9,345.3 L80.9,345.3 M675.0,345.3 L666.0,345.3  h0.01'/>	<g transform="translate(63.6,349.8)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
+		<text>-150</text>
+	</g>
+</g>
+<g style="fill:none; color:gray; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M71.9,296.8 L675.0,296.8  h0.01'/></g>
+<g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path stroke='black'  d='M71.9,296.8 L80.9,296.8 M675.0,296.8 L666.0,296.8  h0.01'/>	<g transform="translate(63.6,301.3)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text>-100</text>
 	</g>
 </g>
@@ -53,21 +67,35 @@
 	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M71.9,248.2 L675.0,248.2  h0.01'/></g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<path stroke='black'  d='M71.9,248.2 L80.9,248.2 M675.0,248.2 L666.0,248.2  h0.01'/>	<g transform="translate(63.6,252.7)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
+		<text>-50</text>
+	</g>
+</g>
+<g style="fill:none; color:gray; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M71.9,199.7 L675.0,199.7  h0.01'/></g>
+<g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path stroke='black'  d='M71.9,199.7 L80.9,199.7 M675.0,199.7 L666.0,199.7  h0.01'/>	<g transform="translate(63.6,204.2)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text> 0</text>
 	</g>
 </g>
 <g style="fill:none; color:gray; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M71.9,170.6 L675.0,170.6  h0.01'/></g>
+	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M71.9,151.2 L675.0,151.2  h0.01'/></g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='black'  d='M71.9,170.6 L80.9,170.6 M675.0,170.6 L666.0,170.6  h0.01'/>	<g transform="translate(63.6,175.1)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
+	<path stroke='black'  d='M71.9,151.2 L80.9,151.2 M675.0,151.2 L666.0,151.2  h0.01'/>	<g transform="translate(63.6,155.7)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
+		<text> 50</text>
+	</g>
+</g>
+<g style="fill:none; color:gray; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M71.9,102.6 L425.3,102.6 M666.7,102.6 L675.0,102.6  h0.01'/></g>
+<g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path stroke='black'  d='M71.9,102.6 L80.9,102.6 M675.0,102.6 L666.0,102.6  h0.01'/>	<g transform="translate(63.6,107.1)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text> 100</text>
 	</g>
 </g>
 <g style="fill:none; color:gray; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M71.9,92.9 L425.3,92.9 M666.7,92.9 L675.0,92.9  h0.01'/></g>
+	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M71.9,54.1 L675.0,54.1  h0.01'/></g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='black'  d='M71.9,92.9 L80.9,92.9 M675.0,92.9 L666.0,92.9  h0.01'/>	<g transform="translate(63.6,97.4)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
-		<text> 200</text>
+	<path stroke='black'  d='M71.9,54.1 L80.9,54.1 M675.0,54.1 L666.0,54.1  h0.01'/>	<g transform="translate(63.6,58.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
+		<text> 150</text>
 	</g>
 </g>
 <g style="fill:none; color:gray; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
@@ -127,89 +155,92 @@
 	<g transform="translate(373.4,31.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
 		<text>Distances down runway comparing estimates with transits.</text>
 	</g>
-	<g transform="translate(118.3,301.7) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 1 t=2.2s ∆d=-69</text>
+	<g transform="translate(118.3,270.0) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 1 t=2.2s ∆d=-72</text>
 	</g>
-	<g transform="translate(128.4,300.7) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 2 t=2.7s ∆d=-68</text>
+	<g transform="translate(128.4,268.8) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 2 t=2.7s ∆d=-71</text>
 	</g>
-	<g transform="translate(136.4,300.0) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 3 t=3.1s ∆d=-67</text>
+	<g transform="translate(136.4,268.0) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 3 t=3.1s ∆d=-70</text>
 	</g>
-	<g transform="translate(146.5,298.7) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 4 t=3.6s ∆d=-65</text>
+	<g transform="translate(146.5,266.2) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 4 t=3.6s ∆d=-69</text>
 	</g>
-	<g transform="translate(154.5,299.0) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 5 t=4.0s ∆d=-65</text>
+	<g transform="translate(154.5,266.7) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 5 t=4.0s ∆d=-69</text>
 	</g>
-	<g transform="translate(164.6,298.3) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 6 t=4.5s ∆d=-64</text>
+	<g transform="translate(164.6,265.7) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 6 t=4.5s ∆d=-68</text>
 	</g>
-	<g transform="translate(206.8,178.7) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 7 t=6.6s ∆d=90</text>
+	<g transform="translate(206.8,116.9) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 7 t=6.6s ∆d=85</text>
 	</g>
-	<g transform="translate(234.9,230.6) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 8 t=8.0s ∆d=23</text>
+	<g transform="translate(220.9,273.0) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Concrete block hut t=7.3s ∆d=-75</text>
 	</g>
-	<g transform="translate(249.0,245.8) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 9 t=8.7s ∆d=3</text>
+	<g transform="translate(234.9,181.9) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 8 t=8.0s ∆d=18</text>
 	</g>
-	<g transform="translate(261.1,260.6) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 10 t=9.3s ∆d=-16</text>
+	<g transform="translate(249.0,200.9) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 9 t=8.7s ∆d=-1</text>
 	</g>
-	<g transform="translate(275.1,277.9) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 11 t=10.0s ∆d=-38</text>
+	<g transform="translate(261.1,219.3) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 10 t=9.3s ∆d=-20</text>
 	</g>
-	<g transform="translate(287.2,293.9) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 12 t=10.6s ∆d=-59</text>
+	<g transform="translate(275.1,241.0) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 11 t=10.0s ∆d=-43</text>
 	</g>
-	<g transform="translate(301.3,232.0) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 13 t=11.3s ∆d=21</text>
+	<g transform="translate(287.2,261.0) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 12 t=10.6s ∆d=-63</text>
 	</g>
-	<g transform="translate(311.3,247.2) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 14 t=11.8s ∆d=1</text>
+	<g transform="translate(301.3,183.8) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 13 t=11.3s ∆d=16</text>
 	</g>
-	<g transform="translate(319.4,252.3) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 15 t=12.2s ∆d=-5</text>
+	<g transform="translate(311.3,202.7) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 14 t=11.8s ∆d=-3</text>
 	</g>
-	<g transform="translate(331.4,273.6) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 16 t=12.8s ∆d=-33</text>
+	<g transform="translate(319.4,209.1) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 15 t=12.2s ∆d=-10</text>
 	</g>
-	<g transform="translate(343.5,293.2) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 17 t=13.4s ∆d=-58</text>
+	<g transform="translate(331.4,235.8) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 16 t=12.8s ∆d=-37</text>
 	</g>
-	<g transform="translate(381.7,388.4) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 18 t=15.3s ∆d=-181</text>
+	<g transform="translate(343.5,260.3) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 17 t=13.4s ∆d=-62</text>
 	</g>
-	<g transform="translate(399.8,427.8) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tower 19 t=16.2s ∆d=-231</text>
+	<g transform="translate(381.7,379.3) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 18 t=15.3s ∆d=-185</text>
 	</g>
-	<g transform="translate(423.9,274.2) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Control tower base t=17.4s ∆d=-33</text>
+	<g transform="translate(399.8,428.5) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tower 19 t=16.2s ∆d=-236</text>
 	</g>
-	<g transform="translate(536.5,279.5) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Chequer board hut t=23.0s ∆d=-40</text>
+	<g transform="translate(423.9,236.5) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Control tower base t=17.4s ∆d=-38</text>
 	</g>
-	<g transform="translate(568.6,286.9) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Factory interior corner t=24.6s ∆d=-50</text>
+	<g transform="translate(536.5,242.6) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Chequer board hut t=23.0s ∆d=-44</text>
 	</g>
-	<g transform="translate(568.6,407.1) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Trees right of Fedex t=24.6s ∆d=-205</text>
+	<g transform="translate(568.6,251.9) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Factory interior corner t=24.6s ∆d=-54</text>
 	</g>
-	<g transform="translate(572.7,373.0) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Fedex right t=24.8s ∆d=-161</text>
+	<g transform="translate(568.6,209.1) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Trees right of Fedex t=24.6s ∆d=-10</text>
 	</g>
-	<g transform="translate(578.7,379.3) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Fedex left t=25.1s ∆d=-169</text>
+	<g transform="translate(572.7,225.6) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Fedex right t=24.8s ∆d=-27</text>
 	</g>
-	<g transform="translate(614.9,276.5) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Factory extreme left t=26.9s ∆d=-36</text>
+	<g transform="translate(578.7,236.4) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Fedex left t=25.1s ∆d=-38</text>
 	</g>
-	<g transform="translate(633.0,264.9) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Tall radio tower t=27.8s ∆d=-22</text>
+	<g transform="translate(614.9,239.6) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Factory extreme left t=26.9s ∆d=-41</text>
 	</g>
-	<g transform="translate(653.1,265.4) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Second control tower t=28.8s ∆d=-22</text>
+	<g transform="translate(633.0,224.9) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Tall radio tower t=27.8s ∆d=-26</text>
+	</g>
+	<g transform="translate(653.1,225.4) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Second control tower t=28.8s ∆d=-26</text>
 	</g>
 </g>
 	<g id="gnuplot_plot_1" ><title>gnuplot_plot_1</title>
@@ -219,64 +250,65 @@
 	<g transform="translate(607.9,76.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text>Mid estimate -10 knots</text>
 	</g>
-	<path  d='M616.2,72.1 L658.4,72.1 M120.1,146.8 L130.2,148.7 L140.3,150.6 L148.3,152.4 L158.3,154.2 L166.4,156.0 
-		L210.6,164.6 L238.8,170.2 L250.8,172.8 L264.9,175.3 L277.0,178.0 L291.0,180.5 L303.1,183.2 L315.2,185.3 
-		L321.2,186.8 L335.3,189.4 L347.3,191.9 L385.5,199.4 L403.6,203.1 L427.7,207.9 L540.3,230.2 L572.5,236.5 
-		L576.5,237.3 L580.5,238.4 L618.7,245.8 L634.8,249.0 L656.9,253.3  h0.01'/></g>
+	<path  d='M616.2,72.1 L658.4,72.1 M120.1,72.9 L130.2,75.3 L140.3,77.7 L148.3,79.9 L158.3,82.2 L166.4,84.4 
+		L210.6,95.2 L224.7,98.6 L238.8,102.2 L250.8,105.4 L264.9,108.6 L277.0,111.9 L291.0,115.0 L303.1,118.4 
+		L315.2,121.1 L321.2,122.9 L335.3,126.1 L347.3,129.2 L385.5,138.7 L403.6,143.3 L427.7,149.2 L540.3,177.1 
+		L572.5,185.1 L576.5,186.0 L580.5,187.4 L618.7,196.7 L634.8,200.7 L656.9,206.0  h0.01'/></g>
 	</g>
 	<g id="gnuplot_plot_2" ><title>gnuplot_plot_2</title>
 <g style="fill:none; color:green; stroke:currentColor; stroke-width:1.50; stroke-linecap:butt; stroke-linejoin:miter">
 	<g transform="translate(607.9,94.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text>Mid estimate</text>
 	</g>
-	<path  d='M616.2,90.1 L658.4,90.1 M120.1,248.2 L130.2,248.2 L140.3,248.2 L148.3,248.2 L158.3,248.2 L166.4,248.2 
-		L210.6,248.2 L238.8,248.2 L250.8,248.2 L264.9,248.2 L277.0,248.2 L291.0,248.2 L303.1,248.2 L315.2,248.2 
-		L321.2,248.2 L335.3,248.2 L347.3,248.2 L385.5,248.2 L403.6,248.2 L427.7,248.2 L540.3,248.2 L572.5,248.2 
-		L576.5,248.2 L580.5,248.2 L618.7,248.2 L634.8,248.2 L656.9,248.2  h0.01'/></g>
+	<path  d='M616.2,90.1 L658.4,90.1 M120.1,199.7 L130.2,199.7 L140.3,199.7 L148.3,199.7 L158.3,199.7 L166.4,199.7 
+		L210.6,199.7 L224.7,199.7 L238.8,199.7 L250.8,199.7 L264.9,199.7 L277.0,199.7 L291.0,199.7 L303.1,199.7 
+		L315.2,199.7 L321.2,199.7 L335.3,199.7 L347.3,199.7 L385.5,199.7 L403.6,199.7 L427.7,199.7 L540.3,199.7 
+		L572.5,199.7 L576.5,199.7 L580.5,199.7 L618.7,199.7 L634.8,199.7 L656.9,199.7  h0.01'/></g>
 	</g>
 	<g id="gnuplot_plot_3" ><title>gnuplot_plot_3</title>
 <g style="fill:none; color:blue; stroke:currentColor; stroke-width:1.50; stroke-linecap:butt; stroke-linejoin:miter">
 	<g transform="translate(607.9,112.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text>Mid estimate +10 knots</text>
 	</g>
-	<path  d='M616.2,108.1 L658.4,108.1 M120.1,349.7 L130.2,347.7 L140.3,345.9 L148.3,344.2 L158.3,342.2 L166.4,340.4 
-		L210.6,331.8 L238.8,326.4 L250.8,323.7 L264.9,321.3 L277.0,318.5 L291.0,316.0 L303.1,313.3 L315.2,311.2 
-		L321.2,309.7 L335.3,307.0 L347.3,304.6 L385.5,297.1 L403.6,293.4 L427.7,288.6 L540.3,266.3 L572.5,260.0 
-		L576.5,259.1 L580.5,258.1 L618.7,250.6 L634.8,247.5 L656.9,243.2  h0.01'/></g>
+	<path  d='M616.2,108.1 L658.4,108.1 M120.1,326.5 L130.2,324.1 L140.3,321.8 L148.3,319.6 L158.3,317.2 L166.4,314.9 
+		L210.6,304.2 L224.7,300.8 L238.8,297.4 L250.8,294.1 L264.9,291.0 L277.0,287.6 L291.0,284.4 L303.1,281.1 
+		L315.2,278.3 L321.2,276.5 L335.3,273.2 L347.3,270.2 L385.5,260.8 L403.6,256.2 L427.7,250.2 L540.3,222.3 
+		L572.5,214.4 L576.5,213.3 L580.5,212.0 L618.7,202.6 L634.8,198.7 L656.9,193.4  h0.01'/></g>
 	</g>
 	<g id="gnuplot_plot_4" ><title>gnuplot_plot_4</title>
 <g style="fill:none; color:green; stroke:currentColor; stroke-width:1.50; stroke-linecap:butt; stroke-linejoin:miter">
 	<g transform="translate(607.9,130.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text>From transits</text>
 	</g>
-	<use xlink:href='#gpPt1' transform='translate(120.1,293.5) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(130.2,292.6) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(140.3,292.1) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(148.3,290.6) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(158.3,291.0) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(166.4,290.1) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(210.6,170.6) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(238.8,222.5) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(250.8,237.8) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(264.9,252.5) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(277.0,269.8) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(291.0,285.8) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(303.1,223.9) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(315.2,239.1) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(321.2,244.2) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(335.3,265.5) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(347.3,285.1) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(385.5,380.3) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(403.6,419.7) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(427.7,266.1) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(540.3,271.5) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(572.5,278.8) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(572.5,399.0) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(576.5,364.8) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(580.5,371.1) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(618.7,268.4) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(634.8,256.9) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(656.9,257.3) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(120.1,259.8) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(130.2,258.6) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(140.3,258.0) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(148.3,256.1) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(158.3,256.6) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(166.4,255.6) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(210.6,106.8) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(224.7,262.8) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(238.8,171.8) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(250.8,190.8) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(264.9,209.2) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(277.0,230.9) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(291.0,250.9) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(303.1,173.7) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(315.2,192.6) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(321.2,199.0) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(335.3,225.6) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(347.3,250.2) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(385.5,369.2) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(403.6,418.4) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(427.7,226.4) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(540.3,232.5) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(572.5,241.8) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(572.5,198.9) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(576.5,215.5) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(580.5,226.2) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(618.7,229.5) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(634.8,214.8) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(656.9,215.3) scale(5.62)'/>
 	<use xlink:href='#gpPt1' transform='translate(637.3,126.1) scale(5.62)'/>
 </g>
 	</g>

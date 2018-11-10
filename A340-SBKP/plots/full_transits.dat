@@ -1,0 +1,9 @@
+#
+# Notes:
+# time x(m) y(m) x(y=0)(m) y==0(m) Name
+7.6     121.2  705.9 1720.1 0.0 # Tower 8->Concrete block hut
+7.6    2144.3 -230.6 1720.1 0.0 # Tower 8->Concrete block hut
+24.9   2719.6  427.4 2981.3 0.0 # Trees right of Fedex->Concrete block hut
+24.9   3175.4 -355.7 2981.3 0.0 # Trees right of Fedex->Concrete block hut
+28.0   3023.3  812.6 3242.5 0.0 # Tall radio tower->Building corner
+28.0   3270.4 -140.3 3242.5 0.0 # Tall radio tower->Building corner

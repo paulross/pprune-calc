@@ -94,3 +94,25 @@ def write_dat_plt_call(name: str, fn_dat: typing.Callable, fn_plt: typing.Callab
         proc.kill()
         outs, errs = proc.communicate()
     # print(outs, errs, proc.returncode)
+
+
+def observer_xy_with_std():
+    """Returns ((observer_x_mean, observer_x_std), (observer_y_mean, observer_y_std)) in metres."""
+    return video_analysis.observer_position_mean_std(
+        baseline=plot_constants.OBSERVER_XY_MINIMUM_BASELINE,
+        ignore_first_n=plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS,
+        t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
+    )
+
+def x_offset():
+    # TODO: Remove hard-coded 1182
+    return 1182
+
+
+def observer_xy():
+    """Returns (x, y) in metres."""
+    ((observer_x_mean, observer_x_std), (observer_y_mean, observer_y_std)) = observer_xy_with_std()
+    observer_xy_start_runway = observer_x_mean + x_offset(), observer_y_mean
+    # Google earth
+    # observer_xy_start_runway = (3457.9, -655.5)
+    return observer_xy_start_runway

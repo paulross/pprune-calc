@@ -91,6 +91,11 @@ def main():
         plot_transits.gnuplot_ground_transits_plt,
     )
     plot_common.write_dat_plt_call(
+        'full_transits',
+        plot_transits.gnuplot_full_transits,
+        plot_transits.gnuplot_full_transits_plt,
+    )
+    plot_common.write_dat_plt_call(
         'angle_of_view',
         plot_angle_of_view.gnuplot_angle_of_view,
         plot_angle_of_view.gnuplot_angle_of_view_plt,

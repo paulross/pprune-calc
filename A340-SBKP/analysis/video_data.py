@@ -43,6 +43,7 @@ https://www.google.com/maps/@-23.0148861,-47.1181774,3a,75y,270h,90t/data=!3m6!1
 
 import collections
 import enum
+import itertools
 import math
 import pprint
 import typing
@@ -134,6 +135,13 @@ class VideoTime(collections.namedtuple('VideoTime', 'min, sec, frame')):
 
     def __lt__(self, other):
         return self.time < other.time
+
+    def __format__(self, format_spec):
+        if format_spec == '':
+            format_spec = '02d'
+        return 'VideoTime({min:{format_spec}}:{sec:{format_spec}}:{frame:{format_spec}})'.format(
+            min=self.min, sec=self.sec, frame=self.frame, format_spec=format_spec
+        )
 
 
 TIME_VIDEO_BEGIN = VideoTime(0, 0, 0)
@@ -603,13 +611,25 @@ Threshold 15: https://www.google.com/maps/@-22.9985032,-47.1469772,61m/data=!3m1
 End asphalt 15: https://www.google.com/maps/@-23.0163963,-47.1219874,63m/data=!3m1!1e3?hl=en
 Threshold 33: https://www.google.com/maps/@-23.015869,-47.1227499,61m/data=!3m1!1e3?hl=en
 
-Fedex left: https://www.google.com/maps/@-23.0154296,-47.1296299,61m/data=!3m1!1e3?hl=en
-Fedex right: https://www.google.com/maps/@-23.0153072,-47.1298295,61m/data=!3m1!1e3?hl=en
 
-# Simultanous transit at VideoTime(0, 24, 26)
-Trees right of Fedex: https://www.google.com/maps/@-23.0147636,-47.1303907,104m/data=!3m1!1e3
-# Displaced roughly +100m in x axis.
-# Trees right of Fedex: https://www.google.com/maps/@-23.0148536,-47.1290707,104m/data=!3m1!1e3
+# Simultaneous transit at VideoTime(0, 7, 17) or VideoTime(0, 7, 18) of 'Tower 8' and:
+Concrete block hut: https://www.google.com/maps/@-23.008705,-47.129063,50m/data=!3m1!1e3
+
+# Probably misidentified?
+# Fedex left: https://www.google.com/maps/@-23.0154296,-47.1296299,61m/data=!3m1!1e3?hl=en
+# Yes this looks more accurate
+Fedex left: https://www.google.com/maps/@-23.016525,-47.127947,61m/data=!3m1!1e3?hl=en
+# Fedex right: https://www.google.com/maps/@-23.0153072,-47.1298295,61m/data=!3m1!1e3?hl=en
+# Yes this looks more accurate
+Fedex right: https://www.google.com/maps/@-23.016425,-47.128094,61m/data=!3m1!1e3?hl=en
+
+# Simultaneous transit at VideoTime(0, 24, 26)
+# Probably misidentified?
+# Trees right of Fedex: https://www.google.com/maps/@-23.0147636,-47.1303907,104m/data=!3m1!1e3
+# Yes this looks more accurate
+# Trees right of Fedex: https://www.google.com/maps/@-23.016282,-47.128253,104m/data=!3m1!1e3
+# Displaced roughly +30m in x axis, -.0003 degrees to both.
+Trees right of Fedex: https://www.google.com/maps/@-23.016582,-47.128553,104m/data=!3m1!1e3
 Factory interior corner: https://www.google.com/maps/@-23.0135093,-47.1203631,50m/data=!3m1!1e3
 
 Control tower base: https://www.google.com/maps/@-23.010773,-47.145509,61m/data=!3m1!1e3?hl=en
@@ -618,31 +638,105 @@ Control tower base: https://www.google.com/maps/@-23.010773,-47.145509,61m/data=
 Chequer board hut: https://www.google.com/maps/@-23.0137084,-47.1237547,98m/data=!3m1!1e3
 
 Factory extreme left: https://www.google.com/maps/@-23.0147028,-47.120441,55m/data=!3m1!1e3
+
+# Simultaneous transit at VideoTime(0, 28, 0)
 Tall radio tower: https://www.google.com/maps/@-23.0210104,-47.1285102,97m/data=!3m1!1e3
+# Alternate
+# Tall radio tower: https://www.google.com/maps/@-23.020989,-47.128512,97m/data=!3m1!1e3
 Second control tower: https://www.google.com/maps/@-23.0213449,-47.1261314,174m/data=!3m1!1e3
+# This the corner of a building by a white hut that is just visible at 00:28:00 and in line with 'Tall radio tower'
+Building corner: https://www.google.com/maps/@-23.015572,-47.120916,97m/data=!3m1!1e3
 """
 
-# Transit lines that are simultaneous
-GOOGLE_EARTH_SIMULTANEOUS_TRANSIT_LABELS = (
-    ('Trees right of Fedex', 'Factory interior corner'),
+# These are towers in the North West area of the airport.
+# They are clearly visible in the early part of the video.
+# These are organised as a variable width table of pairs of (lat, long)
+GOOGLE_EARTH_TOWER_POSITIONS_LAT_LONG = (
+    # These six towers are in the open to the North East of the terminal building.
+    # They have a group of lights at the very top that make a distinctive butterfly shadow.
+    tuple(
+        [
+            # video_utils.interpolate_between_two_points(-23.001859, -47.148889, -23.003105, -47.147112, i / 5.0)
+            # # dy is -0.4 so tweak end positon by 2m or 2e-5 lat
+            video_utils.LatLong(
+                *video_utils.interpolate_between_two_points(-23.001859, -47.148889, -23.003125, -47.147132, i / 5.0)
+            )
+            for i in range(6)
+        ]
+    ),
+    # These eight towers are on the North East side of the North East Wing of the terminal building.
+    # They have a larger group of lights from some distance down from the top that makes a more rounded shadow.
+    tuple(
+        [
+            # video_utils.interpolate_between_two_points(-23.003361, -47.149942, -23.005109, -47.147447, i / 7.0)
+            # # dy is -0.4 so tweak end positon by 2m or 2e-5 lat
+            video_utils.LatLong(
+                *video_utils.interpolate_between_two_points(-23.003361, -47.149942, -23.005129, -47.147467, i / 7.0)
+            )
+            for i in range(8)
+        ]
+    ),
+    # These six towers are on the South West side of the North East Wing of the terminal building.
+    # They have a larger group of lights from some distance down from the top that makes a more rounded shadow.
+    tuple(
+        [
+            video_utils.LatLong(
+                *video_utils.interpolate_between_two_points(-23.003940, -47.150579, -23.005186, -47.148830, i / 5.0)
+            )
+            for i in range(6)
+        ]
+    ),
+    # These seven towers are on the North East side of the South West Wing of the terminal building.
+    # They have a larger group of lights from some distance down from the top that makes a more rounded shadow.
+    tuple(
+        [
+            video_utils.LatLong(
+                *video_utils.interpolate_between_two_points(-23.005717, -47.151878, -23.007212, -47.149789, i / 6.0)
+            )
+            for i in range(7)
+        ]
+    ),
+    # These towers are on the South West side of the South West Wing of the terminal building.
+    # They have a larger group of lights from some distance down from the top that makes a more rounded shadow.
+    (
+        video_utils.LatLong(-23.006378, -47.152455),
+        video_utils.LatLong(-23.006875, -47.151753),
+        video_utils.LatLong(-23.008431, -47.150984),
+        video_utils.LatLong(-23.009074, -47.151511),
+    )
 )
 
+GOOGLE_EARTH_TOWER_POSITIONS_TRANSIT_TIMES = (
+    (
+        VideoTime(0, 0, 0),
+        VideoTime(0, 0, 0),
+        VideoTime(0, 0, 0),
+        VideoTime(0, 0, 0),
+        VideoTime(0, 0, 0),
+        VideoTime(0, 0, 0),
+    ),
+    (
+        VideoTime(0, 6, 27),
+        VideoTime(0, 7, 17), # Tower 8 in full transit with 'Concrete block hut'
+        VideoTime(0, 8, 8),
+        VideoTime(0, 8, 27),
+        VideoTime(0, 9, 17),
+        VideoTime(0, 10, 7),
+        VideoTime(0, 10, 25),
+        VideoTime(0, 11, 15),
+        VideoTime(0, 12, 2), # Where is this one?
+    ),
+)
 
-def transit_is_simultaneous(label: str) -> bool:
-    """Returns True if the transit line lable belongs to a pair that are simultaneous"""
-    for a, b in GOOGLE_EARTH_SIMULTANEOUS_TRANSIT_LABELS:
-        if label == a or label == b:
-            return True
-    return False
-
-
+# xy is a video_utils.XY and are distances in metres from the datum (the start of runway 15)
+# For writing URLs
 GOOGLE_EARTH_URL_FORMAT = 'https://www.google.com/maps/@{:.7f},{:.7f},55m/data=!3m1!1e3'
 
 
 # Dict of {label : (latitude, longitude), ...}
 # latitude, longitude in degrees.
-GOOGLE_EARTH_POSITIONS_LAT_LONG: typing.Dict[str, typing.Tuple[float, float]] = {
-    video_utils.google_earth_url_to_lat_long(line)[0] : video_utils.google_earth_url_to_lat_long(line)[1:]
+GOOGLE_EARTH_POSITIONS_LAT_LONG: typing.Dict[str, video_utils.LatLong] = {
+    video_utils.google_earth_url_to_lat_long(line)[0] : video_utils.google_earth_url_to_lat_long(line)[1]
     for line in GOOGLE_EARTH_URLS.split('\n') if len(line.strip()) > 0 and not line.startswith('#')
 }
 
@@ -651,26 +745,43 @@ GOOGLE_EARTH_DATUM_LAT_LONG = GOOGLE_EARTH_POSITIONS_LAT_LONG['Threshold 15']
 # Bearing of x axis in degrees, mean of two measurements
 GOOGLE_EARTH_X_AXIS = (
     video_utils.bearing_lat_long(
-        *GOOGLE_EARTH_DATUM_LAT_LONG,
-        *GOOGLE_EARTH_POSITIONS_LAT_LONG['Threshold 33']
+        GOOGLE_EARTH_DATUM_LAT_LONG,
+        GOOGLE_EARTH_POSITIONS_LAT_LONG['Threshold 33'],
     )
     + video_utils.bearing_lat_long(
-        *GOOGLE_EARTH_DATUM_LAT_LONG,
-        *GOOGLE_EARTH_POSITIONS_LAT_LONG['End asphalt 15']
+        GOOGLE_EARTH_DATUM_LAT_LONG,
+        GOOGLE_EARTH_POSITIONS_LAT_LONG['End asphalt 15']
     )
 ) / 2.0
 
 
+def google_earth_lat_long_to_xy(k: str) -> video_utils.XY:
+    return video_utils.lat_long_to_xy(
+        GOOGLE_EARTH_DATUM_LAT_LONG,
+        GOOGLE_EARTH_X_AXIS,
+        GOOGLE_EARTH_POSITIONS_LAT_LONG[k]
+    )
+
+
 # Dict of {label : (x, y), ...}
 GOOGLE_EARTH_POSITIONS_XY = {
-    k : video_utils.lat_long_to_xy(
-        GOOGLE_EARTH_DATUM_LAT_LONG[0],
-        GOOGLE_EARTH_DATUM_LAT_LONG[1],
-        GOOGLE_EARTH_X_AXIS,
-        *GOOGLE_EARTH_POSITIONS_LAT_LONG[k]
-    )
-    for k in GOOGLE_EARTH_POSITIONS_LAT_LONG
+    k : google_earth_lat_long_to_xy(k) for k in GOOGLE_EARTH_POSITIONS_LAT_LONG
 }
+
+GOOGLE_EARTH_TOWER_POSITIONS_XY = tuple(
+    [
+        tuple(
+            [
+                video_utils.lat_long_to_xy(
+                        GOOGLE_EARTH_DATUM_LAT_LONG,
+                        GOOGLE_EARTH_X_AXIS,
+                        lat_long_pos
+                ) for lat_long_pos in row
+            ]
+        )
+        for row in GOOGLE_EARTH_TOWER_POSITIONS_LAT_LONG
+    ]
+)
 
 
 # Map transit lines to video events
@@ -698,7 +809,11 @@ GOOGE_EARTH_EVENT_TOWER_MAP = {
     'Tower 19' : 'Far comms tower number 13.',
 }
 
+#------------------ Google Earth transits -------------------
+
 GOOGLE_EARTH_EVENT_TRANSIT_TIMES = {
+    # These two points are in simultanous transit
+    'Concrete block hut': VideoTime(0, 7, 17), # or VideoTime(0, 7, 18) of 'Tower 8'
     'Chequer board hut': VideoTime(0, 23, 8),
     'Control tower base': VideoTime(0, 17, 21),
     # These two points are in simultanous transit
@@ -710,6 +825,69 @@ GOOGLE_EARTH_EVENT_TRANSIT_TIMES = {
     'Tall radio tower': VideoTime(0, 28, 0),
     'Second control tower': VideoTime(0, 29, 2),
 }
+
+
+# in the direction along the runway. y is to the right of the runway.
+FullTransitPoint = collections.namedtuple('FullTransitPoint', 'label, xy')
+# frm (from) and to are FullTransitPoint(s)
+FullTransitLine = collections.namedtuple('FullTransitLine', 'frm, to, time')
+
+# Transit lines that are simultaneous
+GOOGLE_EARTH_FULL_TRANSITS = (
+    FullTransitLine(
+        FullTransitPoint(
+            'Tower 8',
+            google_earth_lat_long_to_xy('Tower 8')
+        ),
+        FullTransitPoint(
+            'Concrete block hut',
+            google_earth_lat_long_to_xy('Concrete block hut')
+        ),
+        VideoTime(0, 7, 17),
+    ),
+    FullTransitLine(
+        FullTransitPoint(
+            'Trees right of Fedex',
+            google_earth_lat_long_to_xy('Trees right of Fedex')
+        ),
+        FullTransitPoint(
+            'Concrete block hut',
+            google_earth_lat_long_to_xy('Factory interior corner')
+        ),
+        VideoTime(0, 24, 26),
+    ),
+    FullTransitLine(
+        FullTransitPoint(
+            'Tall radio tower',
+            google_earth_lat_long_to_xy('Tall radio tower')
+        ),
+        FullTransitPoint(
+            'Building corner',
+            google_earth_lat_long_to_xy('Building corner')
+        ),
+        VideoTime(0, 28, 0),
+    ),
+)
+
+
+# ('Tower 8', 'Concrete block hut'),
+# ('Trees right of Fedex', 'Factory interior corner'),
+# ('Tall radio tower', 'Building corner'),
+GOOGLE_EARTH_SIMULTANEOUS_TRANSIT_LABELS = tuple(
+    [
+        (v.frm.label, v.to.label) for v in GOOGLE_EARTH_FULL_TRANSITS
+    ]
+)
+
+
+def transit_is_simultaneous(label: str) -> bool:
+    """Returns True if the transit line lable belongs to a pair that are simultaneous"""
+    for a, b in GOOGLE_EARTH_SIMULTANEOUS_TRANSIT_LABELS:
+        if label == a or label == b:
+            return True
+    return False
+
+#------------------ END: Google Earth transits -------------------
 
 # Dictionary of {label : time, ...} where label is an entry in
 # GOOGLE_EARTH_EVENT_TRANSIT_TIMES and GOOGLE_EARTH_POSITIONS_XY
@@ -737,9 +915,107 @@ GOOGLE_EARTH_EVENTS = tuple(
 GOOGLE_EARTH_OBSERVER_POSIITON_URL = 'https://www.google.com/maps/@-23.0129344,-47.1164164,94m/data=!3m1!1e3'
 GOOGLE_EARTH_OBSERVER_POSIITON = video_utils.google_earth_url_to_lat_long(
     'Observer: https://www.google.com/maps/@-23.0129344,-47.1164164,94m/data=!3m1!1e3'
-)[1:]
+)[1]
 
 #================== END: Data from Google Earth ==============
+
+def print_google_earth_tower_positions():
+    print('GOOGLE_EARTH_TOWER_POSITIONS_XY:')
+    # pprint.pprint(GOOGLE_EARTH_TOWER_POSITIONS_XY)
+    for r, row in enumerate(GOOGLE_EARTH_TOWER_POSITIONS_XY):
+        prev = None
+        for c, col in enumerate(row):
+            if prev is not None:
+                print('[{:d}, {:d}]: {:10.1f}, {:10.1f} {:+10.3f}, {:+10.3f}'.format(
+                    r, c, col[0], col[1], col[0] - prev[0], col[1] - prev[1]
+                ))
+            else:
+                print('[{:d}, {:d}]: {:10.1f}, {:10.1f}'.format(r, c, *col))
+            prev = col
+    print()
+
+
+OBSERVER_XY_START_RUNWAY = video_utils.XY(2266 + 1182, -763)
+
+
+def print_transits_and_runway_distances():
+    speed = 0.0
+    prev = (0.0, 0.0, 0.0)
+    # Google earth
+    # observer_xy_start_runway = (3457.9, -655.5)
+    print('Transits for observer at:', OBSERVER_XY_START_RUNWAY)
+    for t, k in GOOGLE_EARTH_EVENTS:
+        event_time = GOOGLE_EARTH_EVENT_MAP[k]
+        # print(event, lat, lon)
+        # print('lat, lon', k, lat, lon)
+        x, y = video_utils.lat_long_to_xy(
+            GOOGLE_EARTH_DATUM_LAT_LONG,
+            GOOGLE_EARTH_X_AXIS,
+            GOOGLE_EARTH_POSITIONS_LAT_LONG[k],
+        )
+        x, y = GOOGLE_EARTH_POSITIONS_XY[k]
+        # print('x, y', k, x, y)
+        # video_utils.transit_x_axis_intercept(lat, lon, X0, Y0)
+        x_intercept = video_utils.transit_x_axis_intercept(x, y, *OBSERVER_XY_START_RUNWAY)
+        # print('TRACE', k, event_time, prev[0])
+        dt = event_time - prev[0]
+        dx_on_axis = x_intercept - prev[1]
+        dx = x - prev[2]
+        if dt != 0.0:
+            gs = video_utils.m_p_s_to_knots(dx_on_axis / dt)
+        else:
+            gs = 0.0
+        print(
+            '{:10s} t={:6.1f} dt={:6.1f} lat={:12.6f} lon={:12.6f} dlat={:10.6f} dlon={:10.6f} x={:6.1f} y={:6.1f} x_runway={:6.1f} dxaxis={:6.1f} v={:6.1f}'.format(
+                '"{}"'.format(k),
+                event_time, event_time - prev[0],
+                GOOGLE_EARTH_POSITIONS_LAT_LONG[k].lat, GOOGLE_EARTH_POSITIONS_LAT_LONG[k].long,
+                GOOGLE_EARTH_POSITIONS_LAT_LONG[k].lat - GOOGLE_EARTH_DATUM_LAT_LONG.lat,
+                GOOGLE_EARTH_POSITIONS_LAT_LONG[k].long - GOOGLE_EARTH_DATUM_LAT_LONG.long,
+                x, y,
+                x_intercept, dx_on_axis, gs
+            )
+        )
+        prev = (event_time, x_intercept, x)
+
+
+def print_full_transits():
+    for transit in GOOGLE_EARTH_FULL_TRANSITS:
+        print(
+            'Full transit at {} from {:8.3f} {:8.3f} "{}"->"{}"'.format(
+                transit.time,
+                transit.frm.xy, transit.to.xy,
+                transit.frm.label, transit.to.label,
+            )
+        )
+    print()
+    crossing_x = []
+    crossing_y = []
+    for i, j in itertools.combinations(range(len(GOOGLE_EARTH_FULL_TRANSITS)), 2):
+        transit1: FullTransitLine = GOOGLE_EARTH_FULL_TRANSITS[i]
+        transit2: FullTransitLine = GOOGLE_EARTH_FULL_TRANSITS[j]
+        crossing = video_utils.intersect_two_lines(
+            transit1.frm.xy, transit1.to.xy, transit2.frm.xy, transit2.to.xy,
+        )
+        crossing_x.append(crossing.x)
+        crossing_y.append(crossing.y)
+        print(
+            'Full transit crossing {:8.3f} "{}"->"{}" and  "{}"->"{}"'.format(
+                crossing,
+                transit1.frm.label, transit1.to.label,
+                transit2.frm.label, transit2.to.label,
+            )
+        )
+    print(
+        'X: min={:8.3f} mean={:8.3f} max={:8.3f} range={:8.3f}'.format(
+            min(crossing_x), sum(crossing_x) / len(crossing_x), max(crossing_x), max(crossing_x) - min(crossing_x),
+        )
+    )
+    print(
+        'Y: min={:8.3f} mean={:8.3f} max={:8.3f} range={:8.3f}'.format(
+            min(crossing_y), sum(crossing_y) / len(crossing_y), max(crossing_y), max(crossing_y) - min(crossing_y),
+        )
+    )
 
 
 if __name__ == '__main__':
@@ -767,71 +1043,51 @@ if __name__ == '__main__':
 
     # pprint.pprint(GOOGLE_EARTH_POSITIONS_XY)
     # pprint.pprint(GOOGLE_EARTH_EVENT_MAP)
-    pprint.pprint(GOOGLE_EARTH_EVENTS)
+    # pprint.pprint(GOOGLE_EARTH_EVENTS)
+    # print('GOOGLE_EARTH_TOWER_POSITIONS_LAT_LONG:')
+    # # pprint.pprint(GOOGLE_EARTH_TOWER_POSITIONS_LAT_LONG)
+    # for r, row in enumerate(GOOGLE_EARTH_TOWER_POSITIONS_LAT_LONG):
+    #     for c, col in enumerate(row):
+    #         print('[{:d}, {:d}]: {:10.6f}, {:10.6f}'.format(r, c, *col))
 
-    speed = 0.0
-    prev = (0.0, 0.0, 0.0)
-    observer_xy_start_runway = (2298 + 1182, -763)
-    # Google earth
-    # observer_xy_start_runway = (3457.9, -655.5)
-    for t, k in GOOGLE_EARTH_EVENTS:
-        lat, lon = GOOGLE_EARTH_POSITIONS_LAT_LONG[k]
-        event_time = GOOGLE_EARTH_EVENT_MAP[k]
-        # print(event, lat, lon)
-        # print('lat, lon', k, lat, lon)
-        x, y = video_utils.lat_long_to_xy(
-            GOOGLE_EARTH_DATUM_LAT_LONG[0],
-            GOOGLE_EARTH_DATUM_LAT_LONG[1],
-            GOOGLE_EARTH_X_AXIS,
-            lat,
-            lon,
-        )
-        x, y = GOOGLE_EARTH_POSITIONS_XY[k]
-        # print('x, y', k, x, y)
-        # video_utils.transit_x_axis_intercept(lat, lon, X0, Y0)
-        x_intercept = video_utils.transit_x_axis_intercept(x, y, *observer_xy_start_runway)
-        # print('TRACE', k, event_time, prev[0])
-        dt = event_time - prev[0]
-        dx_on_axis = x_intercept - prev[1]
-        dx = x - prev[2]
-        if dt != 0.0:
-            gs = video_utils.m_p_s_to_knots(dx_on_axis / dt)
-        else:
-            gs = 0.0
-        print(
-            '{:28s} t={:6.3f} lat={:12.7f} lon={:12.7f} dlat={:12.7f} dlon={:12.7f} x={:6.1f} y={:6.1f} x_runway={:6.1f} dxaxis={:6.1f} v={:6.1f}'.format(
-                '"{}"'.format(k), event_time, lat, lon,
-                lat - GOOGLE_EARTH_DATUM_LAT_LONG[0], lon - GOOGLE_EARTH_DATUM_LAT_LONG[1], x, y,
-                x_intercept, dx_on_axis, gs
-            )
-        )
-        prev = (event_time, x_intercept, x)
+    # print_google_earth_tower_positions()
+    # print_transits_and_runway_distances()
+
+
+    # Full Transits
+    # for a, b in GOOGLE_EARTH_SIMULTANEOUS_TRANSIT_LABELS:
+    #     print('Full transit from {:8.3f} {:8.3f} "{}"->"{}"'.format(
+    #         GOOGLE_EARTH_POSITIONS_XY[a],
+    #         GOOGLE_EARTH_POSITIONS_XY[b],
+    #         a, b)
+    #     )
+    print_full_transits()
+    print()
+
     # Observer
-    ge_obs_x, ge_obs_y = video_utils.lat_long_to_xy(
-        GOOGLE_EARTH_DATUM_LAT_LONG[0],
-        GOOGLE_EARTH_DATUM_LAT_LONG[1],
+    ge_obs_xy = video_utils.lat_long_to_xy(
+        GOOGLE_EARTH_DATUM_LAT_LONG,
         GOOGLE_EARTH_X_AXIS,
-        *GOOGLE_EARTH_OBSERVER_POSIITON,
+        GOOGLE_EARTH_OBSERVER_POSIITON,
     )
-    print('Observer from bearings    : x={:6.1f} y={:6.1f}'.format(*observer_xy_start_runway))
-    print('Observer from google earth: x={:6.1f} y={:6.1f}'.format(ge_obs_x, ge_obs_y))
+    print('Observer from bearings    : {:8.1f}'.format(OBSERVER_XY_START_RUNWAY))
+    print('Observer from google earth: {:8.1f}'.format(ge_obs_xy))
     print('      Diff (bearings - ge): x={:6.1f} y={:6.1f}'.format(
-        observer_xy_start_runway[0] - ge_obs_x, observer_xy_start_runway[1] - ge_obs_y))
+        OBSERVER_XY_START_RUNWAY.x - ge_obs_xy.x,
+        OBSERVER_XY_START_RUNWAY.y - ge_obs_xy.y))
 
     # TODO: Fix x/y to lat/long
-    ge_obs_lat, ge_obs_long = video_utils.xy_to_lat_long(
-        GOOGLE_EARTH_DATUM_LAT_LONG[0],
-        GOOGLE_EARTH_DATUM_LAT_LONG[1],
+    ge_obs_lat_long = video_utils.xy_to_lat_long(
+        GOOGLE_EARTH_DATUM_LAT_LONG,
         GOOGLE_EARTH_X_AXIS,
-        *observer_xy_start_runway,
+        OBSERVER_XY_START_RUNWAY,
     )
-    print('Google earth URL from x={:6.1f} y={:6.1f}'.format(*observer_xy_start_runway))
-    print(GOOGLE_EARTH_URL_FORMAT.format(ge_obs_lat, ge_obs_long))
-    ge_obs_lat, ge_obs_long = video_utils.xy_to_lat_long(
-        GOOGLE_EARTH_DATUM_LAT_LONG[0],
-        GOOGLE_EARTH_DATUM_LAT_LONG[1],
+    print('Google earth URL from x={:6.1f} y={:6.1f}'.format(*OBSERVER_XY_START_RUNWAY))
+    print(GOOGLE_EARTH_URL_FORMAT.format(*ge_obs_lat_long))
+    ge_obs_lat_long = video_utils.xy_to_lat_long(
+        GOOGLE_EARTH_DATUM_LAT_LONG,
         GOOGLE_EARTH_X_AXIS,
-        ge_obs_x, ge_obs_y,
+        ge_obs_xy,
     )
-    print('Google earth URL from x={:6.1f} y={:6.1f}'.format(ge_obs_x, ge_obs_y))
-    print(GOOGLE_EARTH_URL_FORMAT.format(ge_obs_lat, ge_obs_long))
+    print('Google earth URL from {}'.format(ge_obs_xy))
+    print(GOOGLE_EARTH_URL_FORMAT.format(*ge_obs_lat_long))

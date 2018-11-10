@@ -30,6 +30,7 @@ setup(
     install_requires=[
         'numpy',
         'scipy',
+        'utm',
         # 'Pillow',
     ],
     tests_require=test_requirements,
