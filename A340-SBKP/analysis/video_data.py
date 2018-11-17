@@ -575,7 +575,8 @@ Tower 18: https://www.google.com/maps/@-23.006960,-47.150124,59m/data=!3m1!1e3?h
 Tower 19: https://www.google.com/maps/@-23.007207,-47.149788,59m/data=!3m1!1e3?hl=en
 """
 
-# Lat long: 1m on earths surface is 1 / 6378.137e3 radians latitude or about 9e-6 degrees
+# Lat long: 1m on earths surface is 1 / 6378.137e3 radians latitude or about 9e-6 degrees say 0.00001
+# 25m is 0.00025
 # Lat long: 9e-6 degrees latitude is around 1.323e-05 degrees longitude
 GOOGLE_EARTH_URLS = """
 # Tower positions in the open nearest 15 threshold
@@ -607,9 +608,16 @@ Tower 17: https://www.google.com/maps/@-23.006715,-47.150475,59m/data=!3m1!1e3?h
 Tower 18: https://www.google.com/maps/@-23.006960,-47.150124,59m/data=!3m1!1e3?hl=en
 Tower 19: https://www.google.com/maps/@-23.007207,-47.149788,59m/data=!3m1!1e3?hl=en
 
+# Runway ends
 Threshold 15: https://www.google.com/maps/@-22.9985032,-47.1469772,61m/data=!3m1!1e3?hl=en
 End asphalt 15: https://www.google.com/maps/@-23.0163963,-47.1219874,63m/data=!3m1!1e3?hl=en
 Threshold 33: https://www.google.com/maps/@-23.015869,-47.1227499,61m/data=!3m1!1e3?hl=en
+
+
+# Full transit at Tower 1 to Fence Break 1 at VideoTime(0, 2, 12)
+# Fence Break 1: https://www.google.com/maps/@-23.008622,-47.127443,61m/data=!3m1!1e3?hl=en
+# Move 20m north: +.00020
+Fence Break 1: https://www.google.com/maps/@-23.008422,-47.127443,61m/data=!3m1!1e3?hl=en
 
 
 # Simultaneous transit at VideoTime(0, 7, 17) or VideoTime(0, 7, 18) of 'Tower 8' and:
@@ -627,15 +635,22 @@ Fedex right: https://www.google.com/maps/@-23.016425,-47.128094,61m/data=!3m1!1e
 # Probably misidentified?
 # Trees right of Fedex: https://www.google.com/maps/@-23.0147636,-47.1303907,104m/data=!3m1!1e3
 # Yes this looks more accurate
-# Trees right of Fedex: https://www.google.com/maps/@-23.016282,-47.128253,104m/data=!3m1!1e3
-# Displaced roughly +30m in x axis, -.0003 degrees to both.
-Trees right of Fedex: https://www.google.com/maps/@-23.016582,-47.128553,104m/data=!3m1!1e3
+Trees right of Fedex: https://www.google.com/maps/@-23.016282,-47.128253,104m/data=!3m1!1e3
 Factory interior corner: https://www.google.com/maps/@-23.0135093,-47.1203631,50m/data=!3m1!1e3
 
 Control tower base: https://www.google.com/maps/@-23.010773,-47.145509,61m/data=!3m1!1e3?hl=en
+# Simultaneous transit at VideoTime(0, 17, 22) Control tower base and Embankment inside corner, est. (-23.011606,-47.124922)
+Embankment inside corner: https://www.google.com/maps/@-23.011606,-47.124922,61m/data=!3m1!1e3?hl=en
 
 # Transit at 00:23::08
 Chequer board hut: https://www.google.com/maps/@-23.0137084,-47.1237547,98m/data=!3m1!1e3
+
+# See VideoTime(0, 26, 5) for the angle:
+# VideoTime(0, 26, 17) Far factory with cream stripe on roof (-23.017518,-47.126642) and:
+# Left edge of sign ALUGAM-SE Left (-23.012971,-47.117859)
+# Factory cream stripe -> ALUGAM-SE Left VideoTime(0, 26, 17)
+Factory cream stripe: https://www.google.com/maps/@-23.017518,-47.126642,98m/data=!3m1!1e3
+ALUGAM-SE Left: https://www.google.com/maps/@-23.012971,-47.117859,98m/data=!3m1!1e3
 
 Factory extreme left: https://www.google.com/maps/@-23.0147028,-47.120441,55m/data=!3m1!1e3
 
@@ -833,17 +848,46 @@ FullTransitPoint = collections.namedtuple('FullTransitPoint', 'label, xy')
 FullTransitLine = collections.namedtuple('FullTransitLine', 'frm, to, time')
 
 # Transit lines that are simultaneous
+# TODO: Add these transit lines
+# VideoTime(0, 13, 00) Light Stand (which one?) and fence break with hut (-23.010070,-47.127441)
+# VideoTime(0, 16, 29) Light Stand (which one?) and embankment outside corner(-23.010615,-47.124007)
+
+
 GOOGLE_EARTH_FULL_TRANSITS = (
+    # Tower 1 to Fence Break 1 at VideoTime(0, 2, 12)
     FullTransitLine(
         FullTransitPoint(
-            'Tower 8',
-            google_earth_lat_long_to_xy('Tower 8')
+            'Tower 1',
+            google_earth_lat_long_to_xy('Tower 1')
         ),
         FullTransitPoint(
-            'Concrete block hut',
-            google_earth_lat_long_to_xy('Concrete block hut')
+            'Fence Break 1',
+            google_earth_lat_long_to_xy('Fence Break 1')
         ),
-        VideoTime(0, 7, 17),
+        VideoTime(0, 2, 12),
+    ),
+    # FullTransitLine(
+    #     FullTransitPoint(
+    #         'Tower 8',
+    #         google_earth_lat_long_to_xy('Tower 8')
+    #     ),
+    #     FullTransitPoint(
+    #         'Concrete block hut',
+    #         google_earth_lat_long_to_xy('Concrete block hut')
+    #     ),
+    #     VideoTime(0, 7, 17),
+    # ),
+    # Simultaneous transit at VideoTime(0, 17, 22) Control tower base and Embankment inside corner, est. (-23.011606,-47.124922)
+    FullTransitLine(
+        FullTransitPoint(
+            'Control tower base',
+            google_earth_lat_long_to_xy('Control tower base')
+        ),
+        FullTransitPoint(
+            'Embankment inside corner',
+            google_earth_lat_long_to_xy('Embankment inside corner')
+        ),
+        VideoTime(0, 17, 22),
     ),
     FullTransitLine(
         FullTransitPoint(
@@ -851,10 +895,22 @@ GOOGLE_EARTH_FULL_TRANSITS = (
             google_earth_lat_long_to_xy('Trees right of Fedex')
         ),
         FullTransitPoint(
-            'Concrete block hut',
+            'Factory interior corner',
             google_earth_lat_long_to_xy('Factory interior corner')
         ),
         VideoTime(0, 24, 26),
+    ),
+    # Factory cream stripe -> ALUGAM-SE Left VideoTime(0, 26, 17)
+    FullTransitLine(
+        FullTransitPoint(
+            'Factory cream stripe',
+            google_earth_lat_long_to_xy('Factory cream stripe')
+        ),
+        FullTransitPoint(
+            'ALUGAM-SE Left',
+            google_earth_lat_long_to_xy('ALUGAM-SE Left')
+        ),
+        VideoTime(0, 26, 17),
     ),
     FullTransitLine(
         FullTransitPoint(
@@ -991,7 +1047,7 @@ def print_full_transits():
     print()
     crossing_x = []
     crossing_y = []
-    for i, j in itertools.combinations(range(len(GOOGLE_EARTH_FULL_TRANSITS)), 2):
+    for num, (i, j) in enumerate(itertools.combinations(range(len(GOOGLE_EARTH_FULL_TRANSITS)), 2)):
         transit1: FullTransitLine = GOOGLE_EARTH_FULL_TRANSITS[i]
         transit2: FullTransitLine = GOOGLE_EARTH_FULL_TRANSITS[j]
         crossing = video_utils.intersect_two_lines(
@@ -1000,7 +1056,8 @@ def print_full_transits():
         crossing_x.append(crossing.x)
         crossing_y.append(crossing.y)
         print(
-            'Full transit crossing {:8.3f} "{}"->"{}" and  "{}"->"{}"'.format(
+            '[{:2d}] Full transit crossing {:8.3f} "{}"->"{}" and  "{}"->"{}"'.format(
+                num,
                 crossing,
                 transit1.frm.label, transit1.to.label,
                 transit2.frm.label, transit2.to.label,

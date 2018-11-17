@@ -31,7 +31,7 @@ set datafile missing "NaN"
 set terminal svg size 800,600
 
 set arrow from 0,0 to 3240,0 nohead lw 20 lc rgb "#C0C0C0"
-set arrow from 73,414 to 3448,-763 lt -1 lw 0.75 nohead
+set arrow from 73,414 to 3448,-763 lc rgb "#0000FF" lw 0.75 nohead
 set label "Tower 1" at 47.8,438.7 right font ",8" rotate by 60
 set arrow from 118,413 to 3448,-763 lt -1 lw 0.75 nohead
 set label "Tower 2" at 93.5,438.4 right font ",8" rotate by 60
@@ -45,9 +45,9 @@ set arrow from 302,411 to 3448,-763 lt -1 lw 0.75 nohead
 set label "Tower 6" at 276.5,436.5 right font ",8" rotate by 60
 set arrow from 76,705 to 3448,-763 lt -1 lw 0.75 nohead
 set label "Tower 7" at 50.6,729.7 right font ",8" rotate by 60
-set arrow from 1579,0 to 3448,-763 lc rgb "#0000FF" lw 0.75 nohead
+set arrow from 1579,0 to 3448,-763 lt -1 lw 0.75 nohead
 set label "Concrete block hut" at 1554.4,25.0 right font ",8" rotate by 60
-set arrow from 121,706 to 3448,-763 lc rgb "#0000FF" lw 0.75 nohead
+set arrow from 121,706 to 3448,-763 lt -1 lw 0.75 nohead
 set label "Tower 8" at 96.2,730.9 right font ",8" rotate by 60
 set arrow from 167,706 to 3448,-763 lt -1 lw 0.75 nohead
 set label "Tower 9" at 142.1,731.4 right font ",8" rotate by 60
@@ -71,14 +71,14 @@ set arrow from 318,938 to 3448,-763 lt -1 lw 0.75 nohead
 set label "Tower 18" at 293.2,963.3 right font ",8" rotate by 60
 set arrow from 362,939 to 3448,-763 lt -1 lw 0.75 nohead
 set label "Tower 19" at 337.2,963.8 right font ",8" rotate by 60
-set arrow from 951,983 to 3448,-763 lt -1 lw 0.75 nohead
+set arrow from 951,983 to 3448,-763 lc rgb "#0000FF" lw 0.75 nohead
 set label "Control tower base" at 925.9,1007.6 right font ",8" rotate by 60
 set arrow from 2809,0 to 3448,-763 lt -1 lw 0.75 nohead
 set label "Chequer board hut" at 2783.8,25.0 right font ",8" rotate by 60
-set arrow from 2937,0 to 3448,-763 lt -1 lw 0.75 nohead
+set arrow from 2937,0 to 3448,-763 lc rgb "#0000FF" lw 0.75 nohead
 set label "Factory interior corner" at 2912.1,25.0 right font ",8" rotate by 60
-set arrow from 2720,427 to 3448,-763 lc rgb "#0000FF" lw 0.75 nohead
-set label "Trees right of Fedex" at 2694.6,452.4 right font ",8" rotate by 60
+set arrow from 2724,382 to 3448,-763 lc rgb "#0000FF" lw 0.75 nohead
+set label "Trees right of Fedex" at 2698.6,407.3 right font ",8" rotate by 60
 set arrow from 2746,385 to 3448,-763 lt -1 lw 0.75 nohead
 set label "Fedex right" at 2721.2,409.8 right font ",8" rotate by 60
 set arrow from 2765,384 to 3448,-763 lt -1 lw 0.75 nohead

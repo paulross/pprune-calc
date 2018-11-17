@@ -190,17 +190,29 @@
 	<g transform="translate(427.6,31.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
 		<text>Full Transits to Observer</text>
 	</g>
-	<g transform="translate(93.6,468.4)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
-		<text>Tower 8</text>
+	<g transform="translate(84.5,411.4)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Tower 1</text>
 	</g>
-	<g transform="translate(473.5,285.5)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
-		<text>Concrete block hut</text>
+	<g transform="translate(494.5,260.8)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Fence Break 1</text>
 	</g>
-	<g transform="translate(581.5,414.0)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+	<g transform="translate(249.4,522.5)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Control tower base</text>
+	</g>
+	<g transform="translate(573.5,284.4)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Embankment inside corner</text>
+	</g>
+	<g transform="translate(582.3,405.2)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
 		<text>Trees right of Fedex</text>
 	</g>
 	<g transform="translate(667.1,261.1)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
-		<text>Concrete block hut</text>
+		<text>Factory interior corner</text>
+	</g>
+	<g transform="translate(622.5,406.6)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>Factory cream stripe</text>
+	</g>
+	<g transform="translate(698.4,221.2)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
+		<text>ALUGAM-SE Left</text>
 	</g>
 	<g transform="translate(638.5,489.3)" style="stroke:none; fill:black; font-family:Arial; font-size:8.00pt; text-anchor:end">
 		<text>Tall radio tower</text>
@@ -212,7 +224,8 @@
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:20.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<path stroke='rgb(192, 192, 192)'  d='M80.2,327.5 L688.6,327.5  h0.01'/></g>
 <g style="fill:none; color:black; stroke:rgb(192, 192, 192); stroke-width:0.75; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='rgb(  0,   0, 255)'  d='M102.9,465.4 L765.4,146.5 M591.0,410.9 L746.5,133.2 M647.9,486.3 L736.7,130.5  h0.01'/></g>
+	<path stroke='rgb(  0,   0, 255)'  d='M93.9,408.4 L771.1,159.8 M258.8,519.5 L764.5,148.0 M591.7,402.2 L749.1,134.8 M631.9,403.5 L742.9,132.2 
+		M647.9,486.3 L736.7,130.5  h0.01'/></g>
 <g style="fill:none; color:black; stroke:rgb(  0,   0, 255); stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 </g>
 	<g id="gnuplot_plot_1" ><title>gnuplot_plot_1</title>
@@ -220,10 +233,14 @@
 	<g transform="translate(698.9,78.8)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text>Transit points</text>
 	</g>
-	<use xlink:href='#gpPt0' transform='translate(103.0,465.4) scale(6.75)'/>
-	<use xlink:href='#gpPt0' transform='translate(482.9,282.5) scale(6.75)'/>
-	<use xlink:href='#gpPt0' transform='translate(590.9,411.0) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(93.9,408.4) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(503.9,257.8) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(258.8,519.5) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(582.8,281.4) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(591.6,402.2) scale(6.75)'/>
 	<use xlink:href='#gpPt0' transform='translate(676.5,258.1) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(631.9,403.6) scale(6.75)'/>
+	<use xlink:href='#gpPt0' transform='translate(707.8,218.2) scale(6.75)'/>
 	<use xlink:href='#gpPt0' transform='translate(647.9,486.3) scale(6.75)'/>
 	<use xlink:href='#gpPt0' transform='translate(694.3,300.1) scale(6.75)'/>
 	<use xlink:href='#gpPt0' transform='translate(732.8,74.3) scale(6.75)'/>
@@ -234,10 +251,14 @@
 	<g transform="translate(698.9,101.3)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text>Runway intersection</text>
 	</g>
-	<use xlink:href='#gpPt1' transform='translate(403.2,327.5) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(403.2,327.5) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(640.0,327.5) scale(4.50)'/>
-	<use xlink:href='#gpPt1' transform='translate(640.0,327.5) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(316.7,327.5) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(316.7,327.5) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(522.8,327.5) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(522.8,327.5) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(637.1,327.5) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(637.1,327.5) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(664.3,327.5) scale(4.50)'/>
+	<use xlink:href='#gpPt1' transform='translate(664.3,327.5) scale(4.50)'/>
 	<use xlink:href='#gpPt1' transform='translate(689.1,327.5) scale(4.50)'/>
 	<use xlink:href='#gpPt1' transform='translate(689.1,327.5) scale(4.50)'/>
 	<use xlink:href='#gpPt1' transform='translate(732.8,96.8) scale(4.50)'/>

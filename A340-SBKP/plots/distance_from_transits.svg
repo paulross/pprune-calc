@@ -224,8 +224,8 @@
 	<g transform="translate(568.6,251.9) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
 		<text>Factory interior corner t=24.6s ∆d=-54</text>
 	</g>
-	<g transform="translate(568.6,209.1) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
-		<text>Trees right of Fedex t=24.6s ∆d=-10</text>
+	<g transform="translate(568.6,224.4) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
+		<text>Trees right of Fedex t=24.6s ∆d=-25</text>
 	</g>
 	<g transform="translate(572.7,225.6) rotate(-40)" style="stroke:none; fill:black; font-family:Arial; font-size:6.00pt; text-anchor:end">
 		<text>Fedex right t=24.8s ∆d=-27</text>
@@ -303,7 +303,7 @@
 	<use xlink:href='#gpPt1' transform='translate(427.7,226.4) scale(5.62)'/>
 	<use xlink:href='#gpPt1' transform='translate(540.3,232.5) scale(5.62)'/>
 	<use xlink:href='#gpPt1' transform='translate(572.5,241.8) scale(5.62)'/>
-	<use xlink:href='#gpPt1' transform='translate(572.5,198.9) scale(5.62)'/>
+	<use xlink:href='#gpPt1' transform='translate(572.5,214.3) scale(5.62)'/>
 	<use xlink:href='#gpPt1' transform='translate(576.5,215.5) scale(5.62)'/>
 	<use xlink:href='#gpPt1' transform='translate(580.5,226.2) scale(5.62)'/>
 	<use xlink:href='#gpPt1' transform='translate(618.7,229.5) scale(5.62)'/>

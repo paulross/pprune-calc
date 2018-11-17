@@ -307,6 +307,7 @@ reset
 
 
 def gnuplot_observer_xy(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
+    # FIXME: This is relative to video start not runway start.
     notes = [
         '"{}"'.format('Estimated x/y of observer.'),
         'Columns:',
@@ -359,7 +360,7 @@ def gnuplot_observer_xy(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
         ignore_first_n=plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS,
         t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
     )
-    return [
+    ret = [
         'set title "Observers Position [{:d} observations]"'.format(len(observations[1])),
         'set label "X={x_mean:.0f} ±{x_err:.0f}m Y={y_mean:.0f} ±{y_err:.0f} m" at {x:.0f},{y:.0f} center font ",14"'.format(
             x_mean=x_mean,
@@ -373,7 +374,8 @@ def gnuplot_observer_xy(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
             x_mean-40, y_mean+45-8, x_mean, y_mean,
         ),
     ]
-
+    ret.extend(plot_common.full_transit_labels_and_arrows())
+    return ret
 
 def gnuplot_observer_xy_plt() -> str:
     return """# set logscale x

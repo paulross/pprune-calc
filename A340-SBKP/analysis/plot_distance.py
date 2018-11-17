@@ -3,15 +3,12 @@ import typing
 
 import numpy as np
 
-# from analysis.plot_common import get_gs_fits, get_distances_min_mid_max, gnuplot_write_arrays
-# from analysis.plot_constants import OBSERVER_XY_IGNORE_N_FIRST_BEARINGS, OBSERVER_XY_MINIMUM_BASELINE, OBSERVER_XY_TIME_RANGE
-
-
-from analysis import plot_common, video_data, video_analysis, plot_constants, video_utils
+from analysis import plot_common
 from analysis import plot_constants
 from analysis import video_analysis
 from analysis import video_data
-from analysis.plot_common import get_gs_fits
+from analysis import video_utils
+
 
 def get_distances_min_mid_max(offset_distance_at_t: float) -> typing.Tuple[np.ndarray]:
     """Returns a tuple of three np.ndarray of (time, distance) corresponding to the the
@@ -20,7 +17,7 @@ def get_distances_min_mid_max(offset_distance_at_t: float) -> typing.Tuple[np.nd
     If offset_distance_at_t is non-zero an offset wiil be applied that is the
     runway length - the distance at that offset time.
     """
-    gs_fits = get_gs_fits()
+    gs_fits = plot_common.get_gs_fits()
     three_dist_arrays = [] # Three different fits: -10, 0, +10 knots
     if offset_distance_at_t != 0.0:
         # Offsets of: [3240 - 1919, 3240 - 2058, 3240 - 2197,]
@@ -308,7 +305,7 @@ def gnuplot_distance_from_transits(stream: typing.TextIO=sys.stdout) -> typing.L
 
     # Get the min/mid/max ground speed fits
     offset_distance_at_t = video_data.TIME_VIDEO_END_ASPHALT.time
-    gs_fits = get_gs_fits()
+    gs_fits = plot_common.get_gs_fits()
     offsets = [
         video_data.RUNWAY_LEN_M - video_analysis.ground_speed_integral(0, offset_distance_at_t, gs_fit)
         for gs_fit in gs_fits

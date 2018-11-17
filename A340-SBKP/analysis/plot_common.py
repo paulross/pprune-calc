@@ -5,7 +5,7 @@ import typing
 
 import numpy as np
 
-from analysis import plot_constants
+from analysis import plot_constants, video_data, video_utils
 from analysis import video_analysis
 
 
@@ -116,3 +116,36 @@ def observer_xy():
     # Google earth
     # observer_xy_start_runway = (3457.9, -655.5)
     return observer_xy_start_runway
+
+
+def full_transit_labels_and_arrows():
+    ret = []
+    observer = video_utils.XY(*observer_xy())
+    for transit_line in video_data.GOOGLE_EARTH_FULL_TRANSITS:
+        # Compute a position past the observer
+        end_point = video_utils.transit_line_past_observer(
+            transit_line.frm.xy, transit_line.to.xy, observer, 250.0
+        )
+        ret.append(
+            'set arrow from {x0:.0f},{y0:.0f} to {x1:.0f},{y1:.0f} nohead lw 0.75 lc rgb "#0000FF"'.format(
+                x0=transit_line.frm.xy.x,
+                y0=transit_line.frm.xy.y,
+                x1=end_point.x,
+                y1=end_point.y,
+            )
+        )
+        ret.append(
+            'set label "{label:}" at {x:.1f},{y:.1f} right font ",8" rotate by 0'.format(
+                label=transit_line.frm.label,
+                x=transit_line.frm.xy.x - 50,
+                y=transit_line.frm.xy.y,
+            )
+        )
+        ret.append(
+            'set label "{label:}" at {x:.1f},{y:.1f} right font ",8" rotate by 0'.format(
+                label=transit_line.to.label,
+                x=transit_line.to.xy.x - 50,
+                y=transit_line.to.xy.y,
+            )
+        )
+    return ret

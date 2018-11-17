@@ -48,7 +48,7 @@ set label "Tower 19 t=16.2s ∆d=-236" at 16.2,-235.7 right font ",6" rotate by 
 set label "Control tower base t=17.4s ∆d=-38" at 17.4,-37.9 right font ",6" rotate by 40
 set label "Chequer board hut t=23.0s ∆d=-44" at 23.0,-44.2 right font ",6" rotate by 40
 set label "Factory interior corner t=24.6s ∆d=-54" at 24.6,-53.8 right font ",6" rotate by 40
-set label "Trees right of Fedex t=24.6s ∆d=-10" at 24.6,-9.7 right font ",6" rotate by 40
+set label "Trees right of Fedex t=24.6s ∆d=-25" at 24.6,-25.4 right font ",6" rotate by 40
 set label "Fedex right t=24.8s ∆d=-27" at 24.8,-26.7 right font ",6" rotate by 40
 set label "Fedex left t=25.1s ∆d=-38" at 25.1,-37.8 right font ",6" rotate by 40
 set label "Factory extreme left t=26.9s ∆d=-41" at 26.9,-41.1 right font ",6" rotate by 40
