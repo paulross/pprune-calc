@@ -135,14 +135,14 @@ def full_transit_labels_and_arrows():
             )
         )
         ret.append(
-            'set label "{label:}" at {x:.1f},{y:.1f} right font ",8" rotate by 0'.format(
+            'set label "{label:}" at {x:.1f},{y:.1f} right font ",8" rotate by -30'.format(
                 label=transit_line.frm.label,
                 x=transit_line.frm.xy.x - 50,
                 y=transit_line.frm.xy.y,
             )
         )
         ret.append(
-            'set label "{label:}" at {x:.1f},{y:.1f} right font ",8" rotate by 0'.format(
+            'set label "{label:}" at {x:.1f},{y:.1f} right font ",8" rotate by -30'.format(
                 label=transit_line.to.label,
                 x=transit_line.to.xy.x - 50,
                 y=transit_line.to.xy.y,

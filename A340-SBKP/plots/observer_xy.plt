@@ -33,20 +33,20 @@ set title "Observers Position [153 observations]"
 set label "X=2266 ±13m Y=-763 ±12 m" at 2216,-718 center font ",14"
 set arrow from 2226,-726 to 2266,-763 lt -1 lw 2 empty
 set arrow from 73,414 to 3679,-859 nohead lw 0.75 lc rgb "#0000FF"
-set label "Tower 1" at 22.8,413.7 right font ",8" rotate by 0
-set label "Fence Break 1" at 2206.5,-357.1 right font ",8" rotate by 0
+set label "Tower 1" at 22.8,413.7 right font ",8" rotate by -30
+set label "Fence Break 1" at 2206.5,-357.1 right font ",8" rotate by -30
 set arrow from 951,983 to 3644,-919 nohead lw 0.75 lc rgb "#0000FF"
-set label "Control tower base" at 900.9,982.6 right font ",8" rotate by 0
-set label "Embankment inside corner" at 2626.7,-236.3 right font ",8" rotate by 0
+set label "Control tower base" at 900.9,982.6 right font ",8" rotate by -30
+set label "Embankment inside corner" at 2626.7,-236.3 right font ",8" rotate by -30
 set arrow from 2724,382 to 3562,-987 nohead lw 0.75 lc rgb "#0000FF"
-set label "Trees right of Fedex" at 2673.6,382.3 right font ",8" rotate by 0
-set label "Factory interior corner" at 3125.4,-355.7 right font ",8" rotate by 0
+set label "Trees right of Fedex" at 2673.6,382.3 right font ",8" rotate by -30
+set label "Factory interior corner" at 3125.4,-355.7 right font ",8" rotate by -30
 set arrow from 2938,389 to 3529,-1000 nohead lw 0.75 lc rgb "#0000FF"
-set label "Factory cream stripe" at 2888.0,389.5 right font ",8" rotate by 0
-set label "ALUGAM-SE Left" at 3292.0,-559.9 right font ",8" rotate by 0
+set label "Factory cream stripe" at 2888.0,389.5 right font ",8" rotate by -30
+set label "ALUGAM-SE Left" at 3292.0,-559.9 right font ",8" rotate by -30
 set arrow from 3023,813 to 3496,-1009 nohead lw 0.75 lc rgb "#0000FF"
-set label "Tall radio tower" at 2973.3,812.6 right font ",8" rotate by 0
-set label "Building corner" at 3220.4,-140.3 right font ",8" rotate by 0
+set label "Tall radio tower" at 2973.3,812.6 right font ",8" rotate by -30
+set label "Building corner" at 3220.4,-140.3 right font ",8" rotate by -30
 
 set output "observer_xy.svg"
 
