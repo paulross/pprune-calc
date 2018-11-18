@@ -105,6 +105,7 @@ def observer_xy_with_std():
     )
 
 def x_offset():
+    """The x offset at t=0 from the runway start."""
     # TODO: Remove hard-coded 1182
     return 1182
 

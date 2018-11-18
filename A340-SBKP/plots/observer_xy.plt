@@ -5,7 +5,7 @@ set xlabel "X (m)"
 # set xtics 100
 set xtics autofreq
 set mxtics 2
-set xrange [2150:2350]
+set xrange [3300:3550]
 #set format x ""
 
 # set logscale y
@@ -30,8 +30,8 @@ set datafile missing "NaN"
 set terminal svg size 600,600
 
 set title "Observers Position [153 observations]"
-set label "X=2266 ±13m Y=-763 ±12 m" at 2216,-718 center font ",14"
-set arrow from 2226,-726 to 2266,-763 lt -1 lw 2 empty
+set label "X=3448 ±13m Y=-763 ±12 m" at 3398,-718 center font ",14"
+set arrow from 3408,-726 to 3448,-763 lt -1 lw 2 empty
 set arrow from 73,414 to 3679,-859 nohead lw 0.75 lc rgb "#0000FF"
 set label "Tower 1" at 22.8,413.7 right font ",8" rotate by -30
 set label "Fence Break 1" at 2206.5,-357.1 right font ",8" rotate by -30

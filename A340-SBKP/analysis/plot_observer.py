@@ -329,8 +329,11 @@ def gnuplot_observer_xy(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
             t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
         )[0] for error_direction in list(video_data.ErrorDirection)
     ]
+    for obs in observations:
+        obs[:,0] += plot_common.x_offset()
     plot_common.gnuplot_write_arrays(stream, *observations)
     # Print header twice, once for x, once for y.
+    print('TRACE: gnuplot_observer_xy()')
     for i in range(2):
         axis_name = 'X' if i == 0 else 'Y'
         print('{}: {:>8s} {:>8s} {:>8s} {:>8s} {:>8s} {:>8s} {:>8s}  '.format(
@@ -360,6 +363,7 @@ def gnuplot_observer_xy(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
         ignore_first_n=plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS,
         t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
     )
+    x_mean += plot_common.x_offset()
     ret = [
         'set title "Observers Position [{:d} observations]"'.format(len(observations[1])),
         'set label "X={x_mean:.0f} ±{x_err:.0f}m Y={y_mean:.0f} ±{y_err:.0f} m" at {x:.0f},{y:.0f} center font ",14"'.format(
@@ -385,7 +389,7 @@ set xlabel "X (m)"
 # set xtics 100
 set xtics autofreq
 set mxtics 2
-set xrange [2150:2350]
+set xrange [3300:3550]
 #set format x ""
 
 # set logscale y
