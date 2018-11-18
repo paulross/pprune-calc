@@ -73,6 +73,7 @@ def gnuplot_aspect(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
 
 def gnuplot_aspect_plt() -> str:
     return """# set logscale x
+set colorsequence classic
 set grid
 set title "Bearings to Observer."
 set xlabel "Time (s)"

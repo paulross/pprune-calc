@@ -10,8 +10,8 @@ from analysis import video_utils
 @pytest.mark.parametrize(
     'm, k',
     (
-        (1, 1.942602569415665),
-        (5, 9.713012847078325),
+        (1, 1.9438444924406046),
+        (5, 9.719222462203023),
     ),
 )
 def test_m_p_s_to_knots(m, k):
@@ -21,7 +21,7 @@ def test_m_p_s_to_knots(m, k):
 @pytest.mark.parametrize(
     'm, k',
     (
-        (1, 1.942602569415665),
+        (1, 1.9438444924406046),
     ),
 )
 def test_knots_to_m_p_s(m, k):
@@ -109,12 +109,12 @@ def test_aspect_intersection(d0, b0, d1, b1, expected_d, expected_y):
         (
             0, 0, 1, 1,
             0, 1, 1, 1,
-            (1, 1),
+            video_utils.XY(1, 1),
         ),
         (
             0, 0, 2, 2,
             8, 0, 6, 2,
-            (4, 4),
+            video_utils.XY(4, 4),
         ),
         # # Full transit from Tower 8              to Concrete block hut  : (125.279980944823, 707.8758276857575) (2146.0969961863984, -231.2907541223004)
         # # Full transit from Trees right of Fedex to Factory interior corner: (2452.9657502621976, 384.50753297703915) (3178.040481477931, -356.6795624918748)
@@ -150,8 +150,10 @@ def test_aspect_intersection(d0, b0, d1, b1, expected_d, expected_y):
     ),
 )
 def test_intersect_two_lines(x00, y00, x01, y01, x10, y10, x11, y11, expected):
-    result = video_utils.intersect_two_lines(x00, y00, x01, y01, x10, y10, x11, y11)
-    # print('XXXX', result)
+    result = video_utils.intersect_two_lines(
+        video_utils.XY(x00, y00), video_utils.XY(x01, y01),
+        video_utils.XY(x10, y10), video_utils.XY(x11, y11),
+    )
     assert expected == result
 
 
@@ -185,10 +187,10 @@ def test_intersect_two_lines(x00, y00, x01, y01, x10, y10, x11, y11, expected):
     )
 )
 def test_google_earth_url_to_lat_long(note_url, exp_note, exp_lat, exp_lon):
-    note, lat, lon = video_utils.google_earth_url_to_lat_long(note_url)
+    note, lat_long = video_utils.google_earth_url_to_lat_long(note_url)
     assert exp_note == note
-    assert exp_lat == lat, 'Difference = {}'.format(lat - exp_lat)
-    assert exp_lon == lon, 'Difference = {}'.format(lon - exp_lon)
+    assert exp_lat == lat_long.lat, 'Difference = {}'.format(lat_long.lat - exp_lat)
+    assert exp_lon == lat_long.long, 'Difference = {}'.format(lat_long.long - exp_lon)
 
 
 @pytest.mark.parametrize(
@@ -211,7 +213,10 @@ def test_google_earth_url_to_lat_long(note_url, exp_note, exp_lat, exp_lon):
     )
 )
 def test_distance_lat_long(lat1, lon1, lat2, lon2, expected_distance):
-    distance = video_utils.distance_lat_long(lat1, lon1, lat2, lon2)
+    distance = video_utils.distance_lat_long(
+        video_utils.LatLong(lat1, lon1),
+        video_utils.LatLong(lat2, lon2),
+    )
     assert expected_distance == distance, 'Difference = {}'.format(distance - expected_distance)
 
 
@@ -241,7 +246,10 @@ def test_distance_lat_long(lat1, lon1, lat2, lon2, expected_distance):
     )
 )
 def test_bearing_lat_long(lat1, lon1, lat2, lon2, expected_bearing):
-    distance = video_utils.bearing_lat_long(lat1, lon1, lat2, lon2)
+    distance = video_utils.bearing_lat_long(
+        video_utils.LatLong(lat1, lon1),
+        video_utils.LatLong(lat2, lon2),
+    )
     assert math.isclose(expected_bearing, distance, abs_tol=1e-6), 'Difference = {}'.format(distance - expected_bearing)
 
 
@@ -265,9 +273,19 @@ def test_bearing_lat_long(lat1, lon1, lat2, lon2, expected_bearing):
     )
 )
 def test_lat_long_bearing_distance_to_lat_long(lat, lon, exp_lat, exp_lon):
-    distance = video_utils.distance_lat_long(lat, lon, exp_lat, exp_lon)
-    bearing = video_utils.bearing_lat_long(lat, lon, exp_lat, exp_lon)
-    act_lat, act_lon = video_utils.lat_long_bearing_distance_to_lat_long(lat, lon, distance, bearing)
+    distance = video_utils.distance_lat_long(
+        video_utils.LatLong(lat, lon),
+        video_utils.LatLong(exp_lat, exp_lon),
+    )
+    bearing = video_utils.bearing_lat_long(
+        video_utils.LatLong(lat, lon),
+        video_utils.LatLong(exp_lat, exp_lon),
+    )
+    act_lat, act_lon = video_utils.lat_long_bearing_distance_to_lat_long(
+        video_utils.LatLong(lat, lon),
+        distance,
+        bearing,
+    )
     assert exp_lon == act_lon, '{} != {}'.format(exp_lon, act_lon)
     # assert exp_lat == act_lat
     # assert (exp_lat, exp_lon) == (act_lat, act_lon), str((act_lat, act_lon))
@@ -276,6 +294,10 @@ def test_lat_long_bearing_distance_to_lat_long(lat, lon, exp_lat, exp_lon):
 @pytest.mark.parametrize(
     'latx, lonx, bearing_x, lat, lon, exp_x, exp_y',
     (
+        # Threshold 15: https://www.google.com/maps/@-22.9985032,-47.1469772,61m/data=!3m1!1e3?hl=en
+        # End asphalt 15: https://www.google.com/maps/@-23.0163963,-47.1219874,63m/data=!3m1!1e3?hl=en
+        # Threshold 33: https://www.google.com/maps/@-23.015869,-47.1227499,61m/data=!3m1!1e3?hl=en
+        # GOOGLE_EARTH_X_AXIS 126.90137763277201
         (
             # Threshold 15 to end asphalt 15
             # Was, with haversine calculation
@@ -293,7 +315,12 @@ def test_lat_long_bearing_distance_to_lat_long(lat, lon, exp_lat, exp_lon):
     )
 )
 def test_lat_long_to_xy(latx, lonx, bearing_x, lat, lon, exp_x, exp_y):
-    x, y = video_utils.lat_long_to_xy(latx, lonx, bearing_x, lat, lon)
+    x, y = video_utils.lat_long_to_xy(
+        video_utils.LatLong(latx, lonx),
+        bearing_x,
+        video_utils.LatLong(lat, lon),
+    )
+    print('TRACE:', x, y)
     assert math.isclose(x, exp_x, abs_tol=1e-6), 'Difference = {}'.format(x - exp_x)
     assert math.isclose(y, exp_y, abs_tol=1e-6), 'Difference = {}'.format(y - exp_y)
 
@@ -371,6 +398,52 @@ def test_transit_distance_to_x(px, py, ox, oy, expected):
 def test_transit_distance_to_x(px, py, ox, oy, p_err, o_err, expected):
     result = video_utils.transit_x_axis_error(px, py, ox, oy, p_err, o_err)
     assert expected == result
+
+
+@pytest.mark.parametrize(
+    'pt, distance, degrees, expected',
+    (
+        # Try variants of intial position unit move in direction 0
+        (video_utils.XY(0.0, 0.0), 1.0, 0.0, video_utils.XY(1.0, 0.0),),
+        (video_utils.XY(1.0, 0.0), 1.0, 0.0, video_utils.XY(2.0, 0.0),),
+        (video_utils.XY(0.0, 1.0), 1.0, 0.0, video_utils.XY(1.0, 1.0),),
+        (video_utils.XY(1.0, 1.0), 1.0, 0.0, video_utils.XY(2.0, 1.0),),
+        # Zero distance move in different directions
+        (video_utils.XY(0.0, 0.0), 0.0, 0.0, video_utils.XY(0.0, 0.0),),
+        (video_utils.XY(0.0, 0.0), 0.0, 90.0, video_utils.XY(0.0, 0.0),),
+        (video_utils.XY(0.0, 0.0), 0.0, 180.0, video_utils.XY(0.0, 0.0),),
+        (video_utils.XY(0.0, 0.0), 0.0, 270.0, video_utils.XY(0.0, 0.0),),
+        # Two times unit move
+        (video_utils.XY(0.0, 0.0), 2.0, 0.0, video_utils.XY(2.0, 0.0),),
+        # Unit move in different directions from (0, 0)
+        (video_utils.XY(0.0, 0.0), 1.0, 90.0, video_utils.XY(0.0, 1.0),),
+        (video_utils.XY(0.0, 0.0), 1.0, 180.0, video_utils.XY(-1.0, 0.0),),
+        (video_utils.XY(0.0, 0.0), 1.0, 270.0, video_utils.XY(0.0, -1.0),),
+    )
+)
+def test_move_point(pt, distance, degrees, expected):
+    result = video_utils.move_point(pt, distance, degrees)
+    assert expected == result
+
+
+@pytest.mark.parametrize(
+    'line_from, line_to, error, expected_from, expected_to, expected_bearing',
+    (
+        (
+            video_utils.XY(0.0, 0.0), video_utils.XY(8.0, 0.0), 1.0,
+            video_utils.XY(0.0, -1.0), video_utils.XY(8.0, 1.0), math.degrees(math.atan2(2, 8)),
+        ),
+        (
+            video_utils.XY(0.0, 0.0), video_utils.XY(8.0, 0.0), -1.0,
+            video_utils.XY(0.0, 1.0), video_utils.XY(8.0, -1.0), -math.degrees(math.atan2(2, 8)),
+        ),
+    )
+)
+def test_transit_point_with_error(line_from, line_to, error, expected_from, expected_to, expected_bearing):
+    new_from, new_to, new_bearing = video_utils.transit_point_with_error(line_from, line_to, error)
+    assert expected_from == new_from
+    assert expected_to == new_to
+    assert math.isclose(expected_bearing, new_bearing)
 
 
 if __name__ == '__main__':

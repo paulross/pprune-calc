@@ -1,4 +1,5 @@
 # set logscale x
+set colorsequence classic
 set grid
 set title "Bearings to Observer."
 set xlabel "Time (s)"

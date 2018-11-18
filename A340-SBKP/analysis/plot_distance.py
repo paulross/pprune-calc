@@ -4,50 +4,10 @@ import typing
 import numpy as np
 
 from analysis import plot_common
-from analysis import plot_constants
 from analysis import video_analysis
 from analysis import video_data
 from analysis import video_utils
-
-
-def get_distances_min_mid_max(offset_distance_at_t: float) -> typing.Tuple[np.ndarray]:
-    """Returns a tuple of three np.ndarray of (time, distance) corresponding to the the
-    -10, mid, +10 knot fits of ground speed.
-
-    If offset_distance_at_t is non-zero an offset wiil be applied that is the
-    runway length - the distance at that offset time.
-    """
-    gs_fits = plot_common.get_gs_fits()
-    three_dist_arrays = [] # Three different fits: -10, 0, +10 knots
-    if offset_distance_at_t != 0.0:
-        # Offsets of: [3240 - 1919, 3240 - 2058, 3240 - 2197,]
-        offsets = [
-            video_data.RUNWAY_LEN_M - video_analysis.ground_speed_integral(0, offset_distance_at_t, gs_fit)
-                for gs_fit in gs_fits
-        ]
-    else:
-        offsets = [0.0] * len(gs_fits)
-    for i, gs_fit in enumerate(gs_fits):
-        t = np.roots(list(reversed(gs_fit)))[-1]
-        times = []
-        while t < plot_constants.EXTRAPOLATED_RANGE.stop:
-            times.append(t)
-            t += 1
-        # Add as special cases: t=0, t=27+24/30 - end of asphalt, t=end.
-        for special_t in (
-                0.0,
-                video_data.TIME_VIDEO_NOSEWHEEL_OFF.time,
-                video_data.TIME_VIDEO_MAINWHEEL_OFF.time,
-                video_data.TIME_VIDEO_END_ASPHALT.time,
-                video_data.TIME_VIDEO_END.time,
-            ):
-            if special_t not in times:
-                times.append(special_t)
-        array = []
-        for t in sorted(times):
-            array.append((t, video_analysis.ground_speed_integral(0, t, gs_fit) + offsets[i]))
-        three_dist_arrays.append(np.array(array))
-    return tuple(three_dist_arrays)
+from analysis.plot_common import get_distances_min_mid_max
 
 
 def gnuplot_distance(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
@@ -63,7 +23,7 @@ def _gnuplot_distance(offset_distance_at_t: float,
                       stream: typing.TextIO=sys.stdout,
                       ) -> typing.List[str]:
     """
-    If offset_distance_at_t is non-zero an offset wiil be applied that is the
+    If offset_distance_at_t is non-zero an offset will be applied that is the
     runway length - the distance at that offset time.
     """
     three_dist_arrays = get_distances_min_mid_max(offset_distance_at_t)
@@ -252,6 +212,7 @@ def gnuplot_distance_runway_end_plt() -> str:
 
 def _gnuplot_distance_plt() -> str:
     return """# set logscale x
+set colorsequence classic
 set grid
 # set_title
 set xlabel "Video Time (s)"
@@ -293,8 +254,11 @@ def gnuplot_distance_from_transits(stream: typing.TextIO=sys.stdout) -> typing.L
     Creates the data that compares distance computed by integrating ground speed with
     transit data.
     """
+    print()
+    print('TRACE: Distance fit from transits:', video_analysis.distance_fit_from_transits())
+
     notes = [
-        'Distance of aircraft down the runway from integrating ground speed and transit lines.',
+        'Distance of aircraft down the runway from comparing integrated ground speed and transit lines.',
         'time x_transit(m) x_min(m) x_mid(m) x_max(m) x_transit(m)',
     ]
     if len(notes):
@@ -305,7 +269,7 @@ def gnuplot_distance_from_transits(stream: typing.TextIO=sys.stdout) -> typing.L
 
     # Get the min/mid/max ground speed fits
     offset_distance_at_t = video_data.TIME_VIDEO_END_ASPHALT.time
-    gs_fits = plot_common.get_gs_fits()
+    gs_fits = [plot_common.get_gs_fit(err) for err in video_data.ErrorDirection]
     offsets = [
         video_data.RUNWAY_LEN_M - video_analysis.ground_speed_integral(0, offset_distance_at_t, gs_fit)
         for gs_fit in gs_fits
@@ -327,11 +291,12 @@ def gnuplot_distance_from_transits(stream: typing.TextIO=sys.stdout) -> typing.L
             )
         )
         stream.write('\n')
+        d = event.distance - video_analysis.ground_speed_integral(0.0, event.time, gs_fits[1]) + 3 - plot_common.x_offset()
         result.append(
-            'set label "{label:} t={t:.1f}s ∆d={d:.0f}" at {t:.1f},{d:.1f} right font ",6" rotate by 40'.format(
+            'set label "{label:} t={t:.1f}s ∆d={d:.0f}" at {t:.1f},{d:.1f} right font ",6" rotate by -35'.format(
                 label=event.label,
-                t=event.time - 0.25,
-                d=event.distance - video_analysis.ground_speed_integral(0.0, event.time, gs_fits[1]) - 1182 - 10
+                t=event.time - 0.5,
+                d=d
             )
         )
     return result
@@ -339,6 +304,7 @@ def gnuplot_distance_from_transits(stream: typing.TextIO=sys.stdout) -> typing.L
 
 def gnuplot_distance_from_transits_plt() -> str:
     return """# set logscale x
+set colorsequence classic
 set grid
 set title "Distances down runway comparing estimates with transits."
 set xlabel "Video Time (s)"
@@ -348,7 +314,7 @@ set xtics
 
 # set logscale y
 set ylabel "Distance Compared to Mid Estimate (m)"
-# set yrange [-250:250]
+set yrange [-150:100]
 # set ytics 8,35,3
 # set logscale y2
 # set y2label "Bytes"
@@ -363,14 +329,61 @@ set terminal svg size 700,500           # choose the file format
 
 set output "{file_name}.svg"   # choose the output device
 #set key title "Window Length"
+set key box
 #  lw 2 pointsize 2
 
 {computed_data}
 
 # linespoints
-plot "{file_name}.dat" using 1:($3-$4) title "Mid estimate -10 knots" lt 1 lw 1.5 w lines, \\
+#plot "{file_name}.dat" using 1:($3-$4) title "Mid estimate -10 knots" lt 1 lw 1.5 w lines, \\
     "{file_name}.dat" using 1:($4-$4) title "Mid estimate" lt 2 lw 1.5 w lines, \\
     "{file_name}.dat" using 1:($5-$4) title "Mid estimate +10 knots" lt 3 lw 1.5 w lines, \\
     "{file_name}.dat" using 1:($2-$4) title "From transits" lt 2 lw 1.5 ps 1.25 w points
+plot "{file_name}.dat" using 1:($4-$4) title "Mid estimate" lt 2 lw 1.5 w lines, \\
+    "{file_name}.dat" using 1:($2-$4) title "From transits" lt 3 lw 1.5 ps 1.25 w points, \\
+    "{file_name}.dat" using 1:(0.5*($5-$4)) title "Mid estimate +5 knots" lt 3 lw 1.5 w lines, \\
+    "{file_name}.dat" using 1:(0.5*($5-$4)+25) title "Mid estimate +5 knots +25m" lt 1 lw 1.0 w lines, \\
+    "{file_name}.dat" using 1:(0.5*($5-$4)-25) title "Mid estimate +5 knots -25m" lt 1 lw 1.0 w lines
 reset
 """
+
+
+def markdown_table_aircraft_start() -> typing.Tuple[typing.List[str], str]:
+    """
+    Returns a markdown table and a title for the distance estimates at start of take off.
+    """
+    ret = [
+        '| Calculation | Video Time t (s) | Distance from start of Runway (m) | Distance from start of Runway at t=0 (m) |',
+        '| --- | --- | --- | --- |',
+    ]
+    labels = (
+        'Mid speed -10 knots',
+        'Mid speed',
+        'Mid speed +10 knots',
+    )
+    three_dist_arrays = get_distances_min_mid_max(video_data.TIME_VIDEO_END_ASPHALT.time)
+    # Time ranges for min/mid/max of start of take off
+    t_range = [arr[0][0] for arr in three_dist_arrays]
+    # Distance of start of take off from start of runway for min/mid/max
+    d_range = [arr[0][1] for arr in three_dist_arrays]
+    # Distance of start of video from start of runway for min/mid/max
+    d_range_video_start = [
+        video_utils.interpolate(arr[:, 0], arr[:, 1], 0.0) for arr in three_dist_arrays
+    ]
+    for label, arr, d_video_start in zip(labels, three_dist_arrays, d_range_video_start):
+        t, d = arr[0]
+        ret.append(
+            '| {} | {:.1f} | {:.0f} | {:.0f} |'.format(
+                label, t, d, d_video_start
+            )
+        )
+    ret.append(
+        '| **{}** | **{:.1f} ±{:.1f}** | **{:.0f} ±{:.0f}** | **{:.0f} ±{:.0f}** |'.format(
+            'Range and worst error',
+            t_range[1], max(abs(t_range[2] - t_range[1]), abs(t_range[0] - t_range[1])),
+            d_range[1], max(abs(d_range[2] - d_range[1]), abs(d_range[0] - d_range[1])),
+            d_range_video_start[1],
+            max(abs(d_range_video_start[2] - d_range_video_start[1]), abs(d_range_video_start[0] - d_range_video_start[1])),
+        )
+    )
+    return ret, 'Distance Estimates for the Start of Take off'

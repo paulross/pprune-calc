@@ -43,12 +43,8 @@ https://www.google.com/maps/@-23.0148861,-47.1181774,3a,75y,270h,90t/data=!3m6!1
 
 import collections
 import enum
-import itertools
 import math
-import pprint
 import typing
-
-import numpy as np
 
 from analysis import video_utils
 
@@ -84,9 +80,8 @@ ERROR_TIMESTAMP_FRAMES = 5.0
 ERROR_TIMESTAMP = ERROR_TIMESTAMP_FRAMES / FRAMES_PER_SECOND
 
 # Nose to tailcone in metres
-# Reference: https://en.wikipedia.org/wiki/Airbus_A340 A340-300
+# Reference: https://en.wikipedia.org/wiki/Airbus_A340
 AIRCRAFT_LENGTH = 63.6
-# TODO: Check this
 AIRCRAFT_SPAN = 60.3
 
 
@@ -112,6 +107,7 @@ def apply_min_mid_max_error(func: typing.Callable,
 
 
 class VideoTime(collections.namedtuple('VideoTime', 'min, sec, frame')):
+    """Class that represents a point in video time mm:ss:ff"""
     __slots__ = ()
 
     def __new__(cls, *args):
@@ -121,22 +117,23 @@ class VideoTime(collections.namedtuple('VideoTime', 'min, sec, frame')):
             raise ValueError('Minutes must be 0 <= minutes < 60 not {}'.format(args[0]))
         if not 0 <= args[1] < 60:
             raise ValueError('Seconds must be 0 <= seconds < 60 not {}'.format(args[1]))
-        if not 0 <= args[2] < 30:
-            raise ValueError('Frame must be 0 <= frame < 30 not {}'.format(args[2]))
+        if not 0 <= args[2] < FRAMES_PER_SECOND:
+            raise ValueError('Frame must be 0 <= frame < {} not {}'.format(FRAMES_PER_SECOND, args[2]))
         return super().__new__(cls, *args)
 
     @property
-    def time(self):
+    def time(self) -> float:
+        """Time in seconds as a float."""
         # Frame range is 0 <= f < 30
-        return self.min * 60.0 + self.sec + self.frame / 30.0
+        return self.min * 60.0 + self.sec + self.frame / FRAMES_PER_SECOND
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return self.time == other.time
 
-    def __lt__(self, other):
+    def __lt__(self, other) -> bool:
         return self.time < other.time
 
-    def __format__(self, format_spec):
+    def __format__(self, format_spec) -> str:
         if format_spec == '':
             format_spec = '02d'
         return 'VideoTime({min:{format_spec}}:{sec:{format_spec}}:{frame:{format_spec}})'.format(
@@ -236,6 +233,7 @@ class AircraftAspect(collections.namedtuple('AircraftAspect', 'video_time, angle
         return self.video_time.time < other.video_time.time
 
 
+#: Observed aspects where parts of the aircraft overlap.
 AIRCRAFT_ASPECTS: typing.Tuple[AircraftAspect] = (
     # Increase the first two values? They seem to be outliers.
     AircraftAspect(VideoTime(0, 1, 5), 360 - 18.8, 'Nose to LH front of number 3.'),
@@ -265,52 +263,56 @@ AIRCRAFT_ASPECTS: typing.Tuple[AircraftAspect] = (
 _ERROR_ASPECT_FROM_WING_TIPS_PX = 18
 
 
-# Measuring aspect from the relative separation of the wing tips compared to the aircraft length
-# span, length are in pixels
-# span is +ve if observer is ahead of the aircraft
-# length is +ve if the observer is to the right of the observer axis.
-# TODO: Write a test for the error calculation.
+#: Measuring aspect from the relative separation of the wing tips compared to the aircraft length
+#: Span, length are in pixels
+#: span is +ve if observer is ahead of the aircraft
+#: length is +ve if the observer is to the right of the observer axis.
 class AircraftAspectWingTips(collections.namedtuple('AircraftAspect', 'video_time, span, length, note')):
 
     @property
     def angle(self) -> float:
         """Return the aspect in degrees in the range 0 <= aspect < 360"""
-        return self._aspect(self.length, self.span)
+        return self._aspect(self.span, self.length)# % 360
 
-    def _aspect(self, length: float, span: float) -> float:
+    def _aspect(self, span: float, length: float) -> float:
         aspect = math.degrees(math.atan2(length / AIRCRAFT_LENGTH, span / AIRCRAFT_SPAN))
         return aspect % 360
 
     @property
     def error(self) -> float:
-        aspect = self.angle
+        aspect = self._aspect(self.span, self.length)
         errors = [
             self._aspect(
-                self.length + _ERROR_ASPECT_FROM_WING_TIPS_PX,
                 self.span + _ERROR_ASPECT_FROM_WING_TIPS_PX,
-            ),
-            self._aspect(
-                self.length - _ERROR_ASPECT_FROM_WING_TIPS_PX,
-                self.span - _ERROR_ASPECT_FROM_WING_TIPS_PX,
-            ),
-            self._aspect(
                 self.length + _ERROR_ASPECT_FROM_WING_TIPS_PX,
-                self.span - _ERROR_ASPECT_FROM_WING_TIPS_PX,
             ),
             self._aspect(
+                self.span - _ERROR_ASPECT_FROM_WING_TIPS_PX,
                 self.length - _ERROR_ASPECT_FROM_WING_TIPS_PX,
+            ),
+            self._aspect(
+                self.span - _ERROR_ASPECT_FROM_WING_TIPS_PX,
+                self.length + _ERROR_ASPECT_FROM_WING_TIPS_PX,
+            ),
+            self._aspect(
                 self.span + _ERROR_ASPECT_FROM_WING_TIPS_PX,
+                self.length - _ERROR_ASPECT_FROM_WING_TIPS_PX,
             ),
         ]
-        # WARN: Might be bogus near 0 degrees
-        diffs = [abs(e - aspect) for e in errors]
+        # Normalise to -180 <= d < +180
+        diffs = []
+        for err in errors:
+            d = (aspect - err) % 360
+            if d >= 180:
+                d = 360 - d
+            diffs.append(abs(d))
         result = max(diffs)
         return result
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return self.video_time.time == other.video_time.time
 
-    def __lt__(self, other):
+    def __lt__(self, other) -> bool:
         return self.video_time.time < other.video_time.time
 
 
@@ -395,14 +397,19 @@ ERROR_PITCH = 1.0
 
 
 class AircraftTransit(collections.namedtuple('AircraftTransit', 'video_from, video_to, note')):
-
+    """
+    Class that represents the passage of the aircraft past a fixed object such as a
+    lighting stand.
+    Constructed with the VideoTime of the nose passing the object and the VideoTime of the
+    tailcone passing the same object.
+    """
     @property
-    def time(self):
+    def time(self) -> float:
         """Time in seconds of mid point."""
         return (self.video_to.time + self.video_from.time) / 2.0
 
     @property
-    def dt(self):
+    def dt(self) -> float:
         """Delta time in seconds."""
         return self.video_to.time - self.video_from.time
 
@@ -415,7 +422,7 @@ class AircraftTransit(collections.namedtuple('AircraftTransit', 'video_from, vid
         return '{:02d}:{:02d}:{:02d}'.format(mins, secs, frms)
 
 
-# Nose to tailcone
+#: Observed transits of the aircraft passing a fixed object.
 AIRCRAFT_TRANSITS = (
     AircraftTransit(VideoTime(0, 0, 20), VideoTime(0, 1, 23), 'Near lamp post 1.'),
     AircraftTransit(VideoTime(0, 1, 27), VideoTime(0, 2, 29), 'Far floodlight number 1.'),
@@ -486,8 +493,6 @@ TRANSIT_REFERENCE_LENGTH = AIRCRAFT_LENGTH
 ERROR_TRANSIT = 1.0 / 30
 
 
-# Screenshots use to determine video magnification/field of view
-
 AircraftApparentLength = collections.namedtuple('AircraftApparentLength', 'video_time, length_px')
 
 
@@ -495,38 +500,39 @@ SCREENSHOT_WIDTH = 2448
 SCREENSHOT_HEIGHT = 1379
 
 
+#: Screenshots use to determine video magnification/field of view from ffmpeg per-second frames.
 AIRCRAFT_LENGTH_IN_PIXELS = (
-    AircraftApparentLength(VideoTime(0, 2, 0), 542),
-    AircraftApparentLength(VideoTime(0, 3, 0), 557),
-    AircraftApparentLength(VideoTime(0, 4, 0), 595),
-    AircraftApparentLength(VideoTime(0, 5, 0), 627),
-    AircraftApparentLength(VideoTime(0, 6, 0), 671),
-    AircraftApparentLength(VideoTime(0, 7, 0), 768),
-    AircraftApparentLength(VideoTime(0, 8, 0), 765),
-    AircraftApparentLength(VideoTime(0, 9, 0), 797),
-    AircraftApparentLength(VideoTime(0, 10, 0), 848),
-    AircraftApparentLength(VideoTime(0, 11, 0), 913),
-    AircraftApparentLength(VideoTime(0, 12, 0), 595),
-    AircraftApparentLength(VideoTime(0, 13, 0), 666),
-    AircraftApparentLength(VideoTime(0, 14, 0), 719),
-    AircraftApparentLength(VideoTime(0, 15, 0), 792),
-    AircraftApparentLength(VideoTime(0, 16, 0), 865),
-    AircraftApparentLength(VideoTime(0, 17, 0), 959),
-    AircraftApparentLength(VideoTime(0, 18, 0), 1063),
-    AircraftApparentLength(VideoTime(0, 19, 0), 1180),
-    AircraftApparentLength(VideoTime(0, 20, 0), 1300), # Tail obscured
-    AircraftApparentLength(VideoTime(0, 21, 0), 1448), # Tail obscured
-    AircraftApparentLength(VideoTime(0, 22, 0), 1631),
-    AircraftApparentLength(VideoTime(0, 23, 0), 1192),
-    AircraftApparentLength(VideoTime(0, 24, 0), 1313),
-    AircraftApparentLength(VideoTime(0, 25, 0), 1456),
-    AircraftApparentLength(VideoTime(0, 27, 0), 1738),
-    AircraftApparentLength(VideoTime(0, 28, 0), 1856),
-    AircraftApparentLength(VideoTime(0, 29, 0), 1934),
-    AircraftApparentLength(VideoTime(0, 30, 0), 1425),
-    AircraftApparentLength(VideoTime(0, 31, 0), 1437),
-    AircraftApparentLength(VideoTime(0, 32, 0), 1407),
-    AircraftApparentLength(VideoTime(0, 33, 0), 1633),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 2, 0)), 542),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 3, 0)), 557),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 4, 0)), 595),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 5, 0)), 627),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 6, 0)), 671),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 7, 0)), 768),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 8, 0)), 765),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 9, 0)), 797),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 10, 0)), 848),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 11, 0)), 913),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 12, 0)), 595),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 13, 0)), 666),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 14, 0)), 719),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 15, 0)), 792),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 16, 0)), 865),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 17, 0)), 959),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 18, 0)), 1063),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 19, 0)), 1180),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 20, 0)), 1300), # Tail obscured
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 21, 0)), 1448), # Tail obscured
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 22, 0)), 1631),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 23, 0)), 1192),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 24, 0)), 1313),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 25, 0)), 1456),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 27, 0)), 1738),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 28, 0)), 1856),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 29, 0)), 1934),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 30, 0)), 1425),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 31, 0)), 1437),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 32, 0)), 1407),
+    AircraftApparentLength(ffmpeg_time_to_video_time(VideoTime(0, 33, 0)), 1633),
 )
 
 
@@ -534,50 +540,18 @@ ERROR_AIRCRAFT_LENGTH_IN_PIXELS = 10
 
 
 #================== Data from Google Earth ==============
-# Tower positions in the open nearest 15 threshold
-"""
-Tower 1: https://www.google.com/maps/@-23.001859,-47.148885,59m/data=!3m1!1e3?hl=en
-Tower 2: https://www.google.com/maps/@-23.002109,-47.148531,59m/data=!3m1!1e3?hl=en
-Tower 3: https://www.google.com/maps/@-23.002358,-47.148179,59m/data=!3m1!1e3?hl=en
-Tower 4: https://www.google.com/maps/@-23.002612,-47.147815,59m/data=!3m1!1e3?hl=en
-Tower 5: https://www.google.com/maps/@-23.002856,-47.147467,59m/data=!3m1!1e3?hl=en
-Tower 6: https://www.google.com/maps/@-23.003107,-47.147108,59m/data=!3m1!1e3?hl=en
-"""
+#: Assumed error in positions from Google Earth ariel imagery.
+GOOGLE_EARTH_ERROR = 25
+RUNWAY_DISTANCE_ERROR = 25
 
-# Tower positions furthest to the northeast wing of terminal 1
-# Adjustment to Tower 2 by -1 metre heading 150 dlat=7.8e-6 dlong=-4.5e-6:
-# Was:
-# Tower 8: https://www.google.com/maps/@-23.0042240,-47.1502493,59m/data=!3m1!1e3?hl=en
-# Tower 8: https://www.google.com/maps/@-23.0042162,-47.1502538,59m/data=!3m1!1e3?hl=en
-# Maybe .5 m more
-# Tower 8: https://www.google.com/maps/@-23.0042123,-47.1502560,59m/data=!3m1!1e3?hl=en
-"""
-Tower 7: https://www.google.com/maps/@-23.0039523,-47.1506005,59m/data=!3m1!1e3?hl=en
-# Adjustment to even tower spacing to average of 45.6 m, was:
-# Tower 8: https://www.google.com/maps/@-23.0042240,-47.1502493,59m/data=!3m1!1e3?hl=en
-Tower 8: https://www.google.com/maps/@-23.0042123,-47.1502560,59m/data=!3m1!1e3?hl=en
-# Adjustment to even tower spacing to average of 45.6 m, was:
-#Tower 9: https://www.google.com/maps/@-23.0044624,-47.1498953,59m/data=!3m1!1e3?hl=en
-Tower 9: https://www.google.com/maps/@-23.0044700,-47.1499050,59m/data=!3m1!1e3?hl=en
-Tower 10: https://www.google.com/maps/@-23.0047257,-47.1495659,59m/data=!3m1!1e3?hl=en
-Tower 11: https://www.google.com/maps/@-23.0049800,-47.1492158,59m/data=!3m1!1e3?hl=en
-Tower 12: https://www.google.com/maps/@-23.0052343,-47.1488650,59m/data=!3m1!1e3?hl=en
-"""
-
-# Tower positions furthest to the southwest wing of terminal 1
-"""
-Tower 13: https://www.google.com/maps/@-23.005718,-47.151876,59m/data=!3m1!1e3?hl=en
-Tower 14: https://www.google.com/maps/@-23.005967,-47.151523,59m/data=!3m1!1e3?hl=en
-Tower 16: https://www.google.com/maps/@-23.006215,-47.151173,59m/data=!3m1!1e3?hl=en
-Tower 16: https://www.google.com/maps/@-23.006463,-47.150828,59m/data=!3m1!1e3?hl=en
-Tower 17: https://www.google.com/maps/@-23.006715,-47.150475,59m/data=!3m1!1e3?hl=en
-Tower 18: https://www.google.com/maps/@-23.006960,-47.150124,59m/data=!3m1!1e3?hl=en
-Tower 19: https://www.google.com/maps/@-23.007207,-47.149788,59m/data=!3m1!1e3?hl=en
-"""
-
-# Lat long: 1m on earths surface is 1 / 6378.137e3 radians latitude or about 9e-6 degrees say 0.00001
-# 25m is 0.00025
-# Lat long: 9e-6 degrees latitude is around 1.323e-05 degrees longitude
+#: Measurements from Google Earth
+#: These are of the form:
+#: <LABEL>: <URL>
+#: Comment lines start with '#'
+#:
+#: NOTE: Lat long: 1m on earths surface is 1 / 6378.137e3 radians latitude or about
+#: 9e-6 degrees say 0.00001, 25m is 0.00025
+#: Given Lat -23 then long: 9e-6 degrees latitude is around 1.323e-05 degrees longitude
 GOOGLE_EARTH_URLS = """
 # Tower positions in the open nearest 15 threshold
 Tower 1: https://www.google.com/maps/@-23.001859,-47.148885,59m/data=!3m1!1e3?hl=en
@@ -663,9 +637,13 @@ Second control tower: https://www.google.com/maps/@-23.0213449,-47.1261314,174m/
 Building corner: https://www.google.com/maps/@-23.015572,-47.120916,97m/data=!3m1!1e3
 """
 
-# These are towers in the North West area of the airport.
-# They are clearly visible in the early part of the video.
-# These are organised as a variable width table of pairs of (lat, long)
+x = video_utils.LatLong(1.0, 2.0)
+
+#: These are towers in the North West area of the airport.
+#: They are clearly visible in the early part of the video.
+#: These are organised as a variable width table of pairs of (lat, long)
+#:
+#: Unused, experimental only
 GOOGLE_EARTH_TOWER_POSITIONS_LAT_LONG = (
     # These six towers are in the open to the North East of the terminal building.
     # They have a group of lights at the very top that make a distinctive butterfly shadow.
@@ -721,27 +699,6 @@ GOOGLE_EARTH_TOWER_POSITIONS_LAT_LONG = (
     )
 )
 
-GOOGLE_EARTH_TOWER_POSITIONS_TRANSIT_TIMES = (
-    (
-        VideoTime(0, 0, 0),
-        VideoTime(0, 0, 0),
-        VideoTime(0, 0, 0),
-        VideoTime(0, 0, 0),
-        VideoTime(0, 0, 0),
-        VideoTime(0, 0, 0),
-    ),
-    (
-        VideoTime(0, 6, 27),
-        VideoTime(0, 7, 17), # Tower 8 in full transit with 'Concrete block hut'
-        VideoTime(0, 8, 8),
-        VideoTime(0, 8, 27),
-        VideoTime(0, 9, 17),
-        VideoTime(0, 10, 7),
-        VideoTime(0, 10, 25),
-        VideoTime(0, 11, 15),
-        VideoTime(0, 12, 2), # Where is this one?
-    ),
-)
 
 # xy is a video_utils.XY and are distances in metres from the datum (the start of runway 15)
 # For writing URLs
@@ -755,7 +712,7 @@ GOOGLE_EARTH_POSITIONS_LAT_LONG: typing.Dict[str, video_utils.LatLong] = {
     for line in GOOGLE_EARTH_URLS.split('\n') if len(line.strip()) > 0 and not line.startswith('#')
 }
 
-# lat/long of x=0, y=0
+#: Lat/Long of x=0, y=0
 GOOGLE_EARTH_DATUM_LAT_LONG = GOOGLE_EARTH_POSITIONS_LAT_LONG['Threshold 15']
 # Bearing of x axis in degrees, mean of two measurements
 GOOGLE_EARTH_X_AXIS = (
@@ -783,6 +740,7 @@ GOOGLE_EARTH_POSITIONS_XY = {
     k : google_earth_lat_long_to_xy(k) for k in GOOGLE_EARTH_POSITIONS_LAT_LONG
 }
 
+#: Unused, experimental only
 GOOGLE_EARTH_TOWER_POSITIONS_XY = tuple(
     [
         tuple(
@@ -807,21 +765,6 @@ GOOGE_EARTH_EVENT_TOWER_MAP = {
     'Tower 4' : 'Far floodlight number 4.',
     'Tower 5' : 'Far floodlight number 5.',
     'Tower 6' : 'Far floodlight number 6.',
-    # Second line of lighting towers
-    'Tower 7' : 'Far comms tower number 1.',
-    'Tower 8' : 'Far comms tower number 2.',
-    'Tower 9' : 'Far comms tower number 3.',
-    'Tower 10' : 'Far comms tower number 4.',
-    'Tower 11' : 'Far comms tower number 5.',
-    'Tower 12' : 'Far comms tower number 6.',
-    # Third line of lighting towers
-    'Tower 13' : 'Far comms tower number 7.',
-    'Tower 14' : 'Far comms tower number 8.',
-    'Tower 15' : 'Far comms tower number 9.',
-    'Tower 16' : 'Far comms tower number 10.',
-    'Tower 17' : 'Far comms tower number 11.',
-    'Tower 18' : 'Far comms tower number 12.',
-    'Tower 19' : 'Far comms tower number 13.',
 }
 
 #------------------ Google Earth transits -------------------
@@ -834,8 +777,8 @@ GOOGLE_EARTH_EVENT_TRANSIT_TIMES = {
     # These two points are in simultanous transit
     'Trees right of Fedex': VideoTime(0, 24, 26),
     'Factory interior corner': VideoTime(0, 24, 26),
-    'Fedex left': VideoTime(0, 25, 10),
-    'Fedex right': VideoTime(0, 25, 2),
+    # 'Fedex left': VideoTime(0, 25, 10),
+    # 'Fedex right': VideoTime(0, 25, 2),
     'Factory extreme left': VideoTime(0, 27, 6),
     'Tall radio tower': VideoTime(0, 28, 0),
     'Second control tower': VideoTime(0, 29, 2),
@@ -847,10 +790,7 @@ FullTransitPoint = collections.namedtuple('FullTransitPoint', 'label, xy')
 # frm (from) and to are FullTransitPoint(s)
 FullTransitLine = collections.namedtuple('FullTransitLine', 'frm, to, time')
 
-# Transit lines that are simultaneous
-# TODO: Add these transit lines
-# VideoTime(0, 13, 00) Light Stand (which one?) and fence break with hut (-23.010070,-47.127441)
-# VideoTime(0, 16, 29) Light Stand (which one?) and embankment outside corner(-23.010615,-47.124007)
+#: 'Full' transit lines that are simultaneous
 
 
 GOOGLE_EARTH_FULL_TRANSITS = (
@@ -866,18 +806,8 @@ GOOGLE_EARTH_FULL_TRANSITS = (
         ),
         VideoTime(0, 2, 12),
     ),
-    # FullTransitLine(
-    #     FullTransitPoint(
-    #         'Tower 8',
-    #         google_earth_lat_long_to_xy('Tower 8')
-    #     ),
-    #     FullTransitPoint(
-    #         'Concrete block hut',
-    #         google_earth_lat_long_to_xy('Concrete block hut')
-    #     ),
-    #     VideoTime(0, 7, 17),
-    # ),
-    # Simultaneous transit at VideoTime(0, 17, 22) Control tower base and Embankment inside corner, est. (-23.011606,-47.124922)
+    # Simultaneous transit at VideoTime(0, 17, 22) Control tower base and Embankment inside corner, est
+    # (-23.011606,-47.124922)
     FullTransitLine(
         FullTransitPoint(
             'Control tower base',
@@ -968,10 +898,10 @@ GOOGLE_EARTH_EVENTS = tuple(
 )
 
 
-GOOGLE_EARTH_OBSERVER_POSIITON_URL = 'https://www.google.com/maps/@-23.0129344,-47.1164164,94m/data=!3m1!1e3'
-GOOGLE_EARTH_OBSERVER_POSIITON = video_utils.google_earth_url_to_lat_long(
-    'Observer: https://www.google.com/maps/@-23.0129344,-47.1164164,94m/data=!3m1!1e3'
-)[1]
+# GOOGLE_EARTH_OBSERVER_POSIITON_URL = 'https://www.google.com/maps/@-23.0129344,-47.1164164,94m/data=!3m1!1e3'
+# GOOGLE_EARTH_OBSERVER_POSIITON = video_utils.google_earth_url_to_lat_long(
+#     'Observer: https://www.google.com/maps/@-23.0129344,-47.1164164,94m/data=!3m1!1e3'
+# )[1]
 
 #================== END: Data from Google Earth ==============
 
@@ -990,16 +920,17 @@ def print_google_earth_tower_positions():
             prev = col
     print()
 
-
-OBSERVER_XY_START_RUNWAY = video_utils.XY(2266 + 1182, -763)
+# TODO: Use plot_common.x_offset() rather than 1182
+OBSERVER_XY_START_RUNWAY_BEARINGS = video_utils.XY(2266 + 1182, -763)
+OBSERVER_XY_START_RUNWAY_FULL_TRANSITS = video_utils.XY(3433.785, -774.615)
 
 
 def print_transits_and_runway_distances():
     speed = 0.0
     prev = (0.0, 0.0, 0.0)
     # Google earth
-    # observer_xy_start_runway = (3457.9, -655.5)
-    print('Transits for observer at:', OBSERVER_XY_START_RUNWAY)
+    print('Transits for observer at:', OBSERVER_XY_START_RUNWAY_FULL_TRANSITS)
+    fw = max([len(k) for _t, k in GOOGLE_EARTH_EVENTS])
     for t, k in GOOGLE_EARTH_EVENTS:
         event_time = GOOGLE_EARTH_EVENT_MAP[k]
         # print(event, lat, lon)
@@ -1012,7 +943,7 @@ def print_transits_and_runway_distances():
         x, y = GOOGLE_EARTH_POSITIONS_XY[k]
         # print('x, y', k, x, y)
         # video_utils.transit_x_axis_intercept(lat, lon, X0, Y0)
-        x_intercept = video_utils.transit_x_axis_intercept(x, y, *OBSERVER_XY_START_RUNWAY)
+        x_intercept = video_utils.transit_x_axis_intercept(x, y, *OBSERVER_XY_START_RUNWAY_FULL_TRANSITS)
         # print('TRACE', k, event_time, prev[0])
         dt = event_time - prev[0]
         dx_on_axis = x_intercept - prev[1]
@@ -1022,129 +953,63 @@ def print_transits_and_runway_distances():
         else:
             gs = 0.0
         print(
-            '{:10s} t={:6.1f} dt={:6.1f} lat={:12.6f} lon={:12.6f} dlat={:10.6f} dlon={:10.6f} x={:6.1f} y={:6.1f} x_runway={:6.1f} dxaxis={:6.1f} v={:6.1f}'.format(
+            '{:{width}s} t={:6.1f} dt={:6.3f} lat={:12.6f} lon={:12.6f}' \
+            ' dlat={:10.6f} dlon={:10.6f} x={:6.1f} y={:6.1f}' \
+            ' x_runway={:6.1f} dxaxis={:6.1f} v={:6.1f}'.format(
                 '"{}"'.format(k),
                 event_time, event_time - prev[0],
                 GOOGLE_EARTH_POSITIONS_LAT_LONG[k].lat, GOOGLE_EARTH_POSITIONS_LAT_LONG[k].long,
                 GOOGLE_EARTH_POSITIONS_LAT_LONG[k].lat - GOOGLE_EARTH_DATUM_LAT_LONG.lat,
                 GOOGLE_EARTH_POSITIONS_LAT_LONG[k].long - GOOGLE_EARTH_DATUM_LAT_LONG.long,
                 x, y,
-                x_intercept, dx_on_axis, gs
+                x_intercept, dx_on_axis, gs,
+                width=fw+2,
             )
         )
         prev = (event_time, x_intercept, x)
 
 
-def print_full_transits():
-    for transit in GOOGLE_EARTH_FULL_TRANSITS:
-        print(
-            'Full transit at {} from {:8.3f} {:8.3f} "{}"->"{}"'.format(
-                transit.time,
-                transit.frm.xy, transit.to.xy,
-                transit.frm.label, transit.to.label,
-            )
-        )
-    print()
-    crossing_x = []
-    crossing_y = []
-    for num, (i, j) in enumerate(itertools.combinations(range(len(GOOGLE_EARTH_FULL_TRANSITS)), 2)):
-        transit1: FullTransitLine = GOOGLE_EARTH_FULL_TRANSITS[i]
-        transit2: FullTransitLine = GOOGLE_EARTH_FULL_TRANSITS[j]
-        crossing = video_utils.intersect_two_lines(
-            transit1.frm.xy, transit1.to.xy, transit2.frm.xy, transit2.to.xy,
-        )
-        crossing_x.append(crossing.x)
-        crossing_y.append(crossing.y)
-        print(
-            '[{:2d}] Full transit crossing {:8.3f} "{}"->"{}" and  "{}"->"{}"'.format(
-                num,
-                crossing,
-                transit1.frm.label, transit1.to.label,
-                transit2.frm.label, transit2.to.label,
-            )
-        )
-    print(
-        'X: min={:8.3f} mean={:8.3f} max={:8.3f} range={:8.3f}'.format(
-            min(crossing_x), sum(crossing_x) / len(crossing_x), max(crossing_x), max(crossing_x) - min(crossing_x),
-        )
-    )
-    print(
-        'Y: min={:8.3f} mean={:8.3f} max={:8.3f} range={:8.3f}'.format(
-            min(crossing_y), sum(crossing_y) / len(crossing_y), max(crossing_y), max(crossing_y) - min(crossing_y),
-        )
-    )
-
-
 if __name__ == '__main__':
-    # print('Aircraft pitch:')
-    # for p in AIRCRAFT_PITCHES:
-    #     print('{:8.3f} {:8.3f}'.format(p.video_time.time, p.angle))
-    # print('Aspect:')
-    # for p in AIRCRAFT_ASPECTS:
-    #     print('{:8.3f} {:8.1f}'.format(p.video_time.time, p.angle))
-    # print('Aspect from span:')
-    # for p in AIRCRAFT_ASPECTS_FROM_WING_TIPS:
-    #     print('{:8.3f} {:8.1f}'.format(p.video_time.time, p.angle))
     print('GOOGLE_EARTH_DATUM', GOOGLE_EARTH_DATUM_LAT_LONG)
-    print('GOOGLE_EARTH_X_AXIS', GOOGLE_EARTH_X_AXIS)
 
-    # print('FEDEX_BUILDING_WIDTH', FEDEX_BUILDING_WIDTH)
-    # print('FEDEX_BUILDING_BEARING_RIGHT_LEFT', FEDEX_BUILDING_BEARING_RIGHT_LEFT)
-    # print('FEDEX_OFFSET_POSITION', FEDEX_OFFSET_POSITION)
-    # print('FEDEX_BEARING_TO_FACTORY_INTERIOR_CORNER', FEDEX_BEARING_TO_FACTORY_INTERIOR_CORNER)
-    # y_obs = -763
-    # print('fedex_x_from_y({})'.format(y_obs), fedex_x_from_y(y_obs))
-    # 3276.2
-    # Est. is 2298 + 1182 = 3480
-    # Hmm. 200m error.
-
-    # pprint.pprint(GOOGLE_EARTH_POSITIONS_XY)
-    # pprint.pprint(GOOGLE_EARTH_EVENT_MAP)
-    # pprint.pprint(GOOGLE_EARTH_EVENTS)
-    # print('GOOGLE_EARTH_TOWER_POSITIONS_LAT_LONG:')
-    # # pprint.pprint(GOOGLE_EARTH_TOWER_POSITIONS_LAT_LONG)
-    # for r, row in enumerate(GOOGLE_EARTH_TOWER_POSITIONS_LAT_LONG):
-    #     for c, col in enumerate(row):
-    #         print('[{:d}, {:d}]: {:10.6f}, {:10.6f}'.format(r, c, *col))
-
-    # print_google_earth_tower_positions()
-    # print_transits_and_runway_distances()
-
-
-    # Full Transits
-    # for a, b in GOOGLE_EARTH_SIMULTANEOUS_TRANSIT_LABELS:
-    #     print('Full transit from {:8.3f} {:8.3f} "{}"->"{}"'.format(
-    #         GOOGLE_EARTH_POSITIONS_XY[a],
-    #         GOOGLE_EARTH_POSITIONS_XY[b],
-    #         a, b)
-    #     )
-    print_full_transits()
-    print()
-
-    # Observer
-    ge_obs_xy = video_utils.lat_long_to_xy(
-        GOOGLE_EARTH_DATUM_LAT_LONG,
-        GOOGLE_EARTH_X_AXIS,
-        GOOGLE_EARTH_OBSERVER_POSIITON,
+    print(
+        'Xaxis End asphalt 15      :',
+        video_utils.bearing_lat_long(
+            GOOGLE_EARTH_DATUM_LAT_LONG,
+            GOOGLE_EARTH_POSITIONS_LAT_LONG['End asphalt 15']
+        )
     )
-    print('Observer from bearings    : {:8.1f}'.format(OBSERVER_XY_START_RUNWAY))
-    print('Observer from google earth: {:8.1f}'.format(ge_obs_xy))
-    print('      Diff (bearings - ge): x={:6.1f} y={:6.1f}'.format(
-        OBSERVER_XY_START_RUNWAY.x - ge_obs_xy.x,
-        OBSERVER_XY_START_RUNWAY.y - ge_obs_xy.y))
+    print(
+        'Xaxis Threshold 33        :',
+        video_utils.bearing_lat_long(
+            GOOGLE_EARTH_DATUM_LAT_LONG,
+            GOOGLE_EARTH_POSITIONS_LAT_LONG['Threshold 33'],
+        )
+    )
 
-    # TODO: Fix x/y to lat/long
+    print('GOOGLE_EARTH_X_AXIS', '(mean):', GOOGLE_EARTH_X_AXIS)
+
+    print_google_earth_tower_positions()
+    print_transits_and_runway_distances()
+    # Full Transits
+    for a, b in GOOGLE_EARTH_SIMULTANEOUS_TRANSIT_LABELS:
+        print('Full transit from {:8.3f} {:8.3f} "{}"->"{}"'.format(
+            GOOGLE_EARTH_POSITIONS_XY[a],
+            GOOGLE_EARTH_POSITIONS_XY[b],
+            a, b)
+        )
+
     ge_obs_lat_long = video_utils.xy_to_lat_long(
         GOOGLE_EARTH_DATUM_LAT_LONG,
         GOOGLE_EARTH_X_AXIS,
-        OBSERVER_XY_START_RUNWAY,
+        OBSERVER_XY_START_RUNWAY_BEARINGS,
     )
-    print('Google earth URL from x={:6.1f} y={:6.1f}'.format(*OBSERVER_XY_START_RUNWAY))
+    print('Google earth URL from bearings x={:6.1f} y={:6.1f}'.format(*OBSERVER_XY_START_RUNWAY_BEARINGS))
     print(GOOGLE_EARTH_URL_FORMAT.format(*ge_obs_lat_long))
     ge_obs_lat_long = video_utils.xy_to_lat_long(
         GOOGLE_EARTH_DATUM_LAT_LONG,
         GOOGLE_EARTH_X_AXIS,
-        ge_obs_xy,
+        OBSERVER_XY_START_RUNWAY_FULL_TRANSITS,
     )
-    print('Google earth URL from {}'.format(ge_obs_xy))
+    print('Google earth URL from transits x={:6.1f} y={:6.1f}'.format(*OBSERVER_XY_START_RUNWAY_FULL_TRANSITS))
     print(GOOGLE_EARTH_URL_FORMAT.format(*ge_obs_lat_long))

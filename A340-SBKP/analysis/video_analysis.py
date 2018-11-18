@@ -144,7 +144,7 @@ def create_time_distance_aspect_array(min_mid_max: video_data.ErrorDirection=vid
     return result
 
 
-def observer_position_combinations(
+def observer_position_combinations_from_aspects(
         min_mid_max: video_data.ErrorDirection=video_data.ErrorDirection.MID,
         baseline: float=0.0,
         ignore_first_n: int=0,
@@ -201,13 +201,15 @@ def observer_position_combinations(
     return result, possible_count
 
 
-def observer_position_mean_std(
+def observer_position_mean_std_from_aspects(
         baseline: float=0.0,
         ignore_first_n: int=0,
         t_range: typing.Tuple[float, float]=(0.0, 0.0)) \
         -> typing.Tuple[typing.Tuple[float, float], typing.Tuple[float, float]]:
-    """Returns a pair of pairs ((x_mean, x_std), (y_mean, y_std))"""
-    combinations, count = observer_position_combinations(
+    """
+    Returns a pair of pairs ((x_mean, x_std), (y_mean, y_std)) from aircraft aspects.
+    """
+    combinations, count = observer_position_combinations_from_aspects(
         video_data.ErrorDirection.MID,
         baseline, ignore_first_n, t_range
     )
@@ -326,6 +328,7 @@ def _observer_time_distance_bearing(
     array = np.asarray(temp)
     return array
 
+
 def observer_time_distance_bearing(
         gs_fit: typing.List[float],
         min_mid_max: video_data.ErrorDirection,
@@ -411,6 +414,51 @@ def transit_x_axis_distances(observer_x: float, observer_y: float) -> typing.Lis
     return result
 
 
+def observer_position_from_full_transits() -> np.ndarray:
+    """
+    Returns the observers position(s) from the intersection of full transit lines as
+    a 2-D numpy array of x,y.
+    """
+    crossing_xy = []
+    for i, j in itertools.combinations(range(len(video_data.GOOGLE_EARTH_FULL_TRANSITS)), 2):
+        transit1: video_data.FullTransitLine = video_data.GOOGLE_EARTH_FULL_TRANSITS[i]
+        transit2: video_data.FullTransitLine = video_data.GOOGLE_EARTH_FULL_TRANSITS[j]
+        crossing = video_utils.intersect_two_lines(
+            transit1.frm.xy, transit1.to.xy, transit2.frm.xy, transit2.to.xy,
+        )
+        crossing_xy.append((crossing.x, crossing.y))
+    ret = np.array(crossing_xy)
+    return ret
+
+
+def observer_position_mean_std_from_full_transits() -> typing.Tuple[typing.Tuple[float, float], typing.Tuple[float, float]]:
+    obs_array = observer_position_from_full_transits()
+    x_mean = obs_array[:, 0].mean()
+    x_std = obs_array[:, 0].std()
+    y_mean = obs_array[:, 1].mean()
+    y_std = obs_array[:, 1].std()
+    return ((x_mean, x_std), (y_mean, y_std))
+
+
+
+def distance_fit_from_transits() -> typing.List[float]:
+    """
+    This uses the observers position from full transits and then the runway positions from all
+    the transit lines fitted to a
+    """
+    ((x_mean, x_std), (y_mean, y_std)) = observer_position_mean_std_from_full_transits()
+    transits = transit_x_axis_distances(x_mean, y_mean)
+    times = [v.time for v in transits]
+    dists = [v.distance for v in transits]
+    popt, pcov = curve_fit(
+        video_utils.polynomial_3,
+        times,
+        dists,
+    )
+    return popt
+
+
+
 def camera_angle_of_view(min_mid_max: video_data.ErrorDirection = video_data.ErrorDirection.MID) -> np.ndarray:
     # TODO: Figure out min/max error terms.
     # Max value is obtained with:
@@ -436,6 +484,7 @@ def camera_angle_of_view(min_mid_max: video_data.ErrorDirection = video_data.Err
         width_in_m = video_data.SCREENSHOT_WIDTH / px_per_m
         angle_of_view = math.degrees(2 * math.atan(width_in_m / (2 * d)))
         print('{:<4.1f} {:6.3f}'.format(t, angle_of_view))
+
 
 def camera_angle_of_view_with_errors() -> np.ndarray:
     pass
@@ -476,7 +525,23 @@ def main():
 
     # print(ground_speed_curve_fit(video_data.ErrorDirection.MID))
 
-    camera_angle_of_view()
+    # camera_angle_of_view()
+
+    obs_array = observer_position_from_full_transits()
+    print('X: min={:8.1f} mean={:8.1f} max={:8.1f} range=+/-{:4.1f} std={:8.1f}'.format(
+        obs_array[:,0].min(),
+        obs_array[:,0].mean(),
+        obs_array[:,0].max(),
+        (obs_array[:,0].max() - obs_array[:,0].min()) / 2.0,
+        obs_array[:,0].std(),
+    ))
+    print('Y: min={:8.1f} mean={:8.1f} max={:8.1f} range=+/-{:4.1f} std={:8.1f}'.format(
+        obs_array[:,1].min(),
+        obs_array[:,1].mean(),
+        obs_array[:,1].max(),
+        (obs_array[:,1].max() - obs_array[:,1].min()) / 2.0,
+        obs_array[:,1].std(),
+    ))
 
     print('Bye, bye!')
     return 0

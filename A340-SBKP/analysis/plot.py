@@ -4,8 +4,7 @@ Plots video data.
 import shutil
 import sys
 
-
-from analysis import plot_acceleration, plot_angle_of_view
+from analysis import plot_acceleration, plot_angle_of_view, video_data
 from analysis import plot_aspect
 from analysis import plot_common
 from analysis import plot_constants
@@ -74,7 +73,6 @@ def main():
         plot_observer.gnuplot_observer_xy,
         plot_observer.gnuplot_observer_xy_plt,
     )
-    # FIXME:
     plot_common.write_dat_plt_call(
         'time_distance_bearing_with_yaw',
         plot_observer.gnuplot_observer_time_distance_bearing_with_yaw,
@@ -108,12 +106,31 @@ def main():
         '../plots/OpenStreetmap_SBKP_01_annotated.svg',
     )
 
-    for v in plot_events.gen_event_data():
-        print(v)
+    # for v in plot_events.gen_event_data():
+    #     print(v)
 
-    # table = create_event_table()
-    # pprint.pprint(table, width=180)
-    plot_events.print_event_table_markdown()
+    # Print out the markdown tables
+    print()
+    for i, table_fn in enumerate(
+        (
+            plot_distance.markdown_table_aircraft_start,
+            plot_transits.markdown_table_full_transits,
+            plot_transits.markdown_table_distance_from_start_by_transit,
+            plot_acceleration.markdown_table_acceleration_error,
+            plot_acceleration.markdown_table_acceleration_error_worst_case,
+            plot_common.markdown_table_equations_of_motion,
+            plot_events.markdown_table_of_events,
+        )
+    ):
+        table, title = table_fn()
+        print('<center>')
+        print()
+        print('\n'.join(table))
+        print()
+        print('Table {:d}: {}'.format(i+1, title))
+        print()
+        print('</center>')
+        print()
 
     print('Bye, bye!')
     return 0

@@ -6,7 +6,6 @@ import numpy as np
 from analysis import aspect, video_analysis, plot_constants
 from analysis import plot_common
 from analysis import video_data
-from analysis.plot_common import get_gs_fits
 
 
 def gnuplot_angle_of_view(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
@@ -38,7 +37,7 @@ def gnuplot_angle_of_view(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
 
     # Get the min/mid/max ground speed fits
     offset_distance_at_t = video_data.TIME_VIDEO_END_ASPHALT.time
-    gs_fits = get_gs_fits()
+    gs_fits = [plot_common.get_gs_fit(err) for err in video_data.ErrorDirection]
     offsets = [
         video_data.RUNWAY_LEN_M - video_analysis.ground_speed_integral(0, offset_distance_at_t, gs_fit)
         for gs_fit in gs_fits

@@ -1,3 +1,5 @@
+import math
+
 import pytest
 
 from analysis import video_data
@@ -60,3 +62,39 @@ def test_video_time_to_ffmepeg_name(video_time, ffmpeg_name):
 def test_ffmepeg_name_to_video_time(video_time, ffmpeg_name):
     assert video_time == video_data.ffmpeg_name_to_video_time(ffmpeg_name)
 
+
+@pytest.mark.parametrize(
+    'video_time, span, length, note, expected',
+    (
+        (video_data.VideoTime(0, 0, 0), video_data.AIRCRAFT_SPAN, 0.0,                          '', 0),
+        (video_data.VideoTime(0, 0, 0), video_data.AIRCRAFT_SPAN, video_data.AIRCRAFT_LENGTH,   '', 45),
+        (video_data.VideoTime(0, 0, 0), 0.0, video_data.AIRCRAFT_LENGTH,                        '', 90),
+        (video_data.VideoTime(0, 0, 0), -video_data.AIRCRAFT_SPAN, video_data.AIRCRAFT_LENGTH,  '', 135),
+        (video_data.VideoTime(0, 0, 0), -video_data.AIRCRAFT_SPAN, 0.0,                         '', 180),
+        (video_data.VideoTime(0, 0, 0), -video_data.AIRCRAFT_SPAN, -video_data.AIRCRAFT_LENGTH, '', 225),
+        (video_data.VideoTime(0, 0, 0), 0.0, -video_data.AIRCRAFT_LENGTH,                       '', 270),
+        (video_data.VideoTime(0, 0, 0), video_data.AIRCRAFT_SPAN, -video_data.AIRCRAFT_LENGTH,  '', 315),
+    ),
+)
+def test_aircraft_aspect_wing_tips_angle(video_time, span, length, note, expected):
+    aawt = video_data.AircraftAspectWingTips(video_time, span, length, note)
+    assert expected == aawt.angle
+
+
+@pytest.mark.parametrize(
+    'video_time, span, length, note, expected',
+    (
+        (video_data.VideoTime(0, 0, 0), video_data.AIRCRAFT_SPAN, 0.0,                          '', 21.97),
+        (video_data.VideoTime(0, 0, 0), video_data.AIRCRAFT_SPAN, video_data.AIRCRAFT_LENGTH,   '', 16.33),
+        (video_data.VideoTime(0, 0, 0), 0.0, video_data.AIRCRAFT_LENGTH,                        '', 22.60),
+        (video_data.VideoTime(0, 0, 0), -video_data.AIRCRAFT_SPAN, video_data.AIRCRAFT_LENGTH,  '', 16.33),
+        (video_data.VideoTime(0, 0, 0), -video_data.AIRCRAFT_SPAN, 0.0,                         '', 21.97),
+        (video_data.VideoTime(0, 0, 0), -video_data.AIRCRAFT_SPAN, -video_data.AIRCRAFT_LENGTH, '', 16.33),
+        (video_data.VideoTime(0, 0, 0), 0.0, -video_data.AIRCRAFT_LENGTH,                       '', 22.60),
+        (video_data.VideoTime(0, 0, 0), video_data.AIRCRAFT_SPAN, -video_data.AIRCRAFT_LENGTH,  '', 16.33),
+    ),
+)
+def test_aircraft_aspect_wing_tips_error(video_time, span, length, note, expected):
+    aawt = video_data.AircraftAspectWingTips(video_time, span, length, note)
+    assert math.isclose(expected, aawt.error, rel_tol=0.001)
+    # assert expected == aawt.error

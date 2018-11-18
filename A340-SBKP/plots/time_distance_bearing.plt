@@ -1,8 +1,9 @@
 # set logscale x
+set colorsequence classic
 set grid
 set title "Bearings to Observer\n(NOTE: Axes not to common scale)"
-set xlabel "Distance from t=0 (m)"
-set xrange [0:3000]
+set xlabel "Distance from runway start (m)"
+set xrange [1000:4000]
 #set xrange [2200:2300]
 set xtics
 #set format x ""
@@ -41,78 +42,78 @@ set style line 1 lc rgb "blue" lw 0.5
 
 #set style arrow 1 nohead ls 1
 
-set arrow from 39,0 to 2905,-950 ls 4 nohead
-set arrow from 83,0 to 2883,-950 ls 4 nohead
-set arrow from 154,0 to 2889,-950 ls 4 nohead
-set arrow from 174,0 to 2861,-950 ls 4 nohead
-set arrow from 235,0 to 2787,-950 ls 4 nohead
-set arrow from 297,0 to 2755,-950 ls 7 nohead
-set arrow from 360,0 to 2682,-950 ls 7 nohead
-set arrow from 410,0 to 2692,-950 ls 7 nohead
-set arrow from 492,0 to 2662,-950 ls 7 nohead
-set arrow from 559,0 to 2699,-950 ls 7 nohead
-set arrow from 610,0 to 2712,-950 ls 7 nohead
-set arrow from 770,0 to 2669,-950 ls 7 nohead
-set arrow from 918,0 to 2618,-950 ls 7 nohead
-set arrow from 1070,0 to 2574,-950 ls 7 nohead
-set arrow from 1226,0 to 2520,-950 ls 6 nohead
-set arrow from 1285,0 to 2505,-950 ls 6 nohead
-set arrow from 1304,0 to 2506,-950 ls 6 nohead
-set arrow from 1984,0 to 2305,-950 ls 14 nohead
-set arrow from 2014,0 to 2297,-950 ls 14 nohead
-set arrow from 2043,0 to 2314,-950 ls 14 nohead
-set arrow from 2088,0 to 2300,-950 ls 14 nohead
-set arrow from 2119,0 to 2296,-950 ls 14 nohead
-set arrow from 2149,0 to 2289,-950 ls 14 nohead
-set arrow from 2255,0 to 2259,-950 ls 14 nohead
-set arrow from 2286,0 to 2249,-950 ls 14 nohead
-set arrow from 2317,0 to 2245,-950 ls 14 nohead
-set arrow from 2348,0 to 2241,-950 ls 14 nohead
-set arrow from 2379,0 to 2236,-950 ls 14 nohead
-set arrow from 2410,0 to 2230,-950 ls 14 nohead
-set arrow from 2441,0 to 2229,-950 ls 14 nohead
-set arrow from 2472,0 to 2225,-950 ls 14 nohead
-set arrow from 2500,0 to 2226,-950 ls 14 nohead
-set arrow from 2535,0 to 2222,-950 ls 14 nohead
-set arrow from 2566,0 to 2216,-950 ls 14 nohead
-set arrow from 2595,0 to 2212,-950 ls 14 nohead
-set arrow from 1791,-763 to 2266,-763 lw 3
-set label 1 "t=0.7" at 39,20 right rotate by 60 font ",9"
-set label 2 "t=1.5" at 83,20 right rotate by 60 font ",9"
-set label 3 "t=2.7" at 154,20 right rotate by 60 font ",9"
-set label 4 "t=3.0" at 174,20 right rotate by 60 font ",9"
-set label 5 "t=4.0" at 235,20 right rotate by 60 font ",9"
-set label 6 "t=5.0" at 297,20 right rotate by 60 font ",9"
-set label 7 "t=6.0" at 360,20 right rotate by 60 font ",9"
-set label 8 "t=6.8" at 410,20 right rotate by 60 font ",9"
-set label 9 "t=8.0" at 492,20 right rotate by 60 font ",9"
-set label 10 "t=9.0" at 559,20 right rotate by 60 font ",9"
-set label 11 "t=9.7" at 610,20 right rotate by 60 font ",9"
-set label 12 "t=12.0" at 770,20 right rotate by 60 font ",9"
-set label 13 "t=14.0" at 918,20 right rotate by 60 font ",9"
-set label 14 "t=16.0" at 1070,20 right rotate by 60 font ",9"
-set label 15 "t=18.0" at 1226,20 right rotate by 60 font ",9"
-set label 16 "t=18.7" at 1285,20 right rotate by 60 font ",9"
-set label 17 "t=19.0" at 1304,20 right rotate by 60 font ",9"
-set label 18 "t=27.0" at 1984,20 right rotate by 60 font ",9"
-set label 19 "t=27.3" at 2014,20 right rotate by 60 font ",9"
-set label 20 "t=27.6" at 2043,20 right rotate by 60 font ",9"
-set label 21 "t=28.1" at 2088,20 right rotate by 60 font ",9"
-set label 22 "t=28.5" at 2119,20 right rotate by 60 font ",9"
-set label 23 "t=28.8" at 2149,20 right rotate by 60 font ",9"
-set label 24 "t=30.0" at 2255,20 right rotate by 60 font ",9"
-set label 25 "t=30.3" at 2286,20 right rotate by 60 font ",9"
-set label 26 "t=30.6" at 2317,20 right rotate by 60 font ",9"
-set label 27 "t=31.0" at 2348,20 right rotate by 60 font ",9"
-set label 28 "t=31.3" at 2379,20 right rotate by 60 font ",9"
-set label 29 "t=31.6" at 2410,20 right rotate by 60 font ",9"
-set label 30 "t=32.0" at 2441,20 right rotate by 60 font ",9"
-set label 31 "t=32.3" at 2472,20 right rotate by 60 font ",9"
-set label 32 "t=32.6" at 2500,20 right rotate by 60 font ",9"
-set label 33 "t=33.0" at 2535,20 right rotate by 60 font ",9"
-set label 34 "t=33.3" at 2566,20 right rotate by 60 font ",9"
-set label 35 "t=33.6" at 2595,20 right rotate by 60 font ",9"
-set label "Mean position at x=2266, y=-763" at 1766,-763 right font ",14"
+set arrow from 1221,0 to 4087,-950 ls 4 nohead
+set arrow from 1265,0 to 4064,-950 ls 4 nohead
+set arrow from 1335,0 to 4070,-950 ls 4 nohead
+set arrow from 1355,0 to 4042,-950 ls 4 nohead
+set arrow from 1416,0 to 3968,-950 ls 4 nohead
+set arrow from 1478,0 to 3936,-950 ls 7 nohead
+set arrow from 1542,0 to 3864,-950 ls 7 nohead
+set arrow from 1592,0 to 3874,-950 ls 7 nohead
+set arrow from 1673,0 to 3844,-950 ls 7 nohead
+set arrow from 1741,0 to 3881,-950 ls 7 nohead
+set arrow from 1792,0 to 3894,-950 ls 7 nohead
+set arrow from 1952,0 to 3850,-950 ls 7 nohead
+set arrow from 2099,0 to 3799,-950 ls 7 nohead
+set arrow from 2251,0 to 3755,-950 ls 7 nohead
+set arrow from 2408,0 to 3701,-950 ls 6 nohead
+set arrow from 2467,0 to 3686,-950 ls 6 nohead
+set arrow from 2485,0 to 3688,-950 ls 6 nohead
+set arrow from 3165,0 to 3487,-950 ls 14 nohead
+set arrow from 3195,0 to 3478,-950 ls 14 nohead
+set arrow from 3225,0 to 3495,-950 ls 14 nohead
+set arrow from 3270,0 to 3482,-950 ls 14 nohead
+set arrow from 3300,0 to 3478,-950 ls 14 nohead
+set arrow from 3330,0 to 3470,-950 ls 14 nohead
+set arrow from 3437,0 to 3441,-950 ls 14 nohead
+set arrow from 3468,0 to 3431,-950 ls 14 nohead
+set arrow from 3498,0 to 3426,-950 ls 14 nohead
+set arrow from 3529,0 to 3422,-950 ls 14 nohead
+set arrow from 3560,0 to 3418,-950 ls 14 nohead
+set arrow from 3591,0 to 3412,-950 ls 14 nohead
+set arrow from 3622,0 to 3410,-950 ls 14 nohead
+set arrow from 3654,0 to 3407,-950 ls 14 nohead
+set arrow from 3682,0 to 3407,-950 ls 14 nohead
+set arrow from 3716,0 to 3403,-950 ls 14 nohead
+set arrow from 3748,0 to 3398,-950 ls 14 nohead
+set arrow from 3776,0 to 3393,-950 ls 14 nohead
+set arrow from 2973,-763 to 3448,-763 lw 3
+set label 1 "t=0.7" at 1221,20 right rotate by 60 font ",9"
+set label 2 "t=1.5" at 1265,20 right rotate by 60 font ",9"
+set label 3 "t=2.7" at 1335,20 right rotate by 60 font ",9"
+set label 4 "t=3.0" at 1355,20 right rotate by 60 font ",9"
+set label 5 "t=4.0" at 1416,20 right rotate by 60 font ",9"
+set label 6 "t=5.0" at 1478,20 right rotate by 60 font ",9"
+set label 7 "t=6.0" at 1542,20 right rotate by 60 font ",9"
+set label 8 "t=6.8" at 1592,20 right rotate by 60 font ",9"
+set label 9 "t=8.0" at 1673,20 right rotate by 60 font ",9"
+set label 10 "t=9.0" at 1741,20 right rotate by 60 font ",9"
+set label 11 "t=9.7" at 1792,20 right rotate by 60 font ",9"
+set label 12 "t=12.0" at 1952,20 right rotate by 60 font ",9"
+set label 13 "t=14.0" at 2099,20 right rotate by 60 font ",9"
+set label 14 "t=16.0" at 2251,20 right rotate by 60 font ",9"
+set label 15 "t=18.0" at 2408,20 right rotate by 60 font ",9"
+set label 16 "t=18.7" at 2467,20 right rotate by 60 font ",9"
+set label 17 "t=19.0" at 2485,20 right rotate by 60 font ",9"
+set label 18 "t=27.0" at 3165,20 right rotate by 60 font ",9"
+set label 19 "t=27.3" at 3195,20 right rotate by 60 font ",9"
+set label 20 "t=27.6" at 3225,20 right rotate by 60 font ",9"
+set label 21 "t=28.1" at 3270,20 right rotate by 60 font ",9"
+set label 22 "t=28.5" at 3300,20 right rotate by 60 font ",9"
+set label 23 "t=28.8" at 3330,20 right rotate by 60 font ",9"
+set label 24 "t=30.0" at 3437,20 right rotate by 60 font ",9"
+set label 25 "t=30.3" at 3468,20 right rotate by 60 font ",9"
+set label 26 "t=30.6" at 3498,20 right rotate by 60 font ",9"
+set label 27 "t=31.0" at 3529,20 right rotate by 60 font ",9"
+set label 28 "t=31.3" at 3560,20 right rotate by 60 font ",9"
+set label 29 "t=31.6" at 3591,20 right rotate by 60 font ",9"
+set label 30 "t=32.0" at 3622,20 right rotate by 60 font ",9"
+set label 31 "t=32.3" at 3654,20 right rotate by 60 font ",9"
+set label 32 "t=32.6" at 3682,20 right rotate by 60 font ",9"
+set label 33 "t=33.0" at 3716,20 right rotate by 60 font ",9"
+set label 34 "t=33.3" at 3748,20 right rotate by 60 font ",9"
+set label 35 "t=33.6" at 3776,20 right rotate by 60 font ",9"
+set label "Mean position at x=3448, y=-763" at 2948,-763 right font ",14"
 
 plot "time_distance_bearing.dat" using 2:(y_base_value)
 reset

@@ -53,6 +53,8 @@ def gnuplot_observer_time_distance_bearing(stream: typing.TextIO=sys.stdout) -> 
     assert len(set([len(v) for v in time_dist_brng_s])) == 1
     rows = len(time_dist_brng_s[0])
     time_distance_bearing_limits = []
+
+    x_offset = plot_common.x_offset()
     for r in range(rows):
         # Time should be the same
         assert time_dist_brng_s[0][r, 0] == time_dist_brng_s[1][r, 0]
@@ -63,7 +65,7 @@ def gnuplot_observer_time_distance_bearing(stream: typing.TextIO=sys.stdout) -> 
         time_distance_bearing_limits.append(
             (
                 time_dist_brng_s[0][r, 0], # time
-                time_dist_brng_s[0][r, 1], # distance
+                time_dist_brng_s[0][r, 1]+x_offset, # distance
                 time_dist_brng_s[0][r, 2], # bearing_min
                 time_dist_brng_s[1][r, 2], # bearing_mid
                 time_dist_brng_s[2][r, 2], # bearing_max
@@ -87,7 +89,7 @@ def gnuplot_observer_time_distance_bearing(stream: typing.TextIO=sys.stdout) -> 
         x_1 = x_0 + radius * math.cos(math.radians(bearing))
         y_1 = y_0 + radius * math.sin(math.radians(bearing))
         part_line = ['{:.1f}'.format(t),]
-        part_line.extend([FORMAT.format(v) for v in (x_0, y_0, bearing, x_1, y_1)])
+        part_line.extend([FORMAT.format(v) for v in (x_0 + x_offset, y_0, bearing, x_1 + x_offset, y_1)])
         result.append(' '.join(part_line))
         if t < video_data.TIME_VIDEO_NOSEWHEEL_OFF.time:
             line_style = 7
@@ -106,7 +108,7 @@ def gnuplot_observer_time_distance_bearing(stream: typing.TextIO=sys.stdout) -> 
         # 14 Red
         arrow_texts.append(
             'set arrow from {:.0f},{:.0f} to {:.0f},{:.0f} ls {ls:d} nohead'.format(
-                x_0, y_0, x_1, y_1,
+                x_0+x_offset, y_0, x_1+x_offset, y_1,
                 ls=4 if i < plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS else line_style
                 # ls=i
             )
@@ -114,7 +116,7 @@ def gnuplot_observer_time_distance_bearing(stream: typing.TextIO=sys.stdout) -> 
         label_texts.append(
             # Gnuplot label numbering starts from 1
             'set label {} "t={:.1f}" at {:.0f},20 right rotate by 60 font ",9"'.format(
-                i + 1, time_dist_brng_s[1][i, 0], x_0# - 25
+                i + 1, time_dist_brng_s[1][i, 0], x_0 + x_offset# - 25
             )
         )
     # print('# Arrows:')
@@ -124,24 +126,24 @@ def gnuplot_observer_time_distance_bearing(stream: typing.TextIO=sys.stdout) -> 
     stream.write('\n'.join(result))
 
     # Add annotation to identify observer
-    ((x_mean, x_std), (y_mean, y_std)) = video_analysis.observer_position_mean_std(
+    ((x_mean, x_std), (y_mean, y_std)) = video_analysis.observer_position_mean_std_from_aspects(
         baseline=plot_constants.OBSERVER_XY_MINIMUM_BASELINE,
         ignore_first_n=plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS,
         t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
     )
     label_texts.append(
         'set label "Mean position at x={x:.0f}, y={y:.0f}" at {x_pos:.0f},{y_pos:.0f} right font ",14"'.format(
-            x=x_mean,
+            x=x_mean+x_offset,
             y=y_mean,
-            x_pos=x_mean - 500,
+            x_pos=x_mean + x_offset - 500,
             y_pos=y_mean,
         )
     )
     arrow_texts.append(
         'set arrow from {:.0f},{:.0f} to {:.0f},{:.0f} lw 3'.format(
-            x_mean - 500 + 25,
+            x_mean + x_offset - 500 + 25,
             y_mean,
-            x_mean,
+            x_mean + x_offset,
             y_mean,
         )
     )
@@ -162,16 +164,18 @@ def gnuplot_observer_time_distance_bearing_with_yaw(stream: typing.TextIO=sys.st
         for note in notes:
             stream.write('# {}\n'.format(note))
     FORMAT = '{:8.3f}'
+    x_offset = plot_common.x_offset()
     gs_fit = video_analysis.ground_speed_curve_fit(video_data.ErrorDirection.MID)
     # time_dist_brng = video_analysis.observer_time_distance_bearing(gs_fit, video_data.ErrorDirection.MID)
     time_dist_brng = video_analysis.observer_time_distance_bearing_from_wing_tips(gs_fit, video_data.ErrorDirection.MID)
     # time_dist_brng = video_analysis.time_distance_bearing_from_fits(time_interval=1.0)
-    ((x_mean, x_std), (y_mean, y_std)) = video_analysis.observer_position_mean_std(
-        baseline=plot_constants.OBSERVER_XY_MINIMUM_BASELINE,
-        ignore_first_n=plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS,
-        t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
-    )
-    print('Observer at:', ((x_mean, x_std), (y_mean, y_std)))
+    # ((x_mean, x_std), (y_mean, y_std)) = video_analysis.observer_position_mean_std_from_aspects(
+    #     baseline=plot_constants.OBSERVER_XY_MINIMUM_BASELINE,
+    #     ignore_first_n=plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS,
+    #     t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
+    # )
+    ((x_mean, x_std), (y_mean, y_std)) = video_analysis.observer_position_mean_std_from_full_transits()
+    # print('Observer at:', ((x_mean+x_offset, x_std), (y_mean, y_std)))
 
     y_value = -950
     y_0 = 0.0
@@ -179,7 +183,7 @@ def gnuplot_observer_time_distance_bearing_with_yaw(stream: typing.TextIO=sys.st
     label_texts = []
     for i in range(len(time_dist_brng)):
         t = time_dist_brng[i, 0]
-        x_0 = time_dist_brng[i, 1]
+        x_0 = time_dist_brng[i, 1] + x_offset
         bearing = time_dist_brng[i, 2]
         computed_bearing = math.degrees(math.atan2(y_mean, x_mean - x_0))
         computed_bearing %= 360
@@ -257,10 +261,11 @@ def gnuplot_observer_time_distance_bearing_with_yaw(stream: typing.TextIO=sys.st
 
 def gnuplot_observer_time_distance_bearing_plt() -> str:
     return """# set logscale x
+set colorsequence classic
 set grid
 set title "Bearings to Observer\\n(NOTE: Axes not to common scale)"
-set xlabel "Distance from t=0 (m)"
-set xrange [0:3000]
+set xlabel "Distance from runway start (m)"
+set xrange [1000:4000]
 #set xrange [2200:2300]
 set xtics
 #set format x ""
@@ -307,7 +312,6 @@ reset
 
 
 def gnuplot_observer_xy(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
-    # FIXME: This is relative to video start not runway start.
     notes = [
         '"{}"'.format('Estimated x/y of observer.'),
         'Columns:',
@@ -322,7 +326,7 @@ def gnuplot_observer_xy(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
             stream.write('# {}\n'.format(note))
     # observer_xy array
     observations = [
-        video_analysis.observer_position_combinations(
+        video_analysis.observer_position_combinations_from_aspects(
             min_mid_max=error_direction,
             baseline=plot_constants.OBSERVER_XY_MINIMUM_BASELINE,
             ignore_first_n=plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS,
@@ -358,31 +362,68 @@ def gnuplot_observer_xy(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
     # y_min = np.min(observations[1], axis=0)[1]
     # y_max = np.max(observations[1], axis=0)[1]
     # y_std = np.std(observations[1], axis=0)[1]
-    ((x_mean, x_std), (y_mean, y_std)) = video_analysis.observer_position_mean_std(
+    offset_label_x = -35
+    ((x_mean, x_std), (y_mean, y_std)) = video_analysis.observer_position_mean_std_from_aspects(
         baseline=plot_constants.OBSERVER_XY_MINIMUM_BASELINE,
         ignore_first_n=plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS,
         t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
     )
     x_mean += plot_common.x_offset()
+
     ret = [
-        'set title "Observers Position [{:d} observations]"'.format(len(observations[1])),
-        'set label "X={x_mean:.0f} ±{x_err:.0f}m Y={y_mean:.0f} ±{y_err:.0f} m" at {x:.0f},{y:.0f} center font ",14"'.format(
-            x_mean=x_mean,
-            x_err=x_std,#(x_max - x_min) / 2,
-            y_mean=y_mean,
-            y_err=y_std,#(y_max - y_min) / 2,
-            x=x_mean-50,
-            y=y_mean+45,
-        ),
-        'set arrow from {:.0f},{:.0f} to {:.0f},{:.0f} lt -1 lw 2 empty'.format(
-            x_mean-40, y_mean+45-8, x_mean, y_mean,
-        ),
-    ]
-    ret.extend(plot_common.full_transit_labels_and_arrows())
+        'set title "Observers Position [{:d} observations]"'.format(len(observations[1]))
+        ]
+    # Label and arrow for observer position from bearings
+    ret.extend(
+        [
+            'set label "X={x_mean:.0f} ±{x_err:.0f}m Y={y_mean:.0f} ±{y_err:.0f} m" at {x:.0f},{y:.0f} right font ",12" textcolor rgb "#007F00"'.format(
+                x_mean=x_mean,
+                x_err=x_std,
+                y_mean=y_mean,
+                y_err=y_std,
+                x=x_mean+offset_label_x,
+                y=y_mean,
+            ),
+            'set arrow from {:.0f},{:.0f} to {:.0f},{:.0f} lt -1 lw 2 empty'.format(
+                x_mean+offset_label_x+1, y_mean, x_mean, y_mean,
+            ),
+        ]
+    )
+    # Add transit lines
+    # ret.extend(plot_common.full_transit_labels_and_arrows('#FF00FF'))
+    ret.extend(plot_common.full_transit_labels_and_arrows('#FF00FF', 1.5))
+    # Apply positional error and plot
+    # 808080
+    error = video_data.GOOGLE_EARTH_ERROR
+    ret.extend(
+        plot_common.full_transit_arrows_with_position_error('#00D0D0', error, 1.5)
+    )
+    ret.extend(
+        plot_common.full_transit_arrows_with_position_error('#D0D000', -error, 1.5)
+    )
+    # Add transit label
+    x, dx, y, dy = plot_common.observer_position_from_full_transits()
+    # Add label and arrow for observer position from full transits
+    ret.extend(
+        [
+            'set label "X={x_mean:.0f} ±{x_err:.0f}m Y={y_mean:.0f} ±{y_err:.0f} m" at {x:.0f},{y:.0f} right font ",12" textcolor rgb "#FF00FF"'.format(
+                x_mean=x,
+                x_err=dx,
+                y_mean=y,
+                y_err=dy,
+                x=x+offset_label_x,
+                y=y,
+            ),
+            'set arrow from {:.0f},{:.0f} to {:.0f},{:.0f} lt -1 lw 2 empty'.format(
+                x+offset_label_x+1, y, x, y,
+            ),
+        ]
+    )
     return ret
 
 def gnuplot_observer_xy_plt() -> str:
     return """# set logscale x
+set colorsequence classic
 set grid
 set xlabel "X (m)"
 #set xtics 2100,100,2400
@@ -411,14 +452,14 @@ set datafile missing "NaN"
 
 # set key off
 
-set terminal svg size 600,600
+set terminal svg size 750,600
 
 {computed_data}
 
 set output "{file_name}.svg"
 
 plot "{file_name}.dat" using 1:2 title "With -ve error" w points ps 0.5, \\
-    "{file_name}.dat" using 1:3 title "No error" w points ps 0.5, \\
+    "{file_name}.dat" using 1:3 title "No error" w points ps 1.0, \\
     "{file_name}.dat" using 1:4 title "With +ve error" w points ps 0.5
 #plot "{file_name}.dat" using 1:3 title "Mid data" w points lt 6 ps 1
 reset

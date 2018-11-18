@@ -16,7 +16,7 @@ class XY(collections.namedtuple('XY', 'x, y')):
 
     def __eq__(self, other):
         if self.__class__ == other.__class__:
-            return self.x == other.x and self.y == other.y
+            return math.isclose(self.x, other.x, abs_tol=1e-6) and math.isclose(self.y, other.y, abs_tol=1e-6)
         return False
 
     def __str__(self):
@@ -63,7 +63,18 @@ class LatLong(collections.namedtuple('LatLong', 'lat, long')):
         return self._devDMM(self.long)
 
 
-MPS_TO_KNOTS = 3600.0 / 0.3048 / 6080
+def move_point(pt: XY, distance: float, degrees: float) -> XY:
+    """
+    Create a new point that is the original point moved by distance (m) in direction degrees.
+    """
+    x = pt.x + distance * math.cos(math.radians(degrees))
+    y = pt.y + distance * math.sin(math.radians(degrees))
+    return XY(x, y)
+
+
+# A nautical mile is 1852m by definition: https://en.wikipedia.org/wiki/Nautical_mile
+# 6080 feet is 6080 * 0.3048 = 1853.184m
+MPS_TO_KNOTS = 3600.0 / 1852
 
 
 def m_p_s_to_knots(v: float) -> float:
@@ -286,16 +297,18 @@ def distance_lat_long(pos1: LatLong, pos2: LatLong) -> float:
 
 
 def bearing_lat_long(pos1: LatLong, pos2: LatLong) -> float:
-    """Bearing in degrees between two lat/long positons.
+    """
+    Bearing in degrees between two lat/long positons.
     Lat/long in degrees.
-    https://en.wikipedia.org/wiki/Great-circle_navigation"""
+    https://en.wikipedia.org/wiki/Great-circle_navigation
+    """
     # (easting, northing, zone_num, zone_letter)
     utm1 = utm.from_latlon(pos1.lat, pos1.long)
     utm2 = utm.from_latlon(pos2.lat, pos2.long)
     if utm1[2] == utm2[2]:
         # Same zone
-        y = utm2[0] - utm1[0]
-        x = utm2[1] - utm1[1]
+        y = utm2[0] - utm1[0] # Subtract eastings
+        x = utm2[1] - utm1[1] # Subtract northings
     else:
         y = math.cos(math.radians(pos2.lat)) * math.sin(math.radians(pos2.long - pos1.long))
         x = math.cos(math.radians(pos1.lat)) * math.sin(math.radians(pos2.lat))
@@ -330,9 +343,11 @@ def lat_long_bearing_distance_to_lat_long(pos: LatLong, dist: float, brng: float
 def lat_long_to_xy(datum: LatLong,
                    bearing_x_axis: float,
                    pos: LatLong) -> XY:
-    """Given datum lat/long position and bearing of the X axis this returns the x/y
+    """
+    Given datum lat/long position and bearing of the X axis this returns the x/y
     position of a lat/long position.
-    Lat/long/bearing in degrees. x/y is in metres."""
+    Lat/long/bearing in degrees. x/y is in metres.
+    """
     angle = bearing_lat_long(datum, pos) - bearing_x_axis
     radius = distance_lat_long(datum, pos)
     # print(
@@ -353,10 +368,19 @@ def xy_to_lat_long(datum: LatLong,
     position of a x/y position.
     Lat/long/bearing in degrees. x/y is in metres.
     """
-    angle = math.atan2(xy.y, xy.x) + bearing_x_axis
-    radius = math.sqrt(xy.x**2 + xy.y**2)
-    result = lat_long_bearing_distance_to_lat_long(datum, radius, angle)
-    return result
+    # Four tuple: (easting, northing, zone_num, zone_letter)
+    datum_utm = utm.from_latlon(datum.lat, datum.long)
+    de = xy.x * math.sin(math.radians(bearing_x_axis)) + xy.y * math.cos(math.radians(bearing_x_axis))
+    dn = xy.x * math.cos(math.radians(bearing_x_axis)) - xy.y * math.sin(math.radians(bearing_x_axis))
+    easting = datum_utm[0] + de
+    northing = datum_utm[1] + dn
+
+    utm_result = utm.to_latlon(easting, northing, datum_utm[2], datum_utm[3])
+    # angle = math.atan2(xy.y, xy.x) + bearing_x_axis
+    # radius = math.sqrt(xy.x**2 + xy.y**2)
+    # result = lat_long_bearing_distance_to_lat_long(datum, radius, angle)
+    # return result
+    return utm_result
 
 
 def transit_x_axis_intercept(px: float, py: float, ox: float, oy: float) -> float:
@@ -407,3 +431,15 @@ def transit_line_past_observer(linefrom: XY, lineto: XY, observer: XY, extra: fl
     x = distance * math.cos(math.radians(bearing))
     y = distance * math.sin(math.radians(bearing))
     return XY(linefrom.x + x, linefrom.y + y)
+
+
+def transit_point_with_error(line_from: XY, line_to: XY, error: float) -> typing.Tuple[XY, XY, float]:
+    """
+    Given two points and a disturbance of error which can be +/- this returns a new from and to point
+    and bearing between them applying the error in the worst possible way to the original points.
+    """
+    bearing = transit_bearing(line_from.x, line_from.y, line_to.x, line_to.y)
+    new_from = move_point(line_from, error, bearing - 90)
+    new_to = move_point(line_to, error, bearing + 90)
+    new_bearing = transit_bearing(new_from.x, new_from.y, new_to.x, new_to.y)
+    return new_from, new_to, new_bearing

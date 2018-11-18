@@ -1,13 +1,13 @@
 #
 # Notes:
 # time x(m) y(m) x(y=0)(m) y==0(m) Name
-2.4      72.8  413.7 1259.6 0.0 # Tower 1->Fence Break 1
-2.4    2256.5 -357.1 1259.6 0.0 # Tower 1->Fence Break 1
-17.7    950.9  982.6 2356.7 0.0 # Control tower base->Embankment inside corner
-17.7   2676.7 -236.3 2356.7 0.0 # Control tower base->Embankment inside corner
-24.9   2723.6  382.3 2965.5 0.0 # Trees right of Fedex->Factory interior corner
-24.9   3175.4 -355.7 2965.5 0.0 # Trees right of Fedex->Factory interior corner
-26.6   2938.0  389.5 3110.5 0.0 # Factory cream stripe->ALUGAM-SE Left
-26.6   3342.0 -559.9 3110.5 0.0 # Factory cream stripe->ALUGAM-SE Left
-28.0   3023.3  812.6 3242.5 0.0 # Tall radio tower->Building corner
-28.0   3270.4 -140.3 3242.5 0.0 # Tall radio tower->Building corner
+2.4      72.8  413.7 1242.9 0.0 # Tower 1->Fence Break 1
+2.4    2256.5 -357.1 1242.9 0.0 # Tower 1->Fence Break 1
+17.7    950.9  982.6 2339.3 0.0 # Control tower base->Embankment inside corner
+17.7   2676.7 -236.3 2339.3 0.0 # Control tower base->Embankment inside corner
+24.9   2723.6  382.3 2958.3 0.0 # Trees right of Fedex->Factory interior corner
+24.9   3175.4 -355.7 2958.3 0.0 # Trees right of Fedex->Factory interior corner
+26.6   2938.0  389.5 3103.9 0.0 # Factory cream stripe->ALUGAM-SE Left
+26.6   3342.0 -559.9 3103.9 0.0 # Factory cream stripe->ALUGAM-SE Left
+28.0   3023.3  812.6 3233.4 0.0 # Tall radio tower->Building corner
+28.0   3270.4 -140.3 3233.4 0.0 # Tall radio tower->Building corner

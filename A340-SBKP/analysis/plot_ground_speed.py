@@ -14,7 +14,7 @@ def gnuplot_ground_speed(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
     gs_arrays = [
         video_analysis.ground_speeds(min_max) for min_max in list(video_data.ErrorDirection)
     ]
-    gs_fits = plot_common.get_gs_fits()
+    gs_fits = [plot_common.get_gs_fit(err) for err in video_data.ErrorDirection]
     result = [
         '# "{}"'.format('Grounds speed, mid data and smoothed data.')
     ]
@@ -61,6 +61,7 @@ def gnuplot_ground_speed(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
 
 def gnuplot_ground_speed_plt() -> str:
     return """# set logscale x
+set colorsequence classic
 set grid
 set title "Ground Speed."
 set xlabel "Video Time (seconds)"
@@ -104,7 +105,7 @@ def gnuplot_ground_speed_extrapolated(stream: typing.TextIO=sys.stdout) -> typin
     gs_arrays = [
         video_analysis.ground_speeds(min_max) for min_max in list(video_data.ErrorDirection)
     ]
-    gs_fits = plot_common.get_gs_fits()
+    gs_fits = [plot_common.get_gs_fit(err) for err in video_data.ErrorDirection]
     result = [
         '# "{}"'.format('Grounds speed, mid data and smoothed data, extrapolated.')
     ]
@@ -176,6 +177,7 @@ def gnuplot_ground_speed_extrapolated(stream: typing.TextIO=sys.stdout) -> typin
 
 def gnuplot_ground_speed_extrapolated_plt() -> str:
     return """# set logscale x
+set colorsequence classic
 set grid
 set title "Ground Speed."
 set xlabel "Video Time (seconds)"

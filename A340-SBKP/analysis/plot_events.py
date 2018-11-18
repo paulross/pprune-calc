@@ -6,8 +6,7 @@ import numpy as np
 from analysis import video_analysis
 from analysis import video_data
 from analysis import video_utils
-from analysis.plot_common import get_gs_fits
-from analysis.plot_constants import GROUND_SPEED_OFFSETS
+from analysis.plot_common import get_gs_fits_corrected
 from analysis.plot_svg import EVENTS_TIMED
 
 
@@ -49,6 +48,7 @@ class ComputedEventData(
             '{label:18}:'
             ' t={t_video:5.1f} ± {t_video_err:3.1f}'
             ' [{t_start:4.1f} ± {t_start_err:3.1f}]'
+            ' gs={gs:4.1f} ±{gs_err:3.1f}'
             ' d={d_start:6.1f} ± {d_start_err:5.1f}'
             ' d_end={d_end:6.1f} ± {d_end_err:5.1f}'
             ' {notes}'.format(
@@ -57,6 +57,8 @@ class ComputedEventData(
                 t_video_err=self.t_video.error or 0.0,
                 t_start=self.t_start.value,
                 t_start_err=self.t_start.error or 0.0,
+                gs=self.ground_speed.value,
+                gs_err=self.ground_speed.error or 0.0,
                 d_start=self.d_start.value,
                 d_start_err=self.d_start.error,
                 d_end=self.d_end.value,
@@ -67,7 +69,8 @@ class ComputedEventData(
 
 
 def gen_event_data() -> ComputedEventData:
-    gs_fits = get_gs_fits()
+    # gs_fits = [plot_common.get_gs_fit(err) for err in video_data.ErrorDirection]
+    gs_fits  = get_gs_fits_corrected()
     # Find initial start and distance
     start_times = [np.roots(list(reversed(v)))[-1] for v in gs_fits]
     # These are the location of the aircraft from the beginning of the runway at t=0
@@ -89,7 +92,7 @@ def gen_event_data() -> ComputedEventData:
         else:
             t_start = t_video - start_times[1]
             t_err = None
-            gs_err = max([abs(v) for v in GROUND_SPEED_OFFSETS])
+            gs_err = video_utils.knots_to_m_p_s(5.0)#max([abs(v) for v in GROUND_SPEED_OFFSETS])
         gs = video_analysis.ground_speed_from_fit(t_video, gs_fit_mid)
         accl = video_analysis.ground_speed_differential(t_video, gs_fit_mid)
         d_from_start = offsets[1] + video_analysis.ground_speed_integral(0.0, t_video, gs_fits[1])
@@ -101,12 +104,16 @@ def gen_event_data() -> ComputedEventData:
                 abs(d_from_start - d_from_start_max),
             ]
         )
+        # Transit calculations improve integrated distance
+        if t_video >= 0.0:
+            d_from_start_error = 25.0
+        d_from_start_error = max([d_from_start_error, 25.0])
         yield ComputedEventData(
             event.label,
             ValueAndError(t_video, t_err),
             ValueAndError(t_start, t_err),
             ValueAndError(gs, gs_err),
-            ValueAndError(accl, 0.0),
+            ValueAndError(accl, 0.17 / 2), # Hard coded
             ValueAndError(d_from_start, d_from_start_error),
             ValueAndError(video_data.RUNWAY_LEN_M - d_from_start, d_from_start_error),
             event.notes,
@@ -115,27 +122,35 @@ def gen_event_data() -> ComputedEventData:
 
 def create_event_table() -> typing.List[typing.List[str]]:
     table = []
+    # Take the t_start error at the beginning and propagate it.
+    t_start_error = None
     for event in gen_event_data():
+        # print('TRACE: event', event)
         # 'label, t_video, t_start, ground_speed, acceleration, d_start, d_end, notes'
+        if event.t_start.error is not None:
+            t_start_error = event.t_start.error
         row = [
             event.label,
             # t_video
-            '{:.1f} ± {:.1f}'.format(
+            '{:.1f} ±{:.1f}'.format(
                 event.t_video.value, event.t_video.error
             ) if event.t_video.error is not None else '{:.1f}'.format(event.t_video.value),
             # t_start
-            '{:.1f} ± {:.1f}'.format(
-                event.t_start.value, event.t_start.error
-            ) if event.t_start.error is not None else '{:.1f}'.format(event.t_start.value),
+            '{:.1f} ±{:.1f}'.format(
+                event.t_start.value, t_start_error
+            ),
             # ground speed
-            '{:.0f} ± {:.0f}'.format(
+            '{:.0f} ±{:.0f}'.format(
                 video_utils.m_p_s_to_knots(event.ground_speed.value),
                 video_utils.m_p_s_to_knots(event.ground_speed.error)
             ) if event.ground_speed.error is not None else '{:.0f}'.format(
                 video_utils.m_p_s_to_knots(event.ground_speed.value)),
-            '{:.1f}'.format(video_utils.m_p_s_to_knots(event.acceleration.value)),
-            '{:.0f} ± {:.0f}'.format(event.d_start.value, event.d_start.error),
-            '{:.0f} ± {:.0f}'.format(event.d_end.value, event.d_end.error),
+            '{:.1f} ±{:0.2f}'.format(
+                video_utils.m_p_s_to_knots(event.acceleration.value),
+                video_utils.m_p_s_to_knots(event.acceleration.error),
+            ),
+            '{:.0f} ±{:.0f}'.format(event.d_start.value, event.d_start.error),
+            '{:.0f} ±{:.0f}'.format(event.d_end.value, event.d_end.error),
             event.notes,
         ]
         table.append(row)
@@ -143,12 +158,19 @@ def create_event_table() -> typing.List[typing.List[str]]:
 
 
 def print_event_table_markdown():
+    table, title = markdown_table_of_events()
+    print(title)
+    print('\n'.join(table))
+
+
+def markdown_table_of_events() -> typing.Union[typing.List[str], str]:
     def expand_line(lst: typing.List[str]) -> str:
         return '| {} |'.format(' | '.join(lst))
 
-    header = create_event_table_header()
-    print(expand_line(header))
-    print('| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |')
+    ret = [
+        expand_line(create_event_table_header()),
+        '| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |',
+    ]
     for row in create_event_table():
-        assert len(header) == len(row), 'Header: {:d} row: {:d}'.format(len(header), len(row))
-        print(expand_line(row))
+        ret.append(expand_line(row))
+    return ret, 'Selected Events'

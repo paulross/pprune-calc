@@ -50,6 +50,7 @@ def gnuplot_pitch(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
 
 def gnuplot_pitch_plt() -> str:
     return """# set logscale x
+set colorsequence classic
 set grid
 set title "Pitch Angle."
 set xlabel "Video Time (s)"

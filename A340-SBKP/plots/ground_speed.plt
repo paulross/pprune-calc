@@ -1,4 +1,5 @@
 # set logscale x
+set colorsequence classic
 set grid
 set title "Ground Speed."
 set xlabel "Video Time (seconds)"

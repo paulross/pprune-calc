@@ -32,11 +32,12 @@ def gnuplot_aircraft_yaw(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
     # Units are (seconds, metres, degrees).
 
     time_yaw = []
-    ((x_mean, x_std), (y_mean, y_std)) = video_analysis.observer_position_mean_std(
-        baseline=plot_constants.OBSERVER_XY_MINIMUM_BASELINE,
-        ignore_first_n=plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS,
-        t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
-    )
+    # ((x_mean, x_std), (y_mean, y_std)) = video_analysis.observer_position_mean_std_from_aspects(
+    #     baseline=plot_constants.OBSERVER_XY_MINIMUM_BASELINE,
+    #     ignore_first_n=plot_constants.OBSERVER_XY_IGNORE_N_FIRST_BEARINGS,
+    #     t_range=plot_constants.OBSERVER_XY_TIME_RANGE,
+    # )
+    ((x_mean, x_std), (y_mean, y_std)) = video_analysis.observer_position_mean_std_from_full_transits()
     observer_error = math.sqrt(x_std**2 + y_std**2)
     # Observer from bearings    : x=3480.0 y=-763.0
     # Observer from google earth: x=3457.9 y=-655.5
@@ -48,7 +49,7 @@ def gnuplot_aircraft_yaw(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
     # y_mean = -764.88
     for t, x_distance, aspect, aspect_error in time_dist_brng:
         # Calculate the bearing from the observers assumed position to the aircraft position
-        x_obs_aircraft = x_mean - x_distance
+        x_obs_aircraft = x_mean - x_distance - plot_common.x_offset()
         obs_brng = math.degrees(
             math.atan2(y_mean, x_obs_aircraft)
         )
@@ -60,7 +61,6 @@ def gnuplot_aircraft_yaw(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
         # 2.0 * atan(OBSERVER_ASSUMED_POSITION_ERROR / observer-to_aircraft_distance)
         obs_aircraft_distance = math.sqrt(y_mean**2 + x_obs_aircraft**2)
         error = 2.0 * math.degrees(math.atan(observer_error / obs_aircraft_distance))
-        # TODO: Take the estimated error from AIRCRAFT_ASPECTS_FROM_WING_TIPS
         error += aspect_error
         time_yaw.append((t, yaw, yaw - error, yaw + error))
         # print('TRACE: t={:8.1f} yaw={:6.3f}),'.format(t, yaw))
@@ -72,6 +72,7 @@ def gnuplot_aircraft_yaw(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
 
 def gnuplot_aircraft_yaw_plt() -> str:
     return """# set logscale x
+set colorsequence classic
 set grid
 set title "Aircraft Deviation from Runway Heading{computed_data}"
 set xlabel "Video Time (s)"
@@ -82,7 +83,7 @@ set xtics autofreq
 
 # set logscale y
 set ylabel "Deviation (degrees, +ve right, -ve left)"
-set yrange [:8]
+set yrange [5:-5]
 #set yrange [-600:-900] reverse
 set ytics 1
 # set mytics 0.5
@@ -105,12 +106,12 @@ set output "{file_name}.svg"
 
 
 # Nose wheel off at around 00:17:27 i.e. 17.9s
-set arrow from 17.9,-4.5 to 17.9,0.0 lw 2 lc rgb "black"
-set label 3 "Nose wheel off" at 17.9,-5 font ",12" center
+set arrow from 17.9,-3.5 to 17.9,-0.8 lw 2 lc rgb "black"
+set label 3 "Nose wheel off" at 17.9,-4 font ",12" center
 
 # Main gear off at around 00:25:19 i.e. 25.63
-set arrow from 25.6,-4.5 to 25.6,0.5 lw 2 lc rgb "black"
-set label 4 "Main wheels off" at 25.6,-5 font ",12" center
+set arrow from 25.6,-3.5 to 25.6,-0.5 lw 2 lc rgb "black"
+set label 4 "Main wheels off" at 25.6,-4 font ",12" center
 
 # linespoints  ps 1.25
 plot "{file_name}.dat" using 1:2:3:4 title "Estimated" w yerrorbars ps 1.25, \\

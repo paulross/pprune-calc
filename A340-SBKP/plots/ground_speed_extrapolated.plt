@@ -1,4 +1,5 @@
 # set logscale x
+set colorsequence classic
 set grid
 set title "Ground Speed."
 set xlabel "Video Time (seconds)"
@@ -25,11 +26,11 @@ set output "ground_speed_extrapolated.svg"   # choose the output device
 #set key title "Window Length"
 #  lw 2 pointsize 2
 
-set arrow from -30.057,50 to -30.057,0.000 lt 1
+set arrow from -30.059,50 to -30.059,0.000 lt 1
 set label "t=-30.1s" at -32.1,54 left font ",12"
 set arrow from -32.829,75 to -32.829,0.000 lt 2
 set label "t=-32.8s" at -34.8,79 left font ",12"
-set arrow from -35.570,100 to -35.570,0.000 lt 3
+set arrow from -35.569,100 to -35.569,0.000 lt 3
 set label "t=-35.6s" at -37.6,104 left font ",12"
 
 # linespoints

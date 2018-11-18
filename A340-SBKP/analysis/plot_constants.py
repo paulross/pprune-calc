@@ -4,6 +4,7 @@ import math
 from analysis import video_data
 from analysis import video_utils
 
+# TODO: Merge this with video_data.XY
 PosXY = collections.namedtuple('PosXY', 'x, y')
 
 # Open Street Map file that we have created, and the runway positions in pixels.

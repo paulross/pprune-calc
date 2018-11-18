@@ -11,15 +11,10 @@ from analysis import video_utils
 
 
 def gnuplot_acceleration(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
-    gs_fits = plot_common.get_gs_fits()
-    # print('TRACE: gs_fits', gs_fits)
-    # print(
-    #     'Acceleration at t=0 (knots/s):',
-    #     video_utils.m_p_s_to_knots(video_analysis.ground_speed_differential(-33.0, gs_fits[1])),
-    # )
     timebase = video_analysis.ground_speed_timebase()
     accl_arrays_smoothed = []
-    for fit in gs_fits:
+    for err in video_data.ErrorDirection:
+        fit = plot_common.get_gs_fit(err)
         accl_arrays_smoothed.append(
             np.array(
                 [(t, video_analysis.ground_speed_differential(t, fit)) for t in timebase]
@@ -58,6 +53,7 @@ def gnuplot_acceleration(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
 
 def gnuplot_acceleration_plt() -> str:
     return """# set logscale x
+set colorsequence classic
 set grid
 set title "Acceleration."
 set xlabel "Video Time (seconds)"
@@ -94,52 +90,69 @@ plot "{file_name}.dat" using 1:2 title "Acceleration from best fit of ground spe
 reset
 """
 
+def markdown_table_acceleration_error() -> typing.Tuple[typing.List[str], str]:
+    return _markdown_table_acceleration_error(False)
 
-def gnuplot_raw_acceleration(stream: typing.TextIO=sys.stdout) -> typing.List[str]:
-    has_prev = False
-    t_prev = math.nan
-    gs_prev: float = math.nan
-    gs_min_prev: float = math.nan
-    gs_max_prev: float = math.nan
-    plot_data = []
-    for transit in video_data.AIRCRAFT_TRANSITS:
-        t = transit.time
-        dt = transit.dt
-        gs = video_utils.m_p_s_to_knots(video_analysis.ground_speed_raw(t, dt, 0))
-        gs_min = video_utils.m_p_s_to_knots(video_analysis.ground_speed_raw(t, dt, -1))
-        gs_max = video_utils.m_p_s_to_knots(video_analysis.ground_speed_raw(t, dt, 1))
-        if has_prev:
-            plot_data.append(
+
+def markdown_table_acceleration_error_worst_case() -> typing.Tuple[typing.List[str], str]:
+    return _markdown_table_acceleration_error(True)
+
+
+def _markdown_table_acceleration_error(worst_cast: bool) -> typing.Tuple[typing.List[str], str]:
+    """
+    Returns a markdown table and a title for the acceleration error.
+    """
+    gs_fits = [plot_common.get_gs_fit(err) for err in video_data.ErrorDirection]
+    three_dist_arrays = plot_common.get_distances_min_mid_max(video_data.TIME_VIDEO_END_ASPHALT.time)
+    # Time ranges for min/mid/max of start of take off
+    t_range = [arr[0][0] for arr in three_dist_arrays]
+    # Distance of start of take off from start of runway for min/mid/max
+    d_range = [arr[0][1] for arr in three_dist_arrays]
+    accl_mid = video_utils.m_p_s_to_knots(
+        video_analysis.ground_speed_from_fit(
+            video_data.TIME_VIDEO_END_ASPHALT.time, gs_fits[1]
+        )
+    ) / (video_data.TIME_VIDEO_END_ASPHALT.time - t_range[1])
+
+    table = [
+        '| {} |'.format(
+            ' | '.join(
                 [
-                    t,
-                    (gs - gs_prev) / (t - t_prev),
-                    t - video_data.ERROR_TIMESTAMP,
-                    t + video_data.ERROR_TIMESTAMP,
-                    # TODO: Is this right or should we cross min/max
-                    # TODO: Add variation in dt
-                    # (gs_min - gs_max_prev) / (t - t_prev),
-                    # (gs_max - gs_min_prev) / (t - t_prev),
-                    (gs_min - gs_min_prev) / (t - t_prev),
-                    (gs_max - gs_max_prev) / (t - t_prev),
+                    'Speed Error',
+                    'Time from start take off to end asphalt (s)',
+                    'Speed (knots)',
+                    'Mean Acceleration (knots/s)',
+                    'Error (knots/s)',
+                    'Distance from start take off from start of runway (m)',
                 ]
             )
-        t_prev = t
-        gs_prev = gs
-        gs_min_prev = gs_min
-        gs_max_prev = gs_max
-        has_prev = True
-    stream.write('# "{}"\n'.format('Raw acceleration in Knots/s with error estimate.'))
-    notes = [
+        ),
+        '| --- | ---: | ---: | ---: | ---: | ---: | ---: |',
     ]
-    if len(notes):
-        stream.write('#\n# Notes:\n')
-    for note in notes:
-        stream.write('# {}\n'.format(note))
-    stream.write('# {:>2} {:>8} {:>8} {:>8} {:>8} {:>8}\n'.format(
-            't', 'accn', 't_low', 't_high', 'accn_low', 'accn_high'
+    err = -10
+    for i in range(len(gs_fits)):
+        v_m_per_sec = video_analysis.ground_speed_from_fit(
+            video_data.TIME_VIDEO_END_ASPHALT.time, gs_fits[i]
         )
-    )
-    for data in plot_data:
-        stream.write('{:.1f} {:8.3f} {:8.3f} {:8.3f} {:8.3f} {:8.3f}\n'.format(*data)
+        if worst_cast:
+            t_take_off = video_data.TIME_VIDEO_END_ASPHALT.time - t_range[2 - i]
+            # FIXME: How is the worst case calculation been done?
+            # Hand calculation gives start of take off distances of 542, 511, 485m.
+            # How was this result obtained?
+            d_start = video_data.RUNWAY_LEN_M - (t_take_off * v_m_per_sec / 2.0)
+        else:
+            t_take_off = video_data.TIME_VIDEO_END_ASPHALT.time - t_range[i]
+            d_start = d_range[i]
+        v_knots = video_utils.m_p_s_to_knots(v_m_per_sec)
+        a = v_knots / t_take_off
+        table.append(
+            '| {:d} knots | {:.1f} | {:.0f} | {:.2f} | {:.2f} | {:.0f} |'.format(
+                err, t_take_off, v_knots, a, a - accl_mid, d_start
+            )
         )
-    return []
+        err += 10
+    if worst_cast:
+        title = 'Acceleration error, worst case.'
+    else:
+        title = 'Acceleration error.'
+    return table, title
