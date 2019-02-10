@@ -29,6 +29,16 @@ README_FILENAME = 'README.md'
 README_FILE_LOCATION = os.path.join(os.path.dirname(__file__), os.pardir, README_FILENAME)
 
 
+# # Table of Contents
+# 1. [Example](#example)
+# 2. [Example2](#example2)
+# 3. [Third Example](#third-example)
+#
+# ## Example
+# ## Example2
+# ## Third Example
+
+
 PREAMBLE = """
 <!-- 
 =============================================
@@ -60,7 +70,7 @@ SUMMARY = """# Summary
 
 I found that:
 
-* The takeoff started 34.2 ±1.4 seconds before the beginning of the video. The aircraft is 75 ±159m from the
+* The takeoff started 34.2 ±1.4 seconds before the beginning of the video with the aircraft 75 ±159m from the
 start of the runway.
 * At the start of the video the ground speed is 113 ±5 knots. The aircraft is 1110 ±{runway_distance_error}m from the
 start of the runway with 2130 ±{runway_distance_error}m of runway remaining.
@@ -79,6 +89,23 @@ remaining.
     google_earth_error=video_data.GOOGLE_EARTH_ERROR,
     runway_distance_error=video_data.RUNWAY_DISTANCE_ERROR
 )
+
+OPENSTREETMAP_SVG_ANNOTATION = """
+Here is the data plotted on an image of Viracopos International Airport from Open Street Map.
+The red boxes illustrate the accuracy of the position estimate.
+The probable location of the observer is also shown, the black lines are transits that establish that position.
+The annotations in blue contain:
+
+* v= The ground speed in knots.
+* t= The time as video time, followed by [...], the estimated time from start of takeoff.
+* d= The distance from the start of the runway, followed by [... to go], the distance to the end of the runway.
+
+<center>
+
+<img src="plots/OpenStreetmap_SBKP_01_work_1024.png" width="1024" />
+
+</center>
+"""
 
 DATA = """# Data
 
@@ -120,7 +147,7 @@ there is strong evidence for this.
 * Any details of the video camera or operator.
 * Any editing of the video that alters its fidelity (i.e the video is taken in good faith).
 
-If any of these assumptions are wrong it will affect this analysis greatly.
+If any of these assumptions are wrong it will affect this analysis greatly. Any errors are entirely mine.
 
 ## Measurements
 
@@ -176,14 +203,14 @@ This extrapolation gives a start of takeoff (video) time of -32.8 ±2.8 seconds.
 
 """
 
-DISTANCE_A = """## Distance
+DISTANCE_A = """## Distance Down The Runway
 
-Distance can be estimated by integrating the ground speed data.
-This will be affected by errors in ground speed estimation proportional to the speed error multiplied by time.
+This can be estimated by integrating the ground speed data.
+The distance errors are the speed errors multiplied by time.
 This left graph shows the distance traveled for mid estimate of ground speed and those values ±10 knots.
-The left graph is focussed around t=0 and distance from the start of the video.
+The left graph is focused around t=0 and distance from the start of the video.
 In the right graph the curves are shifted so that they intersect at t=27.8s which is the time the aircraft
-passes the runway end (x=3240m).
+passes the end of the runway (x=3240m).
 The right graph shows video time on the x axis plotted against the estimated distance from the runway start.
 
 <center>
@@ -490,28 +517,11 @@ TABLE_OF_EVENTS = """
 ## Table of Events
 
 These events are calculated by using the ground speed data corrected by transits by +5 knots (the formulae given above).
-The distance tolerance is ±{runway_distance_error}m.
+The distance tolerance is ±{runway_distance_error}m for the duration of the video.
 
 """.format(
     runway_distance_error=video_data.RUNWAY_DISTANCE_ERROR
 )
-
-OPENSTREETMAP_SVG_ANNOTATION = """
-Here is the data plotted on an image of Viracopos International Airport from Open Street Map.
-The red boxes illustrate the accuracy of the position estimate.
-The probable location of the observer is also shown, the black lines are transits that establish that position.
-The annotations in blue contain:
-
-* v= The ground speed in knots.
-* t= The time as video time, followed by [...], the estimated time from start of takeoff.
-* d= The distance from the start of the runway, followed by [... to go], the distance to the end of the runway.
-
-<center>
-
-<img src="plots/OpenStreetmap_SBKP_01_work.png" width="650" />
-
-</center>
-"""
 
 RESOURCES = """
 # Resources

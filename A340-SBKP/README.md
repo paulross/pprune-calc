@@ -25,7 +25,7 @@ It seemed like it would be fun to investigate this as I had never done anything 
 
 I found that:
 
-* The takeoff started 34.2 ±1.4 seconds before the beginning of the video. The aircraft is 75 ±159m from the
+* The takeoff started 34.2 ±1.4 seconds before the beginning of the video with the aircraft 75 ±159m from the
 start of the runway.
 * At the start of the video the ground speed is 113 ±5 knots. The aircraft is 1110 ±25m from the
 start of the runway with 2130 ±25m of runway remaining.
@@ -52,7 +52,7 @@ The annotations in blue contain:
 
 <center>
 
-<img src="plots/OpenStreetmap_SBKP_01_work.png" width="650" />
+<img src="plots/OpenStreetmap_SBKP_01_work_1024.png" width="1024" />
 
 </center>
 # Data
@@ -95,7 +95,7 @@ there is strong evidence for this.
 * Any details of the video camera or operator.
 * Any editing of the video that alters its fidelity (i.e the video is taken in good faith).
 
-If any of these assumptions are wrong it will affect this analysis greatly.
+If any of these assumptions are wrong it will affect this analysis greatly. Any errors are entirely mine.
 
 ## Measurements
 
@@ -147,14 +147,14 @@ The right graph shows those values extrapolated back towards the start of the ta
 This is a large extrapolation, with its consequent dangers, but the data seems reasonable.
 This extrapolation gives a start of takeoff (video) time of -32.8 ±2.8 seconds.
 
-## Distance
+## Distance Down The Runway
 
-Distance can be estimated by integrating the ground speed data.
-This will be affected by errors in ground speed estimation proportional to the speed error multiplied by time.
+This can be estimated by integrating the ground speed data.
+The distance errors are the speed errors multiplied by time.
 This left graph shows the distance traveled for mid estimate of ground speed and those values ±10 knots.
-The left graph is focussed around t=0 and distance from the start of the video.
+The left graph is focused around t=0 and distance from the start of the video.
 In the right graph the curves are shifted so that they intersect at t=27.8s which is the time the aircraft
-passes the runway end (x=3240m).
+passes the end of the runway (x=3240m).
 The right graph shows video time on the x axis plotted against the estimated distance from the runway start.
 
 <center>
@@ -486,8 +486,8 @@ Table 6: Equations of Motion
 ### Notes
 
 1. The ground speed is the primary formulae.
-2. Acceleration is by differentiation of the ground speed formulae.
-3. Distance is by integration of ground speed formulae with the offset at t=0 of +1110m calculated from the full
+2. Acceleration is by differentiation of the ground speed.
+3. Distance is by integration of ground speed with the offset at t=0 of calculated from the full
 transits. The value is the distance from the start of the runway at t=0.
 4. The equations are given to three significant figures.
 5. The equations are valid from 0 <= t <= 35.7.
@@ -497,7 +497,7 @@ of the takeoff.
 ## Table of Events
 
 These events are calculated by using the ground speed data corrected by transits by +5 knots (the formulae given above).
-The distance tolerance is ±25m.
+The distance tolerance is ±25m for the duration of the video.
 
 <center>
 
