@@ -354,7 +354,7 @@ def markdown_table_aircraft_start() -> typing.Tuple[typing.List[str], str]:
     """
     ret = [
         '| Calculation | Video Time t (s) | Distance from start of Runway (m) | Distance from start of Runway at t=0 (m) |',
-        '| --- | --- | --- | --- |',
+        '| --- | --: | --: | --: |',
     ]
     labels = (
         'Mid speed -10 knots',

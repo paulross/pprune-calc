@@ -172,7 +172,7 @@ The right graph suggests the estimated starting positions of the aircraft's take
 <center>
 
 | Calculation | Video Time t (s) | Distance from start of Runway (m) | Distance from start of Runway at t=0 (m) |
-| --- | --- | --- | --- |
+| --- | --: | --: | --: |
 | Mid speed -10 knots | -30.1 | 537 | 1325 |
 | Mid speed | -32.8 | 232 | 1182 |
 | Mid speed +10 knots | -35.6 | -87 | 1039 |
