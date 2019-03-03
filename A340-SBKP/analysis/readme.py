@@ -67,7 +67,8 @@ It seemed like it would be fun to investigate this as I had never done anything 
 Some of these techniques might be useful for analysing other, similar, videos.
 """
 
-SUMMARY = """# Summary
+SUMMARY = """
+# Summary
 
 I found that:
 
@@ -108,7 +109,8 @@ The annotations in blue contain:
 </center>
 """
 
-DATA = """# Data
+DATA = """
+# Data
 
 Apart from the video itself there were the following sources of information that were useful:
 

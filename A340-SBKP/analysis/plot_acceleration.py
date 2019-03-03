@@ -127,7 +127,7 @@ def _markdown_table_acceleration_error(worst_cast: bool) -> typing.Tuple[typing.
                 ]
             )
         ),
-        '| --- | ---: | ---: | ---: | ---: | ---: | ---: |',
+        '| --- | ---: | ---: | ---: | ---: | ---: |',
     ]
     err = -10
     for i in range(len(gs_fits)):

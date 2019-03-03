@@ -22,6 +22,7 @@ individual frames.
 It seemed like it would be fun to investigate this as I had never done anything like this before.
 
 Some of these techniques might be useful for analysing other, similar, videos.
+
 # Summary
 
 I found that:
@@ -56,6 +57,7 @@ The annotations in blue contain:
 <img src="plots/OpenStreetmap_SBKP_01_work_1024.png" width="1024" />
 
 </center>
+
 # Data
 
 Apart from the video itself there were the following sources of information that were useful:
@@ -413,7 +415,7 @@ However an error estimate can be made by looking at the time and distance error 
 <center>
 
 | Speed Error | Time from start take off to end asphalt (s) | Speed (knots) | Mean Acceleration (knots/s) | Error (knots/s) | Distance from start take off from start of runway (m) |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| --- | ---: | ---: | ---: | ---: | ---: |
 | -10 knots | 57.9 | 165 | 2.85 | -0.03 | 537 |
 | 0 knots | 60.6 | 175 | 2.88 | 0.00 | 232 |
 | 10 knots | 63.4 | 185 | 2.91 | 0.03 | -87 |
@@ -427,7 +429,7 @@ The extreme worst case is when the time estimate and speed estimate are reversed
 <center>
 
 | Speed Error | Time from start take off to end asphalt (s) | Speed (knots) | Mean Acceleration (knots/s) | Error (knots/s) | Distance from start take off from start of runway (m) |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| --- | ---: | ---: | ---: | ---: | ---: |
 | -10 knots | 63.4 | 165 | 2.60 | -0.28 | 555 |
 | 0 knots | 60.6 | 175 | 2.88 | 0.00 | 515 |
 | 10 knots | 57.9 | 185 | 3.19 | 0.31 | 491 |
