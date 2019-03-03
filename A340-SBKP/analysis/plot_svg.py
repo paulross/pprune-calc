@@ -71,7 +71,7 @@ EVENTS_TIMED = (
     EventTimed(0.0, 'Video starts', ''),
     EventTimed(video_data.TIME_VIDEO_NOSEWHEEL_OFF.time, 'Nose wheel off', 'Rotation of ~1.4 °/s to t=23'),
     EventTimed(video_data.TIME_VIDEO_MAINWHEEL_OFF.time, 'Main wheels off', ''),
-    EventTimed(video_data.TIME_VIDEO_END_ASPHALT.time, 'End asphalt', 'Defined datum'),
+    EventTimed(video_data.TIME_VIDEO_END_ASPHALT.time, 'End asphalt', 'Used as a datum for some calculations.'),
     EventTimed(video_data.TIME_VIDEO_END.time, 'Video ends', ''),
 )
 

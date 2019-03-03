@@ -64,6 +64,7 @@ speed and distance data, and to what accuracy, could be extracted from the video
 individual frames.
 It seemed like it would be fun to investigate this as I had never done anything like this before.
 
+Some of these techniques might be useful for analysing other, similar, videos.
 """
 
 SUMMARY = """# Summary
@@ -111,7 +112,8 @@ DATA = """# Data
 
 Apart from the video itself there were the following sources of information that were useful:
 
-The airport was identified as [Viracopos International Airport](https://en.wikipedia.org/wiki/Viracopos_International_Airport)
+The airport was identified as
+[Viracopos International Airport](https://en.wikipedia.org/wiki/Viracopos_International_Airport)
 ICAO code SBKP in South America.
 
 The aircraft was identified [on youtube](https://www.youtube.com/watch?v=XbWaXdA5jY0&feature=youtu.be) as
@@ -174,7 +176,7 @@ video frame.
 This is not a very reliable measurement as it is vulnerable to camera roll, which is unknown.
 Still, some conclusions can be drawn.
 
-An estimate of the error was made for each of these measurement which was used to estimate the accuracy of each conclusion.
+An error estimate was made for each of these measurements which was used to estimate the accuracy of each conclusion.
 
 ## Terminology
 
@@ -247,7 +249,8 @@ Knowing the position of the aircraft a bearing to the observer can be made.
 
 ### Full Transits
 
-Five transits are observable, the x/y coordinates are relative to the runway start, +y to the right of runway 15, -y to the left:
+Five transits are observable, the x/y coordinates are relative to the runway start, +y to the right of runway 15, -y to
+the left:
 
 """
 
@@ -262,14 +265,29 @@ The time and the aircraft's position on the runway is shown in green:
 </center>
 
 Combining these gives 10 intersections (any two out of five).
-The average of these intesections does not take into account the uncertainty of the positions of
+The average of these intersections does not take into account the uncertainty of the positions of
 each transit object (actually the *relative position* of each transit object).
 So, somewhat conservatively, an accuracy of ±{google_earth_error}m is assumed.
 
+The assumption in this case is that the observer is stationary which looks highly likely.
+
+**NOTE:** If the observer is moving then the transits could still be used.
+It means correcting for estimated observer speed and direction and adjusting the transits accordingly so that they
+intersect the assumed observers path.
+Clearly this is more accurate if the observer's speed and direction are constant.
+
+
+**Conclusion:** The observer's position from full transits is at x=3434 ±6m y=-775 ±9m
+
+""".format(
+    google_earth_error=video_data.GOOGLE_EARTH_ERROR,
+)
+
+
+OBSERVER_FULL_TRANSITS_RUNWAY_DISTANCE = """
 As well as establishing the observer, full transits can be used to accurately determine the
 aircraft's position on the runway to ±{runway_distance_error}m:
 """.format(
-    google_earth_error=video_data.GOOGLE_EARTH_ERROR,
     runway_distance_error=video_data.RUNWAY_DISTANCE_ERROR
 )
 
@@ -319,6 +337,10 @@ The bearings are filtered:
 * Pairs of bearings are ignored unless the baseline between them is >1250m
 
 Selecting all the combinations of remaining bearing pairs gives a large number of observer positions.
+The error estimate is the standard deviation of the positions.
+
+**Conclusion:** The observer's position from aspect measurements is at x=3448 ±13m y=-763 ±12m
+
 """
 
 OBSERVER_FINAL_POSITION = """
@@ -326,10 +348,10 @@ In the graph below X is distance from start of the runway, Y is the distance to 
 aircraft axis. The lines show the full transit lines (a line through two known points):
 
 * Lines in magenta: based on measured transit points.
-* Lines in chain dotted yellow: with the measured points moved in opposition by +{google_earth_error}m at right angles to the
-transit. . The absence of a clear intersection suggests that this offset is unlikely.
-* Lines in chain dotted cyan: with the measured points moved in opposition by -{google_earth_error}m at right angles to the
-transit. Again, the absence of a clear intersection suggests that this offset is unlikely.
+* Lines in chain dotted yellow: with the measured points moved in opposition by +{google_earth_error}m at right angles
+to the transit. . The absence of a clear intersection suggests that this offset is unlikely.
+* Lines in chain dotted cyan: with the measured points moved in opposition by -{google_earth_error}m at right angles
+to the transit. Again, the absence of a clear intersection suggests that this offset is unlikely.
 
 Also shown as points are the location of the observer calculated from combinations of the aspect data:
  
@@ -401,8 +423,8 @@ The transit points fit well with the mid ground speed estimate +5 knots and the 
 be improved from ±10 knots to ±5 knots.
 The distance estimate is now within ±{runway_distance_error}m throughout the video.
 
-**Conclusion:** The best estimate of the aircraft ground speed is the mid ground speed estimate with 5 knots added. The speed error is ±5 knots.
-The distance error for t>=0 is ±{runway_distance_error}m.
+**Conclusion:** The best estimate of the aircraft ground speed is the mid ground speed estimate with 5 knots added.
+The speed error is ±5 knots. The distance error for t>=0 is ±{runway_distance_error}m.
 
 """.format(
     runway_distance_error=video_data.RUNWAY_DISTANCE_ERROR
@@ -464,7 +486,7 @@ the bearing of the observer from the aircraft:
 <img src="plots/aircraft_yaw.svg" width="350" />
 </center>
 
-The error term vastly exceeds the calculated data but, even so, there seems an interesting, but tentative,
+The error term vastly exceeds the calculated data but, even so, there seems a tentative, but interesting,
 story in the estimated values.
 At t=30 the aircraft yaws from -0.5 degrees at a rate of about 0.6 degree/second to the left reaching
 -1.9 degrees at the end of the video, a difference of -1.4 degrees.
@@ -588,6 +610,8 @@ def main():
             fobj, table_counter, text_counter,
         )
         _write_to_file(OBSERVER_FULL_TRANSITS, fobj, text_counter)
+        _write_to_file('### Aircraft Position from Full Transits\n\n', fobj, text_counter)
+        _write_to_file(OBSERVER_FULL_TRANSITS_RUNWAY_DISTANCE, fobj, text_counter)
         table_counter = _write_table_title_to_file(
             plot_transits.markdown_table_distance_from_start_by_transit,
             fobj, table_counter, text_counter,

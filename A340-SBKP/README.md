@@ -21,6 +21,7 @@ speed and distance data, and to what accuracy, could be extracted from the video
 individual frames.
 It seemed like it would be fun to investigate this as I had never done anything like this before.
 
+Some of these techniques might be useful for analysing other, similar, videos.
 # Summary
 
 I found that:
@@ -59,7 +60,8 @@ The annotations in blue contain:
 
 Apart from the video itself there were the following sources of information that were useful:
 
-The airport was identified as [Viracopos International Airport](https://en.wikipedia.org/wiki/Viracopos_International_Airport)
+The airport was identified as
+[Viracopos International Airport](https://en.wikipedia.org/wiki/Viracopos_International_Airport)
 ICAO code SBKP in South America.
 
 The aircraft was identified [on youtube](https://www.youtube.com/watch?v=XbWaXdA5jY0&feature=youtu.be) as
@@ -122,7 +124,7 @@ video frame.
 This is not a very reliable measurement as it is vulnerable to camera roll, which is unknown.
 Still, some conclusions can be drawn.
 
-An estimate of the error was made for each of these measurement which was used to estimate the accuracy of each conclusion.
+An error estimate was made for each of these measurements which was used to estimate the accuracy of each conclusion.
 
 ## Terminology
 
@@ -201,7 +203,8 @@ Knowing the position of the aircraft a bearing to the observer can be made.
 
 ### Full Transits
 
-Five transits are observable, the x/y coordinates are relative to the runway start, +y to the right of runway 15, -y to the left:
+Five transits are observable, the x/y coordinates are relative to the runway start, +y to the right of runway 15, -y to
+the left:
 
 <center>
 
@@ -227,9 +230,22 @@ The time and the aircraft's position on the runway is shown in green:
 </center>
 
 Combining these gives 10 intersections (any two out of five).
-The average of these intesections does not take into account the uncertainty of the positions of
+The average of these intersections does not take into account the uncertainty of the positions of
 each transit object (actually the *relative position* of each transit object).
 So, somewhat conservatively, an accuracy of ±25m is assumed.
+
+The assumption in this case is that the observer is stationary which looks highly likely.
+
+**NOTE:** If the observer is moving then the transits could still be used.
+It means correcting for estimated observer speed and direction and adjusting the transits accordingly so that they
+intersect the assumed observers path.
+Clearly this is more accurate if the observer's speed and direction are constant.
+
+
+**Conclusion:** The observer's position from full transits is at x=3434 ±6m y=-775 ±9m
+
+### Aircraft Position from Full Transits
+
 
 As well as establishing the observer, full transits can be used to accurately determine the
 aircraft's position on the runway to ±25m:
@@ -291,15 +307,19 @@ The bearings are filtered:
 * Pairs of bearings are ignored unless the baseline between them is >1250m
 
 Selecting all the combinations of remaining bearing pairs gives a large number of observer positions.
+The error estimate is the standard deviation of the positions.
+
+**Conclusion:** The observer's position from aspect measurements is at x=3448 ±13m y=-763 ±12m
+
 
 In the graph below X is distance from start of the runway, Y is the distance to the right (+ve) or left (-ve) of the
 aircraft axis. The lines show the full transit lines (a line through two known points):
 
 * Lines in magenta: based on measured transit points.
-* Lines in chain dotted yellow: with the measured points moved in opposition by +25m at right angles to the
-transit. . The absence of a clear intersection suggests that this offset is unlikely.
-* Lines in chain dotted cyan: with the measured points moved in opposition by -25m at right angles to the
-transit. Again, the absence of a clear intersection suggests that this offset is unlikely.
+* Lines in chain dotted yellow: with the measured points moved in opposition by +25m at right angles
+to the transit. . The absence of a clear intersection suggests that this offset is unlikely.
+* Lines in chain dotted cyan: with the measured points moved in opposition by -25m at right angles
+to the transit. Again, the absence of a clear intersection suggests that this offset is unlikely.
 
 Also shown as points are the location of the observer calculated from combinations of the aspect data:
  
@@ -365,8 +385,8 @@ The transit points fit well with the mid ground speed estimate +5 knots and the 
 be improved from ±10 knots to ±5 knots.
 The distance estimate is now within ±25m throughout the video.
 
-**Conclusion:** The best estimate of the aircraft ground speed is the mid ground speed estimate with 5 knots added. The speed error is ±5 knots.
-The distance error for t>=0 is ±25m.
+**Conclusion:** The best estimate of the aircraft ground speed is the mid ground speed estimate with 5 knots added.
+The speed error is ±5 knots. The distance error for t>=0 is ±25m.
 
 
 ## Acceleration
@@ -440,7 +460,7 @@ the bearing of the observer from the aircraft:
 <img src="plots/aircraft_yaw.svg" width="350" />
 </center>
 
-The error term vastly exceeds the calculated data but, even so, there seems an interesting, but tentative,
+The error term vastly exceeds the calculated data but, even so, there seems a tentative, but interesting,
 story in the estimated values.
 At t=30 the aircraft yaws from -0.5 degrees at a rate of about 0.6 degree/second to the left reaching
 -1.9 degrees at the end of the video, a difference of -1.4 degrees.
@@ -507,7 +527,7 @@ The distance tolerance is ±25m for the duration of the video.
 | Video starts | 0.0 | 34.2 ±1.4 | 113 ±5 | 2.9 ±0.17 | 1110 ±25 | 2130 ±25 |  |
 | Nose wheel off | 17.9 | 52.1 ±1.4 | 159 ±5 | 2.2 ±0.17 | 2375 ±25 | 865 ±25 | Rotation of ~1.4 °/s to t=23 |
 | Main wheels off | 25.6 | 59.8 ±1.4 | 176 ±5 | 1.9 ±0.17 | 3042 ±25 | 198 ±25 |  |
-| End asphalt | 27.8 | 62.0 ±1.4 | 180 ±5 | 1.8 ±0.17 | 3240 ±25 | 0 ±25 | Defined datum |
+| End asphalt | 27.8 | 62.0 ±1.4 | 180 ±5 | 1.8 ±0.17 | 3240 ±25 | 0 ±25 | Used as a datum for some calculations. |
 | Video ends | 35.7 | 69.9 ±1.4 | 193 ±5 | 1.5 ±0.17 | 3995 ±25 | -755 ±25 |  |
 
 Table 7: Selected Events
