@@ -175,14 +175,13 @@ def write_slab_results(stream: typing.TextIO=sys.stdout):
 
 
 def plot_all(directory: str) -> None:
-    print(f'Looking for plot files in "{directory}"')
     for file_name in os.listdir(directory):
-        if os.path.splitext(file_name)[1] == 'plt':
+        if os.path.splitext(file_name)[1] == '.plt':
             print(f'Plotting "{file_name}"')
             proc = subprocess.Popen(
                 args=['gnuplot', '-p', file_name],
                 shell=False,
-                cwd=os.path.dirname(directory),
+                cwd=directory,
             )
             try:
                 outs, errs = proc.communicate(timeout=1)
