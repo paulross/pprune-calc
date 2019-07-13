@@ -168,6 +168,7 @@ SLAB_TRANSITS: typing.Dict[int, typing.Tuple[int, float]] = {
 
 FRAME_EVENTS: typing.Dict[int, str] = {
     1: 'Video start',
+    510: 'Maximum ground speed',
     827: 'Threshold',
     1015: 'Touchdown',
     max(SLAB_TRANSITS.keys()): 'Last speed measurement',

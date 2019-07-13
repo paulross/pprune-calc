@@ -26,21 +26,22 @@ The video shows some distinct landmarks, particularly colourful buildings.
 These can be identified on aerial imagery to give the aircraft position on the extended centreline of runway 22 (the aircraft appears to make a straight in approach with little lateral deviation).
 The error in this method is estimated to be ±100m when 2500m from the runway, reducing to ±10m at the runway edge.
 
-Here are a couple of examples, frame 1 (t=0s) where the edge of a settlement and a dark smudge on a sandy part of an island line up.
+Here are two examples.
+Frame 1 (t=0s) shows the line up of the edge of a settlement and a dark smudge on a sandy part of an island line up.
 The magenta line shows the estimated line the aircraft is flying across:
 
 <center>
 <img src="img/frame0001.jpg" width="200" />&nbsp;
 </center>
 
-Here are those features on the aerial imagery, the extended centreline of runway 22 is in red:
+Here are those features on the aerial imagery, the transit line is in magenta and the extended centreline of runway 22 is in red:
 <center>
 <img src="img/frame0001_map.png" width="800" />
 </center>
 
 This puts the aircraft about 2490 ±100m from the threshold of runway 22.
 
-And here is frame 483 (t=16.0s) where a two distinctive buildings can be seen lined up:
+The second example is frame 483 (t=16.0s) where a two distinctive buildings can be seen lined up:
 <center>
 <img src="img/frame0483.png" width="200" />&nbsp;
 </center>
@@ -50,25 +51,25 @@ Those buildings on the aerial imagery:
 <img src="img/frame0483_map.png" width="800" />
 </center>
 
-This puts the aircraft about 1041 ±49m from the threshold of runway 22.
+This puts the aircraft about 1041 ±49m from the edge of runway 22.
 
-Whilst this technique is useful it requires identifiable ground features and few exist after the aircraft crosses the threshold, and none 330m beyond the threshold.
+This technique is useful but it requires identifiable ground features and few exist after the aircraft crosses the threshold, and none once 330m beyond the threshold.
 
-Fortunately another technique exists due to the particular construction of this runway which is typical of Siberian airports. Even better, the two (independent) techniques overlap for about four seconds of video time so they can be cross checked.
+Fortunately another technique exists due to the particular construction of this runway which is typical of Siberian airports. Even better, the two (independent) techniques overlap for about four seconds so they can be cross checked.
 
 
 # Counting Slabs
 
-The runway at Nizhneangarsk is made of concrete slabs that are ubiquitous in Siberia for roads and airfields. This gives the runway a particular pattern where dark vegetation has grown up at the edges which contrasts with the pale concrete of the slab.
+The runway at Nizhneangarsk is made of concrete slabs that are ubiquitous in Siberia for roads and airfields. This gives the runway a particular pattern where vegetation or water staining at. the slab edges contrasts with the pale concrete of the slab.
 These edges can be clearly seen, and mesured, on the video and high-resolution aerial imagery.
 The size of these slabs can then be used to calculate the speed of aircraft as it passes over the boundaries.
 
 ## Standard Slabs
 
-Standardised slabs used for roads and runways in Siberia measure 6m x 1.8m x 0.2m (likely thicker on runways) [the numbers from the author's engineering file].
+Standardised slabs used for roads and runways in Siberia measure 6m x 1.8m x 0.2m (the numbers from the author's engineering file but likely thicker on runways).
 For confirmation here is an enhanced aerial image where the south side of the runway has been annotated, rather crudely, with yellow lines at the edge of each slab (the slabs are laid with their long side in the runway direction).
 
-Careful measurement of the imagery confirms these 10 slabs are 98 pixels long which, at 0.617 m/pixel for the image, gives a slab length of 6.05m.
+Careful measurement of this imagery shows that these 10 slabs are 98 pixels long which, at 0.617 m/pixel for this image, gives a slab length of 6.05m.
 The value of 6m is used hereon.
 
 <center>
@@ -78,7 +79,7 @@ The value of 6m is used hereon.
 ## Speed by Slab Transits
 
 As an example of the principle, here are two frames, frame 841 and 843, they are 1/15 second apart (at 30 fps).
-The slab edges are quite distinct in the original frames and are marked here as yellow lines, the broad line on the left image is the same part of the runway as the line on the right image.
+The slab edges are quite distinct in the original frames and are marked here as yellow lines, so the broad line on the left image is the same part of the runway as the line on the right image.
 The light patch on the right of the concrete, and the lightish patch in the grass that confirms the sequence of frames.
 
 The near match of the right hand line in the left frame with the line in the second frame means that the aircraft has traveled almost exactly 6m in that 1/15th of a second.
@@ -157,9 +158,16 @@ TODO
 
 <center>
 
-| Time (s) [frame] | Distance from runway edge (m) | Ground Speed (m/s, knots) | Acceleration (m/s^2) | Notes |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| 0.0 [1] | 0.0 ±1.4 | -0 | 3.7 ±0.17 | Start of take off. |
+| Time (s) | Position (m) | Ground Speed (knots) | Acceleration (m/s^2 ) | Description |
+| ---: | ---: | ---: | ---: | :--- |
+| 0.0 | -2482 ±98 | 161 ±4 | N/A | Start of video. |
+| 17.0 | -964 ± 44 | 180 ±7 | 0 |  Maximum ground speed. |
+| 27.0 | 0 ±10 | 172 ±4 | N/A | Start of runway 22. |
+| 33.8 | 572 ±15 | 163 ±2 | -1.1 | Touchdown. |
+| 45.6 | 1438 ±40 | 116 ±10 | -3.7 ±0.3 | Last calculated speed and position. |
+| TODO | est. TODO | est. TODO | est. TODO | Departure from runway. |
+| TODO | est. TODO | est. TODO | est. TODO | Impact with airfield perimeter, undercarridge collapses. |
+| est. TODO | est. TODO | est. TODO | est. TODO | Final impact. |
 
 Table 7: Selected Events
 
