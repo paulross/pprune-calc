@@ -56,7 +56,7 @@ def create_distance_array_of_tile_data() -> typing.Dict[str, np.ndarray]:
 TILE_D_ORDER = ('d', 'd+', 'd-')
 
 
-def get_tile_d_fits() -> typing.Dict[str, np.ndarray]:
+def get_tile_d_fits() -> typing.Tuple[typing.Dict[str, np.ndarray], typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]]:
     array_dict = create_distance_array_of_tile_data()
     fits = {
         d: curve_fit(polynomial.polynomial_3, array_dict['Time'][:, 0], array_dict[d][:, 0])
@@ -77,21 +77,21 @@ def write_tile_results(stream: typing.TextIO=sys.stdout):
         'd+': 'distance_plus',
         'd-': 'distance_minus',
     }
-    array_dict, fits = get_tile_d_fits()
+    array_dict, d_fits = get_tile_d_fits()
     # print('fits', fits)
     # Differentiate for velocity.
     stream.write('# Tile distance data\n')
     for d in TILE_D_ORDER:
         # coeff_str = [f'{v:.3e}' for v in fits[d][0]]
         # stream.write(f'# {d} coefficients: {", ".join(coeff_str)}\n')
-        formulae = polynomial.polynomial_string(D_FORMULAE[d], 't', '.3e', *fits[d][0])
+        formulae = polynomial.polynomial_string(D_FORMULAE[d], 't', '.3e', *d_fits[d][0])
         stream.write(f'# {formulae}\n')
     # stream.write(f'# d+ coefficients {fits["d+"][0]}\n')
     # stream.write(f'# d- coefficients {fits["d-"][0]}\n')
     stream.write(f'# Columns: frame, t, d, d+, d-, v, v+, v- (m/s), v, v+, v- (knots)\n')
     for i in range(len(array_dict['Frame'])):
         t = array_dict['Time'][i, 0]
-        v_m_per_second = [polynomial.polynomial_3_differential(t, *fits[k][0]) for k in TILE_D_ORDER]
+        v_m_per_second = [polynomial.polynomial_3_differential(t, *d_fits[k][0]) for k in TILE_D_ORDER]
         v_knots = [map_funcs.metres_per_second_to_knots(v) for v in v_m_per_second]
         row = [
             f'{array_dict["Frame"][i, 0]:<6.0f}',
@@ -113,7 +113,7 @@ def write_tile_results(stream: typing.TextIO=sys.stdout):
 SLAB_V_ORDER = ('v', 'v+', 'v-')
 
 
-def get_slab_v_fits() -> typing.Dict[str, np.ndarray]:
+def get_slab_v_fits() -> typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]:
     v_fits = {
         v_name: curve_fit(polynomial.polynomial_3, map_data.SLAB_SPEEDS[:, 1], map_data.SLAB_SPEEDS[:, v + 2])
         for v, v_name in enumerate(SLAB_V_ORDER)
@@ -191,6 +191,56 @@ def plot_all(directory: str) -> None:
                 outs, errs = proc.communicate()
 
 
+def _compute_distance(
+        frame: int,
+        tile_d_fits: typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]],
+        slab_v_fits: typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]) -> typing.Tuple[float, float, float]:
+    t = map_funcs.frame_to_time(frame)
+    if frame <= map_data.FRAME_THRESHOLD:
+        # Only use the tile_d_fits
+        return (polynomial.polynomial_3(t, *tile_d_fits['d'][0]),
+                polynomial.polynomial_3(t, *tile_d_fits['d+'][0]),
+                polynomial.polynomial_3(t, *tile_d_fits['d-'][0]))
+    else:
+        THRESHOLD_TIME = map_funcs.frame_to_time(map_data.FRAME_THRESHOLD)
+        d_offsets = [
+            polynomial.polynomial_3_integral(THRESHOLD_TIME, *slab_v_fits["v"][0]),
+            polynomial.polynomial_3_integral(THRESHOLD_TIME, *slab_v_fits["v+"][0]),
+            polynomial.polynomial_3_integral(THRESHOLD_TIME, *slab_v_fits["v-"][0]),
+        ]
+        slab_d = (
+            polynomial.polynomial_3_integral(t, *slab_v_fits["v"][0]) - d_offsets[0],
+            polynomial.polynomial_3_integral(t, *slab_v_fits["v+"][0]) - d_offsets[1],
+            polynomial.polynomial_3_integral(t, *slab_v_fits["v-"][0]) - d_offsets[2],
+        )
+        if frame > max(map_data.POSITIONS_FROM_TILES.keys()):
+            # Only use the slab_v_fits
+            return slab_d
+        else:
+            # Use both
+            return (
+                (polynomial.polynomial_3(t, *tile_d_fits['d'][0]) + slab_d[0]) / 2.0,
+                (polynomial.polynomial_3(t, *tile_d_fits['d+'][0]) + slab_d[1]) / 2.0,
+                (polynomial.polynomial_3(t, *tile_d_fits['d-'][0]) + slab_d[2]) / 2.0,
+            )
+
+
+def print_events() -> None:
+    tile_d_fits = get_tile_d_fits()[1]
+    slab_v_fits = get_slab_v_fits()
+    for frame_number in sorted(map_data.FRAME_EVENTS.keys()):
+        t = map_funcs.frame_to_time(frame_number)
+        d, d_plus, d_minus = _compute_distance(frame_number, tile_d_fits, slab_v_fits)
+        d_tol = max(abs(d - d_plus), abs(d - d_minus))
+        print(
+            f'{frame_number:4d}',
+            f'{t:4.1f}',
+            f'{d:7.1f} ± {d_tol:.1f}',
+            map_data.FRAME_EVENTS[frame_number]
+        )
+
+
+
 def main():
     print_calculated_data()
     with open('plots/tile_distance_data.dat', 'w') as ostream:
@@ -202,6 +252,7 @@ def main():
     plot_dir = os.path.join(os.path.dirname(__file__), 'plots')
     print(f'Looking for plot files in "{plot_dir}"')
     plot_all(plot_dir)
+    print_events()
     return 0
 
 
