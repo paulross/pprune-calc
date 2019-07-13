@@ -24,6 +24,8 @@ import math
 import pprint
 import typing
 
+import numpy as np
+
 import map_funcs
 
 #==================== New tiles ======================
@@ -43,8 +45,6 @@ TILE_FILE_URLS = {
 TILE_WIDTH = 2560
 TILE_HEIGHT = 1440
 TILE_SCALE_M_PER_PIXEL = 50.0 / (2536 - 2455)
-
-# print('TILE_SCALE_M_PER_PIXEL', TILE_SCALE_M_PER_PIXEL)
 
 # These are the common points on both tiles
 TILE_TIE_POINTS = {
@@ -71,8 +71,6 @@ for k, (p_i, p_j) in TILE_TIE_POINTS.items():
     dy = p_i.y - p_j.y
     TILE_OFFSETS[k] = map_funcs.Distance(dx, dy)
 
-# print('TILE_OFFSETS:')
-# pprint.pprint(TILE_OFFSETS)
 
 # Measured by drawing in the runway centreline
 RUNWAY_22_THRESHOLD_TILE_5 = map_funcs.Point(1597, 197)
@@ -85,14 +83,10 @@ THRESHOLD_ON_EACH_TILE: typing.Dict[int, map_funcs.Point] = {
     k: map_funcs.point_tile_to_tile(5, RUNWAY_22_THRESHOLD_TILE_5, k, TILE_OFFSETS) for k in TILE_FILES.keys()
 }
 
-# print('THRESHOLD_ON_EACH_TILE')
-# pprint.pprint(THRESHOLD_ON_EACH_TILE)
-
 
 # From a clear line across the runway on Tile 7
 RUNWAY_WIDTH_PX = math.sqrt((1431 - 1473)**2 + (338 - 371)**2)
 
-# print(f'RUNWAY_WIDTH: {RUNWAY_WIDTH_PX:.1f} (pixels),  {TILE_SCALE_M_PER_PIXEL * RUNWAY_WIDTH_PX:.1f} (m)')
 
 RUNWAY_LENGTH_HEADING = map_funcs.distance_bearing(
     RUNWAY_22_THRESHOLD_TILE_5,
@@ -100,7 +94,6 @@ RUNWAY_LENGTH_HEADING = map_funcs.distance_bearing(
     TILE_SCALE_M_PER_PIXEL,
 )
 
-# print('RUNWAY_LENGTH_HEADING', RUNWAY_LENGTH_HEADING)
 
 RUNWAY_LENGTH_HEADING = map_funcs.distance_bearing(
     RUNWAY_22_THRESHOLD_TILE_5,
@@ -108,20 +101,12 @@ RUNWAY_LENGTH_HEADING = map_funcs.distance_bearing(
     TILE_SCALE_M_PER_PIXEL,
 )
 
-# print('RUNWAY_LENGTH_HEADING', RUNWAY_LENGTH_HEADING)
-
 
 TILE_EXTENDED_RUNWAY_LINE = {
     k: map_funcs.tile_extended_centreline_crossing_points(
         k, RUNWAY_LENGTH_HEADING[1], THRESHOLD_ON_EACH_TILE,
         map_funcs.Distance(TILE_WIDTH, TILE_HEIGHT)) for k in TILE_FILES.keys()
 }
-# print('TILE_EXTENDED_RUNWAY_LINE')
-# pprint.pprint(TILE_EXTENDED_RUNWAY_LINE)
-#
-# print(f'Expected tile 4: (1676, 0), (572, 1439)')
-# print(f'Expected tile 5: (1764, 0), (620, 1439)')
-# print(f'Expected tile 6: (1764, 0), (644, 1439)')
 
 
 # {frame_number : (tile, position), ...}
@@ -146,62 +131,6 @@ POSITIONS_FROM_TILES: typing.Dict[int, typing.Tuple[int, map_funcs.Point, str]] 
     932: (5, map_funcs.Point(1290, 585), 'Start of the second set of white marker pairs.'),
     940: (5, map_funcs.Point(1266, 615), 'End of the second set of white marker pairs.'),
 }
-
-
-
-# TIME_DISTANCE: typing.List[float, float] = []
-
-# import numpy as np
-
-# TIME_DISTANCE = np.empty((len(POSITIONS_FROM_TILES), 4))
-#
-# for f, frame_number in enumerate(sorted(POSITIONS_FROM_TILES.keys())):
-#     t = map_funcs.frame_to_time(frame_number)
-#     dx = POSITIONS_FROM_TILES[frame_number][1].x - THRESHOLD_ON_EACH_TILE[POSITIONS_FROM_TILES[frame_number][0]].x
-#     dy = POSITIONS_FROM_TILES[frame_number][1].y - THRESHOLD_ON_EACH_TILE[POSITIONS_FROM_TILES[frame_number][0]].y
-#     d_threshold = TILE_SCALE_M_PER_PIXEL * math.sqrt(dx**2 + dy**2)
-#     if frame_number < 827:
-#         d_threshold = -d_threshold
-#     print(f't={t:8.2f} d={d_threshold:8.1f}')
-#     # TIME_DISTANCE.append((t, d_threshold))
-#     TIME_DISTANCE[f, 0] = t
-#     TIME_DISTANCE[f, 1] = d_threshold
-#     TIME_DISTANCE[f, 2] = d_threshold + map_funcs.distance_tolerance(d_threshold)
-#     TIME_DISTANCE[f, 3] = d_threshold - map_funcs.distance_tolerance(d_threshold)
-
-
-# print('TIME_DISTANCE', TIME_DISTANCE)
-#
-# from scipy.optimize import curve_fit
-#
-# popt_mid, pcov_mid = curve_fit(
-#     map_funcs.polynomial_3,
-#     TIME_DISTANCE[:, 0],
-#     TIME_DISTANCE[:, 1],
-# )
-#
-# print()
-# print('pcov', pcov_mid)
-# print('err', np.sqrt(np.diag(pcov_mid)))
-# print()
-#
-# for i in range(1, 4):
-#     popt, pcov = curve_fit(
-#         map_funcs.polynomial_3,
-#         TIME_DISTANCE[:, 0],
-#         TIME_DISTANCE[:, i],
-#     )
-#     # print('popt', popt)
-#     print(f'Distance equation: d = {popt[0]:.1f} + {popt[1]:.1f} * t + {popt[2]:.3f} * t**2 + {popt[3]:.5f} * t**3')
-#
-#
-# for i in range(len(TIME_DISTANCE)):
-#     t = TIME_DISTANCE[i, 0]
-#     v = -map_funcs.polynomial_3_differential(t, *popt_mid)
-#     d = map_funcs.polynomial_3(t, *popt_mid)
-#     print(f't={t:6.2f} (s) d={d:6.1f} (m) v={v:6.1f} (m/s)'
-#           f' {map_funcs.metres_per_second_to_knots(v):6.1f} (knots)'
-#           f' {POSITIONS_FROM_TILES[int(t * 30 + 1)][2]}')
 
 
 SLAB_LENGTH = 6.0 # Width is 1.8
@@ -262,9 +191,6 @@ FRAME_TOUCHDOWN = 1015  # Movement of camera due to impact.
 FRAME_LAST = 1819
 
 
-import numpy as np
-from scipy.optimize import curve_fit
-
 SLAB_SPEEDS = np.empty((len(SLAB_TRANSITS), 5))
 
 for f, frame_number in enumerate(sorted(SLAB_TRANSITS.keys())):
@@ -277,38 +203,3 @@ for f, frame_number in enumerate(sorted(SLAB_TRANSITS.keys())):
     SLAB_SPEEDS[f][2] = dx / dt
     SLAB_SPEEDS[f][3] = (dx + .5) / dt
     SLAB_SPEEDS[f][4] = (dx - .5) / dt
-
-
-# print('SLAB_SPEEDS', SLAB_SPEEDS)
-#
-# popt_mid, pcov_mid = curve_fit(
-#     map_funcs.polynomial_3,
-#     SLAB_SPEEDS[:, 0],
-#     SLAB_SPEEDS[:, 1],
-# )
-#
-# print()
-# print('popt', popt_mid)
-# print('pcov', pcov_mid)
-# print('err', np.sqrt(np.diag(pcov_mid)))
-# print()
-
-# for i in range(1, 4):
-#     popt, pcov = curve_fit(
-#         map_funcs.polynomial_3,
-#         SLAB_SPEEDS[:, 0],
-#         SLAB_SPEEDS[:, i],
-#     )
-#     print(f'Speed equation: v = {popt[0]:.1f} + {popt[1]:.1f} * t + {popt[2]:.3f} * t**2 + {popt[3]:.5f} * t**3')
-
-# d_0 = map_funcs.polynomial_3_integral_from_zero(map_funcs.frame_to_time(FRAME_THRESHOLD), *popt_mid)
-# for i in range(len(SLAB_SPEEDS)):
-#     t = SLAB_SPEEDS[i, 0]
-#     f = int(1 + t * 30)
-#     a = map_funcs.polynomial_3_differential(t, *popt_mid)
-#     v = map_funcs.polynomial_3(t, *popt_mid)
-#     d = map_funcs.polynomial_3_integral_from_zero(t, *popt_mid)
-#     print(f'f={f:4d} t={t:6.2f} (s) v={v:6.1f} (m/s) a={a:6.1f} (m/s**2)'
-#           f' {map_funcs.metres_per_second_to_knots(v):6.1f} (knots)'
-#           f' d={d-d_0:6.1f} (m)')
-
