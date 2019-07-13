@@ -1,0 +1,51 @@
+$ ffmpeg -report -i y2mate.com\ -\ _ue8GSSQxEMg_360p.mp4 frames/frame%04d.jpg
+ffmpeg started on 2019-06-30 at 12:21:31
+Report written to "ffmpeg-20190630-122131.log"
+ffmpeg version 4.1.3 Copyright (c) 2000-2019 the FFmpeg developers
+  built with Apple LLVM version 10.0.1 (clang-1001.0.46.4)
+  configuration: --prefix=/usr/local/Cellar/ffmpeg/4.1.3_1 --enable-shared --enable-pthreads --enable-version3 --enable-hardcoded-tables --enable-avresample --cc=clang --host-cflags='-I/Library/Java/JavaVirtualMachines/adoptopenjdk-11.0.2.jdk/Contents/Home/include -I/Library/Java/JavaVirtualMachines/adoptopenjdk-11.0.2.jdk/Contents/Home/include/darwin' --host-ldflags= --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libbluray --enable-libmp3lame --enable-libopus --enable-librubberband --enable-libsnappy --enable-libtesseract --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-librtmp --enable-libspeex --enable-videotoolbox --disable-libjack --disable-indev=jack --enable-libaom --enable-libsoxr
+  libavutil      56. 22.100 / 56. 22.100
+  libavcodec     58. 35.100 / 58. 35.100
+  libavformat    58. 20.100 / 58. 20.100
+  libavdevice    58.  5.100 / 58.  5.100
+  libavfilter     7. 40.101 /  7. 40.101
+  libavresample   4.  0.  0 /  4.  0.  0
+  libswscale      5.  3.100 /  5.  3.100
+  libswresample   3.  3.100 /  3.  3.100
+  libpostproc    55.  3.100 / 55.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'y2mate.com - _ue8GSSQxEMg_360p.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: isommp42
+    creation_time   : 2019-06-28T02:32:42.000000Z
+  Duration: 00:01:00.77, start: 0.000000, bitrate: 359 kb/s
+    Stream #0:0(und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p, 198x360 [SAR 1:1 DAR 11:20], 261 kb/s, 30 fps, 30 tbr, 15360 tbn, 60 tbc (default)
+    Metadata:
+      creation_time   : 2019-06-28T02:32:42.000000Z
+      handler_name    : ISO Media file produced by Google Inc. Created on: 06/27/2019.
+    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 96 kb/s (default)
+    Metadata:
+      creation_time   : 2019-06-28T02:32:42.000000Z
+      handler_name    : ISO Media file produced by Google Inc. Created on: 06/27/2019.
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> mjpeg (native))
+Press [q] to stop, [?] for help
+[swscaler @ 0x113472000] deprecated pixel format used, make sure you did set range correctly
+Output #0, image2, to 'frames/frame%04d.jpg':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: isommp42
+    encoder         : Lavf58.20.100
+    Stream #0:0(und): Video: mjpeg, yuvj420p(pc), 198x360 [SAR 1:1 DAR 11:20], q=2-31, 200 kb/s, 30 fps, 30 tbn, 30 tbc (default)
+    Metadata:
+      creation_time   : 2019-06-28T02:32:42.000000Z
+      handler_name    : ISO Media file produced by Google Inc. Created on: 06/27/2019.
+      encoder         : Lavc58.35.100 mjpeg
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: -1
+frame= 1819 fps=890 q=24.8 Lsize=N/A time=00:01:00.63 bitrate=N/A speed=29.7x    
+video:3669kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+
+
