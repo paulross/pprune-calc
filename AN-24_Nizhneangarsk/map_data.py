@@ -28,6 +28,21 @@ import numpy as np
 
 import map_funcs
 
+
+# Touchdown at about 00:35 [1015], 4 seconds after last position, say 4 * 85 = 340, add 330, so 670m from threshold
+# Off runway at about 00:46 [1380], 11 seconds after that, 11 * 70 = 770, add 670, so 1440m from threshold, 200m to go.
+# Crosses a pale track at 00:54, [1621], near boundary edge?
+# Frame 1685 landing gear hits an obstruction and collapses, boundary fence?
+# Breach fence and undercarridge collapse, tile 7, Point(970, 697)
+# Frame 1712, camera movement indicates impact.
+# Impact site is tile 7, Point(926, 737)
+# Impact at 00:57.
+FRAME_THRESHOLD = 827
+FRAME_TOUCHDOWN = 1015  # Movement of camera due to impact.
+
+FRAME_LAST = 1819
+
+
 #==================== New tiles ======================
 
 TILE_FILES = { k : f'Tile_{k}.png' for k in range(1, 8) }
@@ -133,7 +148,12 @@ POSITIONS_FROM_TILES: typing.Dict[int, typing.Tuple[int, map_funcs.Point, str]] 
 }
 
 
-SLAB_LENGTH = 6.0 # Width is 1.8
+#======== Slab meaasurements ========
+
+SLAB_LENGTH = 6.0  # Width is 1.8
+
+# The estimated error when counting slabs, 10% of slab length
+SLAB_MEASUREMENT_ERROR = SLAB_LENGTH * 0.1
 
 SLAB_TRANSITS: typing.Dict[int, typing.Tuple[int, float]] = {
     841: (2, 1.0),
@@ -165,32 +185,8 @@ SLAB_TRANSITS: typing.Dict[int, typing.Tuple[int, float]] = {
     # 1384 runway dissapears
 }
 
-
-FRAME_EVENTS: typing.Dict[int, str] = {
-    1: 'Video start',
-    510: 'Maximum ground speed',
-    827: 'Threshold',
-    1015: 'Touchdown',
-    max(SLAB_TRANSITS.keys()): 'Last speed measurement',
-    1384: 'Runway disappears',
-    1685: 'Impact with fence',
-    1712: 'Final impact',
-    1819: 'Last frame',
-}
-
-# Touchdown at about 00:35 [1015], 4 seconds after last position, say 4 * 85 = 340, add 330, so 670m from threshold
-# Off runway at about 00:46 [1380], 11 seconds after that, 11 * 70 = 770, add 670, so 1440m from threshold, 200m to go.
-# Crosses a pale track at 00:54, [1621], near boundary edge?
-# Frame 1685 landing gear hits an obstruction and collapses, boundary fence?
-# Breach fence and undercarridge collapse, tile 7, Point(970, 697)
-# Frame 1712, camera movement indicates impact.
-# Impact site is tile 7, Point(926, 737)
-# Impact at 00:57.
-FRAME_THRESHOLD = 827
-FRAME_TOUCHDOWN = 1015  # Movement of camera due to impact.
-
-FRAME_LAST = 1819
-
+LAST_MEASURED_FRAME = max(SLAB_TRANSITS.keys()) + SLAB_TRANSITS[max(SLAB_TRANSITS.keys())][0]
+LAST_MEASURED_TIME = map_funcs.frame_to_time(LAST_MEASURED_FRAME)
 
 SLAB_SPEEDS = np.empty((len(SLAB_TRANSITS), 5))
 
@@ -202,5 +198,42 @@ for f, frame_number in enumerate(sorted(SLAB_TRANSITS.keys())):
     SLAB_SPEEDS[f][0] = frame_number
     SLAB_SPEEDS[f][1] = t
     SLAB_SPEEDS[f][2] = dx / dt
-    SLAB_SPEEDS[f][3] = (dx + .5) / dt
-    SLAB_SPEEDS[f][4] = (dx - .5) / dt
+    SLAB_SPEEDS[f][3] = (dx + SLAB_MEASUREMENT_ERROR) / dt
+    SLAB_SPEEDS[f][4] = (dx - SLAB_MEASUREMENT_ERROR) / dt
+
+
+# After the aircraft departs the runway we have no data. There are some events though.
+BOUNDARY_FENCE_TILE_7 = map_funcs.Point(988, 713)
+FINAL_BUILDING_TILE_7 = map_funcs.Point(934, 743)
+BOUNDARY_FENCE_DISTANCE_FROM_THRESHOLD_M = TILE_SCALE_M_PER_PIXEL * math.sqrt(
+    (THRESHOLD_ON_EACH_TILE[7].x - BOUNDARY_FENCE_TILE_7.x)**2
+    + (THRESHOLD_ON_EACH_TILE[7].y - BOUNDARY_FENCE_TILE_7.y)**2
+)
+FINAL_BUILDING_DISTANCE_FROM_THRESHOLD_M = TILE_SCALE_M_PER_PIXEL * math.sqrt(
+    (THRESHOLD_ON_EACH_TILE[7].x - FINAL_BUILDING_TILE_7.x)**2
+    + (THRESHOLD_ON_EACH_TILE[7].y - FINAL_BUILDING_TILE_7.y)**2
+)
+
+# In metres
+# DISTANCE_FROM_RUNWAY_END_TO_FENCE = 213.0
+# DISTANCE_FROM_FENCE_TO_FINAL_IMPACT = 38.4
+# DISTANCE_FROM_RUNWAY_END_TO_FINAL_IMPACT = DISTANCE_FROM_RUNWAY_END_TO_FENCE + DISTANCE_FROM_FENCE_TO_FINAL_IMPACT
+
+
+FRAME_EVENTS: typing.Dict[int, str] = {
+    1: 'Video start',
+    510: 'Maximum ground speed',
+    827: 'Threshold',
+    1015: 'Touchdown',
+    map_funcs.time_to_frame(36.0): 'Start of drift to the right.',
+    LAST_MEASURED_FRAME: 'Last speed measurement',
+    1384: 'Runway disappears',
+    1685: 'Impact with fence',
+    1712: 'Final impact?',
+    1819: 'Last frame',
+}
+
+
+# This is the best accuracy that we can claim based on the comparison of differentiated tile data
+# and the slab data
+MAX_SPEED_ACCURACY = 2.0

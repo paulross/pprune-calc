@@ -1,7 +1,7 @@
 # set logscale x
 set colorsequence classic
 set grid
-set title "Comparison of Distance From Runway Threshold by Two Methods."
+set title "Comparison of Distance From Runway Start by Two Methods."
 set xlabel "Video Time (s)"
 set xtics
 set xrange [27:31.5]
@@ -39,9 +39,9 @@ slab_distance(t) = -4218.0 + t * (2.843e+02 + t * (-1.645e+01 / 2.0 + t * (4.789
 
 
 plot "tile_distance_data.dat" using 2:3:4:5 title "Aerial data" w yerrorbars, \
-    "tile_distance_data.dat" using 2:(tile_distance($2)) title "Fitted to mid values" lw 2 w line, \
+    "tile_distance_data.dat" using 2:(tile_distance($2)) title "Aerial data fitted to mid values" lw 2 w line, \
     "slab_speed_data.dat" using 2:6:7:8 title "Slab data" w yerrorbars, \
-    "slab_speed_data.dat" using 2:(slab_distance($2)) title "Fitted to mid values" lw 2 w line, \
+    "slab_speed_data.dat" using 2:(slab_distance($2)) title "Slab data fitted to mid values" lw 2 w line, \
     "slab_speed_data.dat" using 2:(slab_distance($2) - tile_distance($2)) title "Difference (right)" axes x1y2 lw 2 dt 4 w line
 
 # linespoints

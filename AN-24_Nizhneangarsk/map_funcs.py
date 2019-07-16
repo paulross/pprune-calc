@@ -116,6 +116,10 @@ def frames_to_dtime(frame_a: typing.Union[int, float], frame_b: typing.Union[int
     return (frame_b - frame_a) / FRAME_RATE
 
 
+def time_to_frame(time: typing.Union[int, float]) -> int:
+    return 1 + int(0.5 + time * FRAME_RATE)
+
+
 def distance_tolerance(distance: float) -> float:
     """Returns the error estimate of distance.
     At +2500m to the threshold this is assumed to be 100m decreasing linearly to 10m at the threshold and thereafter."""
