@@ -64,6 +64,7 @@ def translate_rotate(pt: Point, rotation_degrees: float, origin: Point=Point(0, 
     )
     return ret
 
+
 def distance_bearing(a: Point, b: Point, scale: float) -> typing.Tuple[float, float]:
     """Returns distance in metres and angle in degrees between two points at a scale in m / pixel."""
     return distance(a, b, scale), bearing(a, b)
@@ -130,20 +131,16 @@ def metres_per_second_to_knots(m_s: float) -> float:
     return m_s * 3600 / 1852
 
 
-# FRAME_RATE = 30.0
-FRAME_RATE = 30.0
+def frame_to_time(frame: typing.Union[int, float], frame_rate: int) -> float:
+    return (frame - 1) / frame_rate
 
 
-def frame_to_time(frame: typing.Union[int, float]) -> float:
-    return (frame - 1) / FRAME_RATE
+def frames_to_dtime(frame_a: typing.Union[int, float], frame_b: typing.Union[int, float], frame_rate: int) -> float:
+    return (frame_b - frame_a) / frame_rate
 
 
-def frames_to_dtime(frame_a: typing.Union[int, float], frame_b: typing.Union[int, float]) -> float:
-    return (frame_b - frame_a) / FRAME_RATE
-
-
-def time_to_frame(time: typing.Union[int, float]) -> int:
-    return 1 + int(0.5 + time * FRAME_RATE)
+def time_to_frame(time: typing.Union[int, float], frame_rate: int) -> int:
+    return 1 + int(0.5 + time * frame_rate)
 
 
 def distance_tolerance(distance: float) -> float:

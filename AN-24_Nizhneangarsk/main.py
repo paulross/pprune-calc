@@ -1,3 +1,25 @@
+"""
+Discussion: https://www.pprune.org/rumours-news/622950-angara-airlines-24-landing-accident-nizhneangarsk.html
+
+Video: https://youtu.be/LtJcgdU5MUk
+
+Data from google maps and OpenStreetMap
+
+Accident: https://en.wikipedia.org/wiki/Angara_Airlines_Flight_200
+
+Nizhneangarsk Airport
+---------------------
+Airport location (https://en.wikipedia.org/wiki/Nizhneangarsk_Airport): 55°48′6″N 109°35′12″E
+That is 55.80166666666666, 109.58666666666666
+
+IATA: none ICAO: UIUN
+Runway is 04/22, 1653m long
+
+Threshold of 22 on google maps: https://www.google.com/maps/@55.807288,109.6034312,757m/data=!3m1!1e3
+
+RT videos: https://www.rt.com/news/462775-russia-nizhneangarsk-crash-landing/
+
+"""
 import math
 import os
 import subprocess
@@ -7,45 +29,47 @@ import typing
 import numpy as np
 from scipy.optimize import curve_fit
 
-import map_data
+import data.tiles
+import data.video_a
 import map_funcs
 from common import polynomial
+from data import video_a
 
 
 def print_calculated_data() -> None:
     print('Tile data:')
     print('TILE_OFFSETS:')
-    for k in sorted(map_data.TILE_OFFSETS.keys()):
-        print(f'{k} : {map_data.TILE_OFFSETS[k]}')
+    for k in sorted(data.tiles.TILE_OFFSETS.keys()):
+        print(f'{k} : {data.tiles.TILE_OFFSETS[k]}')
     print('THRESHOLD_ON_EACH_TILE:')
-    for k in sorted(map_data.THRESHOLD_ON_EACH_TILE.keys()):
-        print(f'{k:d} : {map_data.THRESHOLD_ON_EACH_TILE[k]}')
+    for k in sorted(data.tiles.THRESHOLD_ON_EACH_TILE.keys()):
+        print(f'{k:d} : {data.tiles.THRESHOLD_ON_EACH_TILE[k]}')
     print('TILE_EXTENDED_RUNWAY_LINE:')
-    for k in sorted(map_data.TILE_EXTENDED_RUNWAY_LINE.keys()):
-        print(f'{k:d} : {map_data.TILE_EXTENDED_RUNWAY_LINE[k]}')
+    for k in sorted(data.tiles.TILE_EXTENDED_RUNWAY_LINE.keys()):
+        print(f'{k:d} : {data.tiles.TILE_EXTENDED_RUNWAY_LINE[k]}')
     print('\nRunway data:')
     print(
-        f'Runway length {map_data.RUNWAY_LENGTH_HEADING[0]:.1f} (m)'
-        f', heading {map_data.RUNWAY_LENGTH_HEADING[1]:.1f} (degrees).'
+        f'Runway length {data.tiles.RUNWAY_LENGTH_HEADING[0]:.1f} (m)'
+        f', heading {data.tiles.RUNWAY_LENGTH_HEADING[1]:.1f} (degrees).'
     )
     print(
-        f'Runway width {map_data.RUNWAY_WIDTH_PX:.1f} (pixels)'
-        f', {map_data.TILE_SCALE_M_PER_PIXEL * map_data.RUNWAY_WIDTH_PX:.1f} (m).'
+        f'Runway width {data.tiles.RUNWAY_WIDTH_PX :.1f} (pixels)'
+        f', {data.tiles.TILE_SCALE_M_PER_PIXEL * data.tiles.RUNWAY_WIDTH_PX :.1f} (m).'
     )
-    print(f'Boundary fence from threshold: {map_data.BOUNDARY_FENCE_DISTANCE_FROM_THRESHOLD_M:.1f} (m)')
-    print(f'Final building from threshold: {map_data.FINAL_BUILDING_DISTANCE_FROM_THRESHOLD_M:.1f} (m)')
+    print(f'Boundary fence from threshold: {data.tiles.BOUNDARY_FENCE_DISTANCE_FROM_THRESHOLD_M:.1f} (m)')
+    print(f'Final building from threshold: {data.tiles.FINAL_BUILDING_DISTANCE_FROM_THRESHOLD_M:.1f} (m)')
 
 
 def create_distance_array_of_tile_data() -> typing.Dict[str, np.ndarray]:
     """Returns a numpy array of time, position from the tile position data."""
     columns = ('Frame', 'Time', 'd', 'd+', 'd-')
-    ret = {k: np.empty((len(map_data.POSITIONS_FROM_TILES), 1)) for k in columns}
-    for f, frame_number in enumerate(sorted(map_data.POSITIONS_FROM_TILES.keys())):
-        t = map_funcs.frame_to_time(frame_number)
-        dx = map_data.POSITIONS_FROM_TILES[frame_number][1].x - map_data.THRESHOLD_ON_EACH_TILE[map_data.POSITIONS_FROM_TILES[frame_number][0]].x
-        dy = map_data.POSITIONS_FROM_TILES[frame_number][1].y - map_data.THRESHOLD_ON_EACH_TILE[map_data.POSITIONS_FROM_TILES[frame_number][0]].y
-        d_threshold = map_data.TILE_SCALE_M_PER_PIXEL * math.sqrt(dx**2 + dy**2)
-        if frame_number < map_data.FRAME_THRESHOLD:
+    ret = {k: np.empty((len(video_a.POSITIONS_FROM_TILES), 1)) for k in columns}
+    for f, frame_number in enumerate(sorted(video_a.POSITIONS_FROM_TILES.keys())):
+        t = map_funcs.frame_to_time(frame_number, video_a.FRAME_RATE)
+        dx = video_a.POSITIONS_FROM_TILES[frame_number][1].x - data.tiles.THRESHOLD_ON_EACH_TILE[video_a.POSITIONS_FROM_TILES[frame_number][0]].x
+        dy = video_a.POSITIONS_FROM_TILES[frame_number][1].y - data.tiles.THRESHOLD_ON_EACH_TILE[video_a.POSITIONS_FROM_TILES[frame_number][0]].y
+        d_threshold = data.tiles.TILE_SCALE_M_PER_PIXEL * math.sqrt(dx ** 2 + dy ** 2)
+        if frame_number < data.video_a.FRAME_THRESHOLD:
             d_threshold = -d_threshold
         ret['Frame'][f] = frame_number
         ret['Time'][f] = t
@@ -117,7 +141,7 @@ SLAB_V_ORDER = ('v', 'v+', 'v-')
 
 def get_slab_v_fits() -> typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]:
     v_fits = {
-        v_name: curve_fit(polynomial.polynomial_3, map_data.SLAB_SPEEDS[:, 1], map_data.SLAB_SPEEDS[:, v + 2])
+        v_name: curve_fit(polynomial.polynomial_3, data.video_a.SLAB_SPEEDS[:, 1], data.video_a.SLAB_SPEEDS[:, v + 2])
         for v, v_name in enumerate(SLAB_V_ORDER)
     }
     return v_fits
@@ -144,7 +168,7 @@ def write_slab_results(stream: typing.TextIO=sys.stdout):
         formulae = polynomial.polynomial_string(V_FORMULAE[v], 't', '.3e', *v_fits[v][0])
         stream.write(f'# {formulae}\n')
 
-    THRESHOLD_TIME = map_funcs.frame_to_time(map_data.FRAME_THRESHOLD)
+    THRESHOLD_TIME = map_funcs.frame_to_time(data.video_a.FRAME_THRESHOLD, video_a.FRAME_RATE)
     d_offsets = [
         polynomial.polynomial_3_integral(THRESHOLD_TIME, *v_fits["v"][0]),
         polynomial.polynomial_3_integral(THRESHOLD_TIME, *v_fits["v+"][0]),
@@ -152,12 +176,12 @@ def write_slab_results(stream: typing.TextIO=sys.stdout):
     ]
     stream.write(f'# d_offsets {d_offsets}\n')
     stream.write(f'# Columns: frame, t, v, v+, v- (m/s), d, d+, d-, a, a+, a-, v, v+, v- (knots)\n')
-    for i in range(len(map_data.SLAB_SPEEDS)):
-        t = map_data.SLAB_SPEEDS[i, 1]
-        v_m_per_second = [map_data.SLAB_SPEEDS[i, j] for j in (2, 3, 4)]
+    for i in range(len(data.video_a.SLAB_SPEEDS)):
+        t = data.video_a.SLAB_SPEEDS[i, 1]
+        v_m_per_second = [data.video_a.SLAB_SPEEDS[i, j] for j in (2, 3, 4)]
         v_knots = [map_funcs.metres_per_second_to_knots(v) for v in v_m_per_second]
         row = [
-            f'{map_data.SLAB_SPEEDS[i, 0]:<6.0f}',
+            f'{data.video_a.SLAB_SPEEDS[i, 0]:<6.0f}',
             f'{t:6.1f}',
             f'{v_m_per_second[0]:8.1f}',
             f'{v_m_per_second[1]:8.1f}',
@@ -197,14 +221,14 @@ def _compute_distance(
         frame: int,
         tile_d_fits: typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]],
         slab_v_fits: typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]) -> typing.Tuple[float, float, float]:
-    t = map_funcs.frame_to_time(frame)
-    if frame <= map_data.FRAME_THRESHOLD:
+    t = map_funcs.frame_to_time(frame, video_a.FRAME_RATE)
+    if frame <= data.video_a.FRAME_THRESHOLD:
         # Only use the tile_d_fits
         return (polynomial.polynomial_3(t, *tile_d_fits['d'][0]),
                 polynomial.polynomial_3(t, *tile_d_fits['d+'][0]),
                 polynomial.polynomial_3(t, *tile_d_fits['d-'][0]))
     else:
-        THRESHOLD_TIME = map_funcs.frame_to_time(map_data.FRAME_THRESHOLD)
+        THRESHOLD_TIME = map_funcs.frame_to_time(data.video_a.FRAME_THRESHOLD, video_a.FRAME_RATE)
         d_offsets = [
             polynomial.polynomial_3_integral(THRESHOLD_TIME, *slab_v_fits["v"][0]),
             polynomial.polynomial_3_integral(THRESHOLD_TIME, *slab_v_fits["v+"][0]),
@@ -215,7 +239,7 @@ def _compute_distance(
             polynomial.polynomial_3_integral(t, *slab_v_fits["v+"][0]) - d_offsets[1],
             polynomial.polynomial_3_integral(t, *slab_v_fits["v-"][0]) - d_offsets[2],
         )
-        if frame > max(map_data.POSITIONS_FROM_TILES.keys()):
+        if frame > max(video_a.POSITIONS_FROM_TILES.keys()):
             # Only use the slab_v_fits
             return slab_d
         else:
@@ -231,8 +255,8 @@ def _compute_speed(
         frame: int,
         tile_d_fits: typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]],
         slab_v_fits: typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]) -> typing.Tuple[float, float, float]:
-    t = map_funcs.frame_to_time(frame)
-    if frame <= map_data.FRAME_THRESHOLD:
+    t = map_funcs.frame_to_time(frame, video_a.FRAME_RATE)
+    if frame <= data.video_a.FRAME_THRESHOLD:
         # Only use the tile_d_fits
         return (polynomial.polynomial_3_differential(t, *tile_d_fits['d'][0]),
                 polynomial.polynomial_3_differential(t, *tile_d_fits['d+'][0]),
@@ -243,7 +267,7 @@ def _compute_speed(
             polynomial.polynomial_3(t, *slab_v_fits["v+"][0]),
             polynomial.polynomial_3(t, *slab_v_fits["v-"][0]),
         )
-        if frame > max(map_data.POSITIONS_FROM_TILES.keys()):
+        if frame > max(video_a.POSITIONS_FROM_TILES.keys()):
             # Only use the slab_v_fits
             return slab_v
         else:
@@ -303,10 +327,10 @@ def compute_impacts():
     """Does the calculation of de-acceleration after departure from the runway."""
     tile_d_fits = get_tile_d_fits()[1]
     slab_v_fits = get_slab_v_fits()
-    d_data = _compute_distance(map_data.LAST_MEASURED_FRAME, tile_d_fits, slab_v_fits)
-    v_data = _compute_speed(map_data.LAST_MEASURED_FRAME, tile_d_fits, slab_v_fits)
-    dt = map_funcs.frames_to_dtime(map_data.LAST_MEASURED_FRAME, 1685)
-    d_fence = map_data.BOUNDARY_FENCE_DISTANCE_FROM_THRESHOLD_M
+    d_data = _compute_distance(data.video_a.LAST_MEASURED_FRAME, tile_d_fits, slab_v_fits)
+    v_data = _compute_speed(data.video_a.LAST_MEASURED_FRAME, tile_d_fits, slab_v_fits)
+    dt = map_funcs.frames_to_dtime(data.video_a.LAST_MEASURED_FRAME, 1685, video_a.FRAME_RATE)
+    d_fence = data.tiles.BOUNDARY_FENCE_DISTANCE_FROM_THRESHOLD_M
     print('Boundary fence impact:')
     boundary_fence_data = []
     for d, v in zip(d_data, v_data):
@@ -322,7 +346,7 @@ def compute_impacts():
         except ValueError as err:
             print(f'Initial v={v:.1f} d={d:.1f} ERROR: {err}')
             boundary_fence_data.append((d, v, None, None))
-    print(f'Final impact at fence +{map_data.FINAL_BUILDING_DISTANCE_FROM_THRESHOLD_M - map_data.BOUNDARY_FENCE_DISTANCE_FROM_THRESHOLD_M} (m):')
+    print(f'Final impact at fence +{data.tiles.FINAL_BUILDING_DISTANCE_FROM_THRESHOLD_M - data.tiles.BOUNDARY_FENCE_DISTANCE_FROM_THRESHOLD_M} (m):')
     for d, v, v_terminal, accln in boundary_fence_data:
         if v_terminal is not None and accln is not None:
             t = v_terminal / -accln
@@ -351,8 +375,8 @@ def compute_impacts():
 def print_events() -> None:
     tile_d_fits = get_tile_d_fits()[1]
     slab_v_fits = get_slab_v_fits()
-    for frame_number in sorted(map_data.FRAME_EVENTS.keys()):
-        t = map_funcs.frame_to_time(frame_number)
+    for frame_number in sorted(data.video_a.VIDEO_A_FRAME_EVENTS.keys()):
+        t = map_funcs.frame_to_time(frame_number, video_a.FRAME_RATE)
         d, d_plus, d_minus = _compute_distance(frame_number, tile_d_fits, slab_v_fits)
         d_tol = max(abs(d - d_plus), abs(d - d_minus))
         v, v_plus, v_minus = _compute_speed(frame_number, tile_d_fits, slab_v_fits)
@@ -363,7 +387,7 @@ def print_events() -> None:
             f'{d:7.0f} ±{d_tol:.0f} m',
             f'{v:7.1f} ±{v_tol:.1f} m/s',
             f'{map_funcs.metres_per_second_to_knots(v):7.0f} ±{map_funcs.metres_per_second_to_knots(v_tol):.0f} knots',
-            map_data.FRAME_EVENTS[frame_number]
+            data.video_a.VIDEO_A_FRAME_EVENTS[frame_number]
         )
 
 
