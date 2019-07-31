@@ -197,6 +197,7 @@ The impact point is 1853m from the start of runway 22 and at 10.4 seconds after 
 The mid point data computed acceleration of -3.9 m/s^2 agrees very well with the last observed acceleration of -3.7 ±0.3 m/s^2
 
 
+
 ## Final Impact
 
 36m beyond the boundary fence is a building that is where the aircraft finally stopped. *Assuming* the acceleration is the same as before the boundary fence impact and *ignoring* any speed reduction caused by the boundary fence impact the final impact speed would be:

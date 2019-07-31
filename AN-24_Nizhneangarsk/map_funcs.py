@@ -37,16 +37,41 @@ def point_tile_to_tile(tile_a: int, pt_a: Point, tile_b: int,
     return Point(ret_x, ret_y)
 
 
-def distance_bearing(a: Point, b: Point, scale: float) -> typing.Tuple[float, float]:
-    """Returns distance in metres and angle in degrees between two points at a scale in m / pixel."""
+def distance(a: Point, b: Point, scale: float) -> float:
+    """Returns distance in metres two points at a scale in m / pixel."""
     x_north = a.y - b.y
     y_east = b.x - a.x
-    distance = scale * math.sqrt(x_north**2 + y_east**2)
-    bearing = math.atan2(y_east, x_north)
-    bearing_degrees = math.degrees(bearing)
+    return scale * math.sqrt(x_north**2 + y_east**2)
+
+
+def bearing(a: Point, b: Point) -> float:
+    """Returns angle in degrees between two points at a scale in m / pixel."""
+    x_north = a.y - b.y
+    y_east = b.x - a.x
+    _bearing = math.atan2(y_east, x_north)
+    bearing_degrees = math.degrees(_bearing)
     if bearing_degrees < 0:
         bearing_degrees += 360
-    return distance, bearing_degrees
+    return bearing_degrees
+
+
+def translate_rotate(pt: Point, rotation_degrees: float, origin: Point=Point(0, 0)) -> Point:
+    cos = math.cos(math.radians(rotation_degrees))
+    sin = math.sin(math.radians(rotation_degrees))
+    ret = Point(
+        (origin.y - pt.y) * cos - (origin.x - pt.x) * sin,
+        -((origin.x - pt.x) * cos + (origin.y - pt.y) * sin),
+    )
+    return ret
+
+def distance_bearing(a: Point, b: Point, scale: float) -> typing.Tuple[float, float]:
+    """Returns distance in metres and angle in degrees between two points at a scale in m / pixel."""
+    return distance(a, b, scale), bearing(a, b)
+
+
+def mid_point(a: Point, b: Point) -> Point:
+    """The mid point between two points."""
+    return Point((a.x + b.x) / 2, (a.y + b.y) / 2)
 
 
 def tile_extended_centreline_crossing_points(tile: int,
@@ -105,6 +130,7 @@ def metres_per_second_to_knots(m_s: float) -> float:
     return m_s * 3600 / 1852
 
 
+# FRAME_RATE = 30.0
 FRAME_RATE = 30.0
 
 
