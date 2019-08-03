@@ -1,4 +1,8 @@
+"""
+Data from video B, a fixed camera.
+"""
 import math
+import sys
 import typing
 
 import map_funcs
@@ -9,10 +13,27 @@ URL = 'https://youtu.be/BQ8ujmRhLH0'
 
 VIDEO_FILE = 'video_images/AirportCamera.mp4'
 FRAMES_DIRECTORY = 'video_images/AirportCamera_frames'
+VIDEO_WIDTH = 640
+VIDEO_HEIGHT = 350
 FRAME_RATE = 25
-FRAME_FIRST_APPEARANCE = 36
-FRAME_HELICOPTER_TRANSIT = 86
 
+# Specific frame events
+FRAME_EVENTS: typing.Dict[int, str] = {
+    36: 'First appearance',
+    86: 'Helicopter transit',
+}
+
+FRAME_EVENTS_STR_KEY = {v: k for k, v in FRAME_EVENTS.items()}
+
+# In frame 850 these are the positions of objects observable on google earth
+FRAME_850_POSITIONS: typing.Dict[str, map_funcs.Point] = {
+    'helicopter': map_funcs.Point(356, 111),
+    'buildings_apron_edge': map_funcs.Point(12, 101),
+    # Estimated from the base of the dark smoke column.
+    'red_building': map_funcs.Point(75, 90),
+}
+FRAME_850_ERROR_PIXELS = 2
+# TODO: assert keys are in google earth data
 
 class AircraftExtremities(typing.NamedTuple):
     left_tip: map_funcs.Point
@@ -105,45 +126,48 @@ AIRCRAFT_ASPECTS: typing.Dict[int, AircraftExtremities] = {
     ),
 }
 
-print('Helicopter transit time', (
-        FRAME_HELICOPTER_TRANSIT - FRAME_FIRST_APPEARANCE) / FRAME_RATE)
 
-# Rough estimate of distance and video time when the aircraft transits the helicopter.
-# Transit position is Point(2262, 1170)
-# Runway start is (3210, 103)
-# Runway end is (1066.5, 2508.0)
-# Runway length is math.sqrt((3210-1066.5)**2 + (2508-103)**2)) == 3221.6
+def print_aspects() -> None:
+    print('Aspects:')
+    for k in sorted(AIRCRAFT_ASPECTS.keys()):
+        mid_span = map_funcs.mid_point(
+            AIRCRAFT_ASPECTS[k].left_tip,
+            AIRCRAFT_ASPECTS[k].right_tip,
+        )
+        mid_length = map_funcs.mid_point(
+            AIRCRAFT_ASPECTS[k].nose,
+            AIRCRAFT_ASPECTS[k].tail,
+        )
+        mid_point = map_funcs.mid_point(mid_span, mid_length)
+        aspect = AIRCRAFT_ASPECTS[k].aspect(ANTONOV_AN_24_SPAN, ANTONOV_AN_24_LENGTH)
+        print(f'{k:3d} aspect={aspect :5.3f} x: {mid_point.x:6.2f} y: {mid_point.y:6.2f}')
+
+    print('Aspects from tail height:')
+    for k in sorted(AIRCRAFT_ASPECTS.keys()):
+        span_px = map_funcs.distance(
+            AIRCRAFT_ASPECTS[k].left_tip,
+            AIRCRAFT_ASPECTS[k].right_tip,
+            1,
+        ) / ANTONOV_AN_24_SPAN
+        m_per_pixel = ANTONOV_AN_24_HEIGHT / map_funcs.distance(
+            AIRCRAFT_ASPECTS[k].fin_tip,
+            AIRCRAFT_ASPECTS[k].fin_gnd,
+            1,
+        )
+        apparent_span_m = m_per_pixel * span_px
+        aspect = 90 - math.degrees(math.asin(apparent_span_m / ANTONOV_AN_24_SPAN))
+        print(f'{k:3d} span={span_px :5.3f} (px) m/px: {m_per_pixel :6.3f} aspect: {aspect :6.2f}')
 
 
-# The key is the frame number
-
-print('Aspects:')
-for k in sorted(AIRCRAFT_ASPECTS.keys()):
-    print(f'{k:3d} aspect={aspect :5.3f} x: {mid_point.x:6.2f} y: {mid_point.y:6.2f}')
-
-
-print('Aspects from tail height:')
-for k in sorted(AIRCRAFT_ASPECTS.keys()):
-    mid_span = map_funcs.mid_point(
-        AIRCRAFT_ASPECTS[k].left_tip,
-        AIRCRAFT_ASPECTS[k].right_tip,
+def main() -> int:
+    print(
+        'Helicopter transit time',
+        (
+            FRAME_EVENTS_STR_KEY['Helicopter transit'] - FRAME_EVENTS_STR_KEY['First appearance']
+        ) / FRAME_RATE
     )
-    mid_length = map_funcs.mid_point(
-        AIRCRAFT_ASPECTS[k].nose,
-        AIRCRAFT_ASPECTS[k].tail,
-    )
-    mid_point = map_funcs.mid_point(mid_span, mid_length)
-    aspect = AIRCRAFT_ASPECTS[k].aspect(ANTONOV_AN_24_SPAN, ANTONOV_AN_24_LENGTH)
-    span_px = map_funcs.distance(
-        AIRCRAFT_ASPECTS[k].left_tip,
-        AIRCRAFT_ASPECTS[k].right_tip,
-        1,
-    ) / ANTONOV_AN_24_SPAN
-    m_per_pixel = ANTONOV_AN_24_HEIGHT / map_funcs.distance(
-        AIRCRAFT_ASPECTS[k].fin_tip,
-        AIRCRAFT_ASPECTS[k].fin_gnd,
-        1,
-    )
-    apparent_span_m = m_per_pixel * span_px
-    aspect = 90 - math.degrees(math.asin(apparent_span_m / ANTONOV_AN_24_SPAN))
-    print(f'{k:3d} span={span_px :5.3f} (px) m/px: {m_per_pixel :6.3f} aspect: {aspect :6.2f}')
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

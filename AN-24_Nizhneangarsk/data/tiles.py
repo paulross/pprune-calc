@@ -1,3 +1,6 @@
+"""
+There are several high resolution images downloaded as 'tiles' that have to be stitched together.
+"""
 import math
 import typing
 
@@ -34,6 +37,7 @@ TILE_TIE_POINTS = {
     (6, 7): (map_funcs.Point(1120, 1118), map_funcs.Point(1663, 375)),
 }
 
+
 def init_tile_offsets():
     tile_offsets = {}
     # These are the common points on both tiles
@@ -61,14 +65,6 @@ RUNWAY_LENGTH_HEADING = map_funcs.distance_bearing(
 )
 
 
-
-# Measured by drawing in the runway centreline
-# Measured as the average of two points
-
-
-# From a clear line across the runway on Tile 7
-
-
 RUNWAY_LENGTH_HEADING = map_funcs.distance_bearing(
     RUNWAY_22_THRESHOLD_TILE_5,
     map_funcs.point_tile_to_tile(6, RUNWAY_22_END_TILE_6, 5, TILE_OFFSETS),
@@ -83,16 +79,15 @@ TILE_EXTENDED_RUNWAY_LINE = {
 }
 
 
-# {frame_number : (tile, position), ...}
-
-
-# After the aircraft departs the runway we have no data. There are some events though.
 BOUNDARY_FENCE_TILE_7 = map_funcs.Point(988, 713)
+
 FINAL_BUILDING_TILE_7 = map_funcs.Point(934, 743)
+
 BOUNDARY_FENCE_DISTANCE_FROM_THRESHOLD_M = TILE_SCALE_M_PER_PIXEL * math.sqrt(
     (THRESHOLD_ON_EACH_TILE[7].x - BOUNDARY_FENCE_TILE_7.x) ** 2
     + (THRESHOLD_ON_EACH_TILE[7].y - BOUNDARY_FENCE_TILE_7.y) ** 2
 )
+
 FINAL_BUILDING_DISTANCE_FROM_THRESHOLD_M = TILE_SCALE_M_PER_PIXEL * math.sqrt(
     (THRESHOLD_ON_EACH_TILE[7].x - FINAL_BUILDING_TILE_7.x) ** 2
     + (THRESHOLD_ON_EACH_TILE[7].y - FINAL_BUILDING_TILE_7.y) ** 2

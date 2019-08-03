@@ -375,7 +375,7 @@ def compute_impacts():
 def print_events() -> None:
     tile_d_fits = get_tile_d_fits()[1]
     slab_v_fits = get_slab_v_fits()
-    for frame_number in sorted(data.video_a.VIDEO_A_FRAME_EVENTS.keys()):
+    for frame_number in sorted(data.video_a.FRAME_EVENTS.keys()):
         t = map_funcs.frame_to_time(frame_number, video_a.FRAME_RATE)
         d, d_plus, d_minus = _compute_distance(frame_number, tile_d_fits, slab_v_fits)
         d_tol = max(abs(d - d_plus), abs(d - d_minus))
@@ -387,11 +387,11 @@ def print_events() -> None:
             f'{d:7.0f} ±{d_tol:.0f} m',
             f'{v:7.1f} ±{v_tol:.1f} m/s',
             f'{map_funcs.metres_per_second_to_knots(v):7.0f} ±{map_funcs.metres_per_second_to_knots(v_tol):.0f} knots',
-            data.video_a.VIDEO_A_FRAME_EVENTS[frame_number]
+            data.video_a.FRAME_EVENTS[frame_number]
         )
 
 
-def main():
+def main() -> int:
     print_calculated_data()
     with open('plots/tile_distance_data.dat', 'w') as ostream:
         print('Writing tile results...')

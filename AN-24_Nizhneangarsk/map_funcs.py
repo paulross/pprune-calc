@@ -55,6 +55,20 @@ def bearing(a: Point, b: Point) -> float:
     return bearing_degrees
 
 
+def bearing_min_max(a: Point, b: Point, disp: float) -> typing.Tuple[float, float]:
+    d_range = (-disp, +disp)
+    bearings = []
+    for dx_a in d_range:
+        for dy_a in d_range:
+            for dx_b in d_range:
+                for dy_b in d_range:
+                    new_a = Point(a.x + dx_a, a.y + dy_a)
+                    new_b = Point(b.x + dx_b, b.y + dy_b)
+                    bearings.append(bearing(new_a, new_b))
+    # print('TRACE:', bearings)
+    return min(bearings), max(bearings)
+
+
 def translate_rotate(pt: Point, rotation_degrees: float, origin: Point=Point(0, 0)) -> Point:
     cos = math.cos(math.radians(rotation_degrees))
     sin = math.sin(math.radians(rotation_degrees))
