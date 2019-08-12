@@ -25,6 +25,15 @@ GOOGLE_EARTH_AIRPORT_IMAGES = {
             'helicopter': map_funcs.Point(2630, 1236),
             'camera_B': map_funcs.Point(2890, 1103),
             'buildings_apron_edge': map_funcs.Point(2213, 1780),
+            # The next three are from camera B frame 850
+            # Dark smudge on right
+            'right_dark_grass': map_funcs.Point(2742, 1137),
+            # Pale smudge on right where tarmac meets grass
+            'right_light_grass': map_funcs.Point(2755, 1154),
+            # Pale smudge on left where tarmac taxiway meets grass
+            # 'left_light_grass': map_funcs.Point(2492, 1488),
+            # Bright roofed house
+            'bright_roofed_house': map_funcs.Point(1067, 2243),
         }
     },
 }

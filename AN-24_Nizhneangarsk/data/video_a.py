@@ -7,6 +7,12 @@ import map_funcs
 URL = 'https://youtu.be/LtJcgdU5MUk'
 FRAME_RATE = 30
 
+
+def frame_to_time(frame: int) -> float:
+    """Return the time in seconds from the start of this video."""
+    return map_funcs.frame_to_time(frame, FRAME_RATE)
+
+
 # Touchdown at about 00:35 [1015], 4 seconds after last position, say 4 * 85 = 340, add 330, so 670m from threshold
 # Off runway at about 00:46 [1380], 11 seconds after that, 11 * 70 = 770, add 670, so 1440m from threshold, 200m to go.
 # Crosses a pale track at 00:54, [1621], near boundary edge?
@@ -107,8 +113,11 @@ FRAME_EVENTS: typing.Dict[int, str] = {
     510: 'Maximum ground speed',
     827: 'Threshold',
     1015: 'Touchdown',
-    map_funcs.time_to_frame(36.0, FRAME_RATE): 'Start of drift to the right.',
+    1065: 'First appearance in video B, x=??? m',
+    1081: 'Start of drift to the right.',
     LAST_MEASURED_FRAME: 'Last speed measurement',
+    # At about 46s the starboard undercarriage leg meets the grass.
+    # So frame 1 + 30 * 46 = 1381
     1384: 'Runway disappears',
     1685: 'Impact with fence',
     1712: 'Final impact?',
