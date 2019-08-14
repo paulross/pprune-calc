@@ -108,6 +108,42 @@ The light patch on the right of the concrete, and the lightish patch in the gras
 
 This is a speed measurement and can be integrated for distance or differentiated for acceleration. The accuracy is estimated as 10% of a slab so if four slabs are counted the error is 2.5%.
 
+
+# Data From Video B
+
+A second video was posted on YouTube that showed images from a security camera overlooking the airport. The camera is facing roughly west south west:
+
+<center>
+
+[![AN-24 at Nizhneangarsk, video B](https://img.youtube.com/vi/BQ8ujmRhLH0/0.jpg)](https://youtu.be/BQ8ujmRhLH0 "AN-24 at Nizhneangarsk, video B")
+
+</center>
+
+This video was recorded at 30 f.p.s.
+
+## Camera Position
+
+## Camera Resolution, Heading and Focal Length
+
+## Matching TimeLines
+
+## Observed Events
+
+## Aircraft Position and Speed
+
+## Equation of Motion
+
+## Comparison with Video A
+
+| Video Time A (s) | Event Video A | Video Time B (s) | Event Video B | Difference (s) |
+| --: | :--- | ---: | :--- | ---: |
+|   35.5 | x=752 m from video B in video A time     |    1.4 | First appearance, x=752 m |   34.1 |
+|   36.0 | Start of drift to the right.             |    1.6 | Tyre smoke and dust                     |   34.4 |
+|   46.1 | Runway disappears                        |   11.6 | Start of large dust plume               |   34.5 |
+|   57.0 | Final impact?                            |   23.0 | Start of smoke plume                    |   34.0 |
+
+
+
 # Computed Data
 
 ## Position
@@ -140,6 +176,7 @@ TODO
 
 
 ## Acceleration
+
 
 TODO
 
@@ -209,6 +246,7 @@ The mid point data computed acceleration of -3.9 m/s^2 agrees very well with the
 | -ve error | 29.3 m/s (57 knots) |
 
 Images of the aftermath suggest that the mid-point calculation is probably correct.
+
 
 # Summary of Events
 

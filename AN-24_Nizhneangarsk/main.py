@@ -31,9 +31,14 @@ from scipy.optimize import curve_fit
 
 import data.tiles
 import data.video_a
+import data.video_b
+import data.video_ab
 import map_funcs
-from common import polynomial
-from data import video_a
+from cmn import polynomial
+# from data import tiles
+# from data import video_a
+# from data import video_b
+from data import google_earth
 
 
 def print_calculated_data() -> None:
@@ -63,11 +68,13 @@ def print_calculated_data() -> None:
 def create_distance_array_of_tile_data() -> typing.Dict[str, np.ndarray]:
     """Returns a numpy array of time, position from the tile position data."""
     columns = ('Frame', 'Time', 'd', 'd+', 'd-')
-    ret = {k: np.empty((len(video_a.POSITIONS_FROM_TILES), 1)) for k in columns}
-    for f, frame_number in enumerate(sorted(video_a.POSITIONS_FROM_TILES.keys())):
-        t = map_funcs.frame_to_time(frame_number, video_a.FRAME_RATE)
-        dx = video_a.POSITIONS_FROM_TILES[frame_number][1].x - data.tiles.THRESHOLD_ON_EACH_TILE[video_a.POSITIONS_FROM_TILES[frame_number][0]].x
-        dy = video_a.POSITIONS_FROM_TILES[frame_number][1].y - data.tiles.THRESHOLD_ON_EACH_TILE[video_a.POSITIONS_FROM_TILES[frame_number][0]].y
+    ret = {k: np.empty((len(data.video_a.POSITIONS_FROM_TILES), 1)) for k in columns}
+    for f, frame_number in enumerate(sorted(data.video_a.POSITIONS_FROM_TILES.keys())):
+        t = map_funcs.frame_to_time(frame_number, data.video_a.FRAME_RATE)
+        dx = data.video_a.POSITIONS_FROM_TILES[frame_number][1].x \
+             - data.tiles.THRESHOLD_ON_EACH_TILE[data.video_a.POSITIONS_FROM_TILES[frame_number][0]].x
+        dy = data.video_a.POSITIONS_FROM_TILES[frame_number][1].y \
+             - data.tiles.THRESHOLD_ON_EACH_TILE[data.video_a.POSITIONS_FROM_TILES[frame_number][0]].y
         d_threshold = data.tiles.TILE_SCALE_M_PER_PIXEL * math.sqrt(dx ** 2 + dy ** 2)
         if frame_number < data.video_a.FRAME_THRESHOLD:
             d_threshold = -d_threshold
@@ -168,7 +175,7 @@ def write_slab_results(stream: typing.TextIO=sys.stdout):
         formulae = polynomial.polynomial_string(V_FORMULAE[v], 't', '.3e', *v_fits[v][0])
         stream.write(f'# {formulae}\n')
 
-    THRESHOLD_TIME = map_funcs.frame_to_time(data.video_a.FRAME_THRESHOLD, video_a.FRAME_RATE)
+    THRESHOLD_TIME = map_funcs.frame_to_time(data.video_a.FRAME_THRESHOLD, data.video_a.FRAME_RATE)
     d_offsets = [
         polynomial.polynomial_3_integral(THRESHOLD_TIME, *v_fits["v"][0]),
         polynomial.polynomial_3_integral(THRESHOLD_TIME, *v_fits["v+"][0]),
@@ -221,14 +228,14 @@ def _compute_distance(
         frame: int,
         tile_d_fits: typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]],
         slab_v_fits: typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]) -> typing.Tuple[float, float, float]:
-    t = map_funcs.frame_to_time(frame, video_a.FRAME_RATE)
+    t = map_funcs.frame_to_time(frame, data.video_a.FRAME_RATE)
     if frame <= data.video_a.FRAME_THRESHOLD:
         # Only use the tile_d_fits
         return (polynomial.polynomial_3(t, *tile_d_fits['d'][0]),
                 polynomial.polynomial_3(t, *tile_d_fits['d+'][0]),
                 polynomial.polynomial_3(t, *tile_d_fits['d-'][0]))
     else:
-        THRESHOLD_TIME = map_funcs.frame_to_time(data.video_a.FRAME_THRESHOLD, video_a.FRAME_RATE)
+        THRESHOLD_TIME = map_funcs.frame_to_time(data.video_a.FRAME_THRESHOLD, data.video_a.FRAME_RATE)
         d_offsets = [
             polynomial.polynomial_3_integral(THRESHOLD_TIME, *slab_v_fits["v"][0]),
             polynomial.polynomial_3_integral(THRESHOLD_TIME, *slab_v_fits["v+"][0]),
@@ -239,7 +246,7 @@ def _compute_distance(
             polynomial.polynomial_3_integral(t, *slab_v_fits["v+"][0]) - d_offsets[1],
             polynomial.polynomial_3_integral(t, *slab_v_fits["v-"][0]) - d_offsets[2],
         )
-        if frame > max(video_a.POSITIONS_FROM_TILES.keys()):
+        if frame > max(data.video_a.POSITIONS_FROM_TILES.keys()):
             # Only use the slab_v_fits
             return slab_d
         else:
@@ -255,7 +262,7 @@ def _compute_speed(
         frame: int,
         tile_d_fits: typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]],
         slab_v_fits: typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]) -> typing.Tuple[float, float, float]:
-    t = map_funcs.frame_to_time(frame, video_a.FRAME_RATE)
+    t = map_funcs.frame_to_time(frame, data.video_a.FRAME_RATE)
     if frame <= data.video_a.FRAME_THRESHOLD:
         # Only use the tile_d_fits
         return (polynomial.polynomial_3_differential(t, *tile_d_fits['d'][0]),
@@ -267,7 +274,7 @@ def _compute_speed(
             polynomial.polynomial_3(t, *slab_v_fits["v+"][0]),
             polynomial.polynomial_3(t, *slab_v_fits["v-"][0]),
         )
-        if frame > max(video_a.POSITIONS_FROM_TILES.keys()):
+        if frame > max(data.video_a.POSITIONS_FROM_TILES.keys()):
             # Only use the slab_v_fits
             return slab_v
         else:
@@ -329,7 +336,7 @@ def compute_impacts():
     slab_v_fits = get_slab_v_fits()
     d_data = _compute_distance(data.video_a.LAST_MEASURED_FRAME, tile_d_fits, slab_v_fits)
     v_data = _compute_speed(data.video_a.LAST_MEASURED_FRAME, tile_d_fits, slab_v_fits)
-    dt = map_funcs.frames_to_dtime(data.video_a.LAST_MEASURED_FRAME, 1685, video_a.FRAME_RATE)
+    dt = map_funcs.frames_to_dtime(data.video_a.LAST_MEASURED_FRAME, 1685, data.video_a.FRAME_RATE)
     d_fence = data.tiles.BOUNDARY_FENCE_DISTANCE_FROM_THRESHOLD_M
     print('Boundary fence impact:')
     boundary_fence_data = []
@@ -353,7 +360,8 @@ def compute_impacts():
             dd = t * v_terminal / 2
             try:
                 t_roots = _quadratic_distance_solution(
-                    d_fence, v_terminal, accln, map_data.FINAL_BUILDING_DISTANCE_FROM_THRESHOLD_M
+                    d_fence, v_terminal, accln,
+                    data.tiles.FINAL_BUILDING_DISTANCE_FROM_THRESHOLD_M
                 )
             except Exception:
                 print('Not computable')
@@ -376,7 +384,7 @@ def print_events() -> None:
     tile_d_fits = get_tile_d_fits()[1]
     slab_v_fits = get_slab_v_fits()
     for frame_number in sorted(data.video_a.FRAME_EVENTS.keys()):
-        t = map_funcs.frame_to_time(frame_number, video_a.FRAME_RATE)
+        t = map_funcs.frame_to_time(frame_number, data.video_a.FRAME_RATE)
         d, d_plus, d_minus = _compute_distance(frame_number, tile_d_fits, slab_v_fits)
         d_tol = max(abs(d - d_plus), abs(d - d_minus))
         v, v_plus, v_minus = _compute_speed(frame_number, tile_d_fits, slab_v_fits)
@@ -391,6 +399,42 @@ def print_events() -> None:
         )
 
 
+#======== Video B ========
+def _get_video_b_v_array() -> np.ndarray:
+    """Returns an array of the speed and plus, minus from video B on a timebase of video A."""
+    x_array = data.video_b.aircraft_x_array()
+    x_fits = list(
+        curve_fit(polynomial.polynomial_3, x_array[:, 0], x_array[:, i])[0]
+        for i in range(1, 4)
+    )
+    v_array = np.empty_like(x_array)
+    v_array[:, 0] = x_array[:, 0] + data.video_ab.time_difference_mid_max_min().mid
+    # print(x_fits)
+    for row in range(len(x_array)):
+        v_array[row, 1] = polynomial.polynomial_3_differential(x_array[row, 0], *x_fits[0])
+        v_array[row, 2] = polynomial.polynomial_3_differential(x_array[row, 0], *x_fits[1])
+        v_array[row, 3] = polynomial.polynomial_3_differential(x_array[row, 0], *x_fits[2])
+    return v_array
+
+
+def write_video_b_results(stream: typing.TextIO=sys.stdout):
+    # x_array is in video B time
+    x_array = data.video_b.aircraft_x_array()
+    # v_array is in video A time
+    v_array = _get_video_b_v_array()
+    stream.write(f'# Columns: t, d, d+, d-, v, v+, v- (m/s), v, v+, v- (knots)\n')
+    for i in range(len(v_array)):
+        t = v_array[i, 0]
+        row = [
+            f'{t:<6.2f}',
+        ]
+        row.extend([f'{v:8.1f}' for v in x_array[i, 1:]])
+        row.extend([f'{v:8.1f}' for v in v_array[i, 1:]])
+        row.extend([f'{map_funcs.metres_per_second_to_knots(v):8.1f}' for v in v_array[i, 1:]])
+        stream.write(' '.join((row)))
+        stream.write('\n')
+#======== END: Video B ========
+
 def main() -> int:
     print_calculated_data()
     with open('plots/tile_distance_data.dat', 'w') as ostream:
@@ -399,6 +443,9 @@ def main() -> int:
     with open('plots/slab_speed_data.dat', 'w') as ostream:
         print('Writing slab results...')
         write_slab_results(ostream)
+    with open('plots/video_b.dat', 'w') as ostream:
+        print('Writing video B results...')
+        write_video_b_results(ostream)
     plot_dir = os.path.join(os.path.dirname(__file__), 'plots')
     print(f'Looking for plot files in "{plot_dir}"')
     plot_all(plot_dir)

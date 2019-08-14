@@ -84,6 +84,13 @@ def distance_bearing(a: Point, b: Point, scale: float) -> typing.Tuple[float, fl
     return distance(a, b, scale), bearing(a, b)
 
 
+def xy_from_two_points_and_axis(a: Point, b: Point, axis_deg: float, scale: float) -> Point:
+    dist_m, brg_deg = distance_bearing(a, b, scale)
+    x = dist_m * math.cos(math.radians(brg_deg - axis_deg))
+    y = dist_m * math.sin(math.radians(brg_deg - axis_deg))
+    return Point(x, y)
+
+
 def mid_point(a: Point, b: Point) -> Point:
     """The mid point between two points."""
     return Point((a.x + b.x) / 2, (a.y + b.y) / 2)
