@@ -2,8 +2,10 @@
 There are several high resolution images downloaded as 'tiles' that have to be stitched together.
 """
 import math
+import sys
 import typing
 
+import data.tiles
 import map_funcs
 
 TILE_FILES = { k : f'Tile_{k}.png' for k in range(1, 8) }
@@ -92,3 +94,36 @@ FINAL_BUILDING_DISTANCE_FROM_THRESHOLD_M = TILE_SCALE_M_PER_PIXEL * math.sqrt(
     (THRESHOLD_ON_EACH_TILE[7].x - FINAL_BUILDING_TILE_7.x) ** 2
     + (THRESHOLD_ON_EACH_TILE[7].y - FINAL_BUILDING_TILE_7.y) ** 2
 )
+
+
+def print_calculated_data() -> None:
+    print('Tile data:')
+    print('TILE_OFFSETS:')
+    for k in sorted(data.tiles.TILE_OFFSETS.keys()):
+        print(f'{k} : {data.tiles.TILE_OFFSETS[k]}')
+    print('THRESHOLD_ON_EACH_TILE:')
+    for k in sorted(data.tiles.THRESHOLD_ON_EACH_TILE.keys()):
+        print(f'{k:d} : {data.tiles.THRESHOLD_ON_EACH_TILE[k]}')
+    print('TILE_EXTENDED_RUNWAY_LINE:')
+    for k in sorted(data.tiles.TILE_EXTENDED_RUNWAY_LINE.keys()):
+        print(f'{k:d} : {data.tiles.TILE_EXTENDED_RUNWAY_LINE[k]}')
+    print('\nRunway data:')
+    print(
+        f'Runway length {data.tiles.RUNWAY_LENGTH_HEADING[0]:.1f} (m)'
+        f', heading {data.tiles.RUNWAY_LENGTH_HEADING[1]:.1f} (degrees).'
+    )
+    print(
+        f'Runway width {data.tiles.RUNWAY_WIDTH_PX :.1f} (pixels)'
+        f', {data.tiles.TILE_SCALE_M_PER_PIXEL * data.tiles.RUNWAY_WIDTH_PX :.1f} (m).'
+    )
+    print(f'Boundary fence from threshold: {data.tiles.BOUNDARY_FENCE_DISTANCE_FROM_THRESHOLD_M:.1f} (m)')
+    print(f'Final building from threshold: {data.tiles.FINAL_BUILDING_DISTANCE_FROM_THRESHOLD_M:.1f} (m)')
+
+
+def main():
+    print_calculated_data()
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())
