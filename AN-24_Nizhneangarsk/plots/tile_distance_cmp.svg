@@ -372,7 +372,7 @@
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(347.8,31.0)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
-		<text><tspan font-family="Arial" >Comparison of Distance From Runway Start by Two Methods.</tspan></text>
+		<text><tspan font-family="Arial" >Comparison of Distance From Runway Start From Landmarks and Slab Count.</tspan></text>
 	</g>
 </g>
 	<g id="gnuplot_plot_1" ><title>Aerial data</title>

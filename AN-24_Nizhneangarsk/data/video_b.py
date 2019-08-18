@@ -13,8 +13,8 @@ import map_funcs
 from cmn import polynomial
 from common import structs
 from data import aircraft, google_earth
-from data.aircraft import ANTONOV_AN_24_SPAN, ANTONOV_AN_24_LENGTH, ANTONOV_AN_24_HEIGHT
-# import data.google_earth
+# from data.aircraft import ANTONOV_AN_24_SPAN, ANTONOV_AN_24_LENGTH, ANTONOV_AN_24_HEIGHT
+
 
 #------------ Security Camera as Video B ------------
 URL = 'https://youtu.be/BQ8ujmRhLH0'
@@ -45,7 +45,7 @@ CAMERA_POSITION_XY = map_funcs.xy_from_two_points_and_axis(
 
 # Specific frame events
 FRAME_EVENTS: typing.Dict[int, str] = {
-    36: 'First appearance',
+    36: 'First appearance, bearing 253.5˚ from camera',
     42: 'Tyre smoke and dust',
     86: 'Helicopter transit',
     96: 'Increase in tyre smoke',
@@ -303,8 +303,21 @@ def range_to_target(dp: float, s: float) -> float:
 
 
 def xy_from_range_bearing(range: float, bearing: float) -> map_funcs.Point:
-    theta = bearing - google_earth.RUNWAY_HEADING_DEG
-    # x = CAMERA_POSITION_ON_GOOGLE_EARTH
+    """Given a range in metres and a bearing from the camera this returns the x, y position in metres relative to the runway
+    start."""
+    theta_deg = bearing - google_earth.RUNWAY_HEADING_DEG
+    x = CAMERA_POSITION_XY.x + range * math.cos(math.radians(theta_deg))
+    y = CAMERA_POSITION_XY.y + range * math.sin(math.radians(theta_deg))
+    return map_funcs.Point(x, y)
+
+
+def x_bearing_from_range(range: float) -> typing.Tuple[float, float]:
+    """Given a range in metres from the camera then, assuming y=0, this returns the x position in metres relative to
+    the runway start and the bearing."""
+    x = CAMERA_POSITION_XY.x + math.sqrt(range**2 - CAMERA_POSITION_XY.y**2)
+    theta_deg = math.degrees(math.atan2(CAMERA_POSITION_XY.y, x - CAMERA_POSITION_XY.x))
+    bearing = (theta_deg + google_earth.RUNWAY_HEADING_DEG) % 360
+    return x, bearing
 
 
 def print_camera_axis_bearing_data():
@@ -481,7 +494,7 @@ AIRCRAFT_ASPECTS: typing.Dict[int, AircraftExtremities] = {
         # Nose-tail, looks error prone
         map_funcs.Point(184, 114), map_funcs.Point(202, 113),
         # Fin tip to ground
-        map_funcs.Point(202, 97), map_funcs.Point(203, 119),
+        map_funcs.Point(202, 99), map_funcs.Point(203, 119),
     ),
     # TODO: Fill in
     231: AircraftExtremities(
@@ -499,11 +512,15 @@ AIRCRAFT_ASPECTS: typing.Dict[int, AircraftExtremities] = {
         # Nose-tail, looks error prone
         map_funcs.Point(64, 111), map_funcs.Point(71, 112),
         # Fin tip to ground
-        map_funcs.Point(71, 106), map_funcs.Point(71, 115),
+        map_funcs.Point(71, 106), map_funcs.Point(71, 117),
     ),
 }
 
 AIRCRAFT_ASPECTS_ERROR_PIXELS = 2
+
+# Frames >= these numbers are too unreliable to be used.
+AIRCRAFT_ASPECTS_TAIL_HEIGHT_FRAME_LIMIT = 151
+AIRCRAFT_ASPECTS_SPAN_FRAME_LIMIT = 151
 
 
 def print_aspects() -> None:
@@ -519,7 +536,7 @@ def print_aspects() -> None:
             AIRCRAFT_ASPECTS[k].tail,
         )
         mid_point = map_funcs.mid_point(mid_span, mid_length)
-        aspect = AIRCRAFT_ASPECTS[k].aspect(ANTONOV_AN_24_SPAN, ANTONOV_AN_24_LENGTH)
+        aspect = AIRCRAFT_ASPECTS[k].aspect(aircraft.ANTONOV_AN_24_SPAN, aircraft.ANTONOV_AN_24_LENGTH)
         print(f'{k:3d} aspect={aspect :5.3f} x: {mid_point.x:6.2f} y: {mid_point.y:6.2f}')
 
     print('Aspects from tail height:')
@@ -528,14 +545,14 @@ def print_aspects() -> None:
             AIRCRAFT_ASPECTS[k].left_tip,
             AIRCRAFT_ASPECTS[k].right_tip,
             1,
-        ) / ANTONOV_AN_24_SPAN
-        m_per_pixel = ANTONOV_AN_24_HEIGHT / map_funcs.distance(
+        ) / aircraft.ANTONOV_AN_24_SPAN
+        m_per_pixel = aircraft.ANTONOV_AN_24_HEIGHT / map_funcs.distance(
             AIRCRAFT_ASPECTS[k].fin_tip,
             AIRCRAFT_ASPECTS[k].fin_gnd,
             1,
         )
         apparent_span_m = m_per_pixel * span_px
-        aspect = 90 - math.degrees(math.asin(apparent_span_m / ANTONOV_AN_24_SPAN))
+        aspect = 90 - math.degrees(math.asin(apparent_span_m / aircraft.ANTONOV_AN_24_SPAN))
         print(f'{k:3d} span={span_px :5.3f} (px) m/px: {m_per_pixel :6.3f} aspect: {aspect :6.2f}')
 
 
@@ -544,6 +561,8 @@ def print_aircraft_bearings_and_ranges():
     print('print_aircraft_bearings_and_ranges():')
     t_prev = None
     x_prev = None
+    print(f'{"Frame":>8} {"t":>6} {"Brg":>6} {"Tail deg":>8}'
+          f' {"Range":>6} {"x":>6} {"y":>6} {"dt":>6} {"dx":>6} {"dx/dt":>6}')
     for frame in sorted(AIRCRAFT_ASPECTS):
         # Compute mid point of span
         mid_span = map_funcs.mid_point(
@@ -554,11 +573,9 @@ def print_aircraft_bearings_and_ranges():
         # Compute height of tail
         tail_height_px = map_funcs.distance(AIRCRAFT_ASPECTS[frame].fin_gnd, AIRCRAFT_ASPECTS[frame].fin_tip, 1.0)
         tail_height_deg = tail_height_px / PX_PER_DEGREE
-        range = range_to_target(tail_height_px, aircraft.ANTONOV_AN_24_HEIGHT)
+        rng = range_to_target(tail_height_px, aircraft.ANTONOV_AN_24_HEIGHT)
         # Compute x, y relative to runway
-        theta_deg = brg_deg - google_earth.RUNWAY_HEADING_DEG
-        x = CAMERA_POSITION_XY.x + range * math.cos(math.radians(theta_deg))
-        y = CAMERA_POSITION_XY.y + range * math.sin(math.radians(theta_deg))
+        x, y = xy_from_range_bearing(rng, brg_deg)
         t = frame_to_time(frame)
         if t_prev is not None:
             dt = t - t_prev
@@ -568,13 +585,42 @@ def print_aircraft_bearings_and_ranges():
             dt = 0.0
             dx = 0.0
             dx_dt = 0.0
-        print(f'{frame:4d} {t:6.2f} {brg_deg:6.2f} {tail_height_deg:6.2f}'
-              f' {range:6.1f} {x:6.2f} {y:6.2f} {dt:6.2f} {dx:6.2f} {dx_dt:6.2f}')
+        print(f'{frame:8d} {t:6.2f} {brg_deg:6.2f} {tail_height_deg:8.2f}'
+              f' {rng:6.1f} {x:6.2f} {y:6.2f} {dt:6.2f} {dx:6.2f} {dx_dt:6.2f}')
         t_prev = t
         x_prev = x
 
 
-def print_aircraft_bearings_and_x():
+def print_aircraft_ranges_from_tail():
+    """Takes the AIRCRAFT_ASPECTS and the camera data to print the ranges of the aircraft using tail height."""
+    print('print_aircraft_ranges_from_tail():')
+    t_prev = None
+    x_prev = None
+    print(f'{"Frame":>8} {"t":>6} {"Tail deg":>8}'
+          f' {"Range":>6} {"x":>6} {"Brg":>6} {"dt":>6} {"dx":>6} {"dx/dt":>6}')
+    for frame in sorted(AIRCRAFT_ASPECTS):
+        # Compute height of tail
+        tail_height_px = map_funcs.distance(AIRCRAFT_ASPECTS[frame].fin_gnd, AIRCRAFT_ASPECTS[frame].fin_tip, 1.0)
+        tail_height_deg = tail_height_px / PX_PER_DEGREE
+        rng = range_to_target(tail_height_px, aircraft.ANTONOV_AN_24_HEIGHT)
+        # Compute x, bearing relative to runway
+        x, bearing = x_bearing_from_range(rng)
+        t = frame_to_time(frame)
+        if t_prev is not None:
+            dt = t - t_prev
+            dx = x - x_prev
+            dx_dt = dx / dt
+        else:
+            dt = 0.0
+            dx = 0.0
+            dx_dt = 0.0
+        print(f'{frame:8d} {t:6.2f} {tail_height_deg:8.2f}'
+              f' {rng:6.1f} {x:6.1f} {bearing:6.2f} {dt:6.2f} {dx:6.2f} {dx_dt:6.2f}')
+        t_prev = t
+        x_prev = x
+
+
+def print_aircraft_x_from_bearings():
     """Takes the AIRCRAFT_ASPECTS and the camera data to print bearings of the aircraft."""
     print('print_aircraft_bearings_and_x():')
     t_prev = None
@@ -606,8 +652,10 @@ def print_aircraft_bearings_and_x():
         x_prev = x
 
 
-def aircraft_x_array() -> np.ndarray:
-    """Takes the AIRCRAFT_ASPECTS and the camera data to create a numpy array of the aircraft position.
+def aircraft_x_array_from_bearings() -> np.ndarray:
+    """Takes the AIRCRAFT_ASPECTS and the camera data to create a numpy array of the aircraft position from the bearings
+    of the aircraft.
+    Time is in video B time.
     """
     array = np.empty((len(AIRCRAFT_ASPECTS), 4), dtype=np.float64)
     for f, frame in enumerate(sorted(AIRCRAFT_ASPECTS)):
@@ -634,23 +682,68 @@ def aircraft_x_array() -> np.ndarray:
     return array
 
 
-# def get_x_fits() -> typing.Tuple[typing.List[float], typing.List[float], typing.List[float]]:
-#     """Returns a fit of the x position and plus, minus."""
-#     array = aircraft_bearings_and_x()
-#     # print(array)
-#     # print(curve_fit(polynomial.polynomial_3, array[:, 0], array[:, 1])[0])
-#     # print(curve_fit(polynomial.polynomial_3, array[:, 0], array[:, 2])[0])
-#     # print(curve_fit(polynomial.polynomial_3, array[:, 0], array[:, 3])[0])
-#     x_fits = (
-#         curve_fit(polynomial.polynomial_3, array[:, 0], array[:, i])[0]
-#         for i in range(1, 4)
-#     )
-#     return x_fits
+def aircraft_x_array_from_tail_height() -> np.ndarray:
+    """Takes the AIRCRAFT_ASPECTS and the camera data to calculate the ranges of the aircraft using tail height.
+    Time is in video B time.
+    """
+    array_length = 0
+    for frame in AIRCRAFT_ASPECTS:
+        if frame <= AIRCRAFT_ASPECTS_TAIL_HEIGHT_FRAME_LIMIT:
+            array_length += 1
+    array = np.empty((array_length, 4), dtype=np.float64)
+    idx = 0
+    for frame in sorted(AIRCRAFT_ASPECTS.keys()):
+        if frame <= AIRCRAFT_ASPECTS_SPAN_FRAME_LIMIT:
+            array[idx, 0] = frame_to_time(frame)
+            # Compute height of tail
+            tail_height_px = map_funcs.distance_between_points(
+                AIRCRAFT_ASPECTS[frame].fin_gnd, AIRCRAFT_ASPECTS[frame].fin_tip
+            )
+            for i, px_error in enumerate((0, -AIRCRAFT_ASPECTS_ERROR_PIXELS, AIRCRAFT_ASPECTS_ERROR_PIXELS)):
+                rng = range_to_target(tail_height_px + px_error, aircraft.ANTONOV_AN_24_HEIGHT)
+                x, _bearing = x_bearing_from_range(rng)
+                array[idx, i + 1] = x
+            idx += 1
+    return array
 
 
-def get_v_array() -> np.ndarray:
+def aircraft_x_array_from_span() -> np.ndarray:
+    """Takes the AIRCRAFT_ASPECTS and the camera data to calculate the ranges of the aircraft using apparent span.
+    Time is in video B time.
+    """
+    array_length = 0
+    for frame in AIRCRAFT_ASPECTS:
+        if frame <= AIRCRAFT_ASPECTS_SPAN_FRAME_LIMIT:
+            array_length += 1
+    array = np.empty((array_length, 4), dtype=np.float64)
+    idx = 0
+    for frame in sorted(AIRCRAFT_ASPECTS.keys()):
+        if frame <= AIRCRAFT_ASPECTS_SPAN_FRAME_LIMIT:
+            # Compute mid point of span
+            mid_span = map_funcs.mid_point(
+                AIRCRAFT_ASPECTS[frame].left_tip,
+                AIRCRAFT_ASPECTS[frame].right_tip,
+            )
+            brg_deg = bearing_x_degrees(mid_span.x)
+            # Pixels of apparent span
+            span_px: float = map_funcs.distance_between_points(
+                AIRCRAFT_ASPECTS[frame].left_tip,
+                AIRCRAFT_ASPECTS[frame].right_tip,
+            )
+            array[idx, 0] = frame_to_time(frame)
+            apparent_span = aircraft.ANTONOV_AN_24_SPAN * math.cos(math.radians(brg_deg - google_earth.RUNWAY_HEADING_DEG))
+            for i, px_error in enumerate((0, -AIRCRAFT_ASPECTS_ERROR_PIXELS, AIRCRAFT_ASPECTS_ERROR_PIXELS)):
+                rng = range_to_target(span_px + px_error, apparent_span)
+                # print('TRACE:', span_px, brg_deg, apparent_span, rng)
+                x, bearing = x_bearing_from_range(rng)
+                array[idx, i + 1] = x
+            idx += 1
+    return array
+
+
+def get_v_array_from_bearings() -> np.ndarray:
     """Returns a fit of the speed and plus, minus."""
-    x_array = aircraft_x_array()
+    x_array = aircraft_x_array_from_bearings()
     x_fits = list(
         curve_fit(polynomial.polynomial_3, x_array[:, 0], x_array[:, i])[0]
         for i in range(1, 4)
@@ -665,12 +758,40 @@ def get_v_array() -> np.ndarray:
     return v_array
 
 
+def print_gnuplot_formulae(t_offfset_to_add: float=0.0) -> None:
+    print('# print_gnuplot_formulae():')
+    for name, fn in (
+        ('video_b_{}_from_bearings', aircraft_x_array_from_bearings),
+        ('video_b_{}_from_tail_height', aircraft_x_array_from_tail_height),
+        ('video_b_{}_from_span', aircraft_x_array_from_span),
+    ):
+        x_array = fn()
+        x_array[:, 0] += t_offfset_to_add
+        x_fits = curve_fit(polynomial.polynomial_3, x_array[:, 0], x_array[:, 1])[0]
+        x_formulae = polynomial.polynomial_string('', 't', '.3e', *x_fits)
+        print('{:40} {}'.format(name.format('distance'), x_formulae))
+    for name, fn in (
+        ('video_b_{}_from_bearings', aircraft_x_array_from_bearings),
+        ('video_b_{}_from_tail_height', aircraft_x_array_from_tail_height),
+        ('video_b_{}_from_span', aircraft_x_array_from_span),
+    ):
+        x_array = fn()
+        x_array[:, 0] += t_offfset_to_add
+        # print('TRACE:', name)
+        # print(x_array)
+        x_fits = curve_fit(polynomial.polynomial_3, x_array[:, 0], x_array[:, 1])[0]
+        x_fitted = [polynomial.polynomial(t, *x_fits) for t in x_array[:, 0]]
+        v_fits = polynomial.polynomial_differential_factors(*x_fits)
+        v_formulae = polynomial.polynomial_string('', 't', '.3e', *v_fits)
+        print('{:40} {}'.format(name.format('speed'), v_formulae))
+
+
 def main() -> int:
     print('CAMERA_POSITION_XY', CAMERA_POSITION_XY)
     print(
         'Helicopter transit time',
         (
-            FRAME_EVENTS_STR_KEY['Helicopter transit'] - FRAME_EVENTS_STR_KEY['First appearance']
+            FRAME_EVENTS_STR_KEY['Helicopter transit'] - FRAME_EVENTS_STR_KEY['First appearance, bearing 253.5˚ from camera']
         ) / FRAME_RATE
     )
     print_pixels_per_degree_data()
@@ -678,12 +799,15 @@ def main() -> int:
     print(f'Focal length: {focal_length():.2f}')
     # print_aspects()
     print_aircraft_bearings_and_ranges()
-    print_aircraft_bearings_and_x()
+    print_aircraft_ranges_from_tail()
+    print(aircraft_x_array_from_tail_height())
+    print_aircraft_x_from_bearings()
     print('X +/- over time')
-    print(aircraft_x_array())
+    print(aircraft_x_array_from_bearings())
     # get_x_fits()
     print('V derived from differential of x')
-    print(get_v_array())
+    print(get_v_array_from_bearings())
+    print_gnuplot_formulae(0.0)#34.25)
     return 0
 
 

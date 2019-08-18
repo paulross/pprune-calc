@@ -33,6 +33,14 @@ def polynomial_integral(x: float, *args: typing.List[float]) -> float:
     return ret
 
 
+def polynomial_differential_factors(*args: typing.List[float]) -> typing.List[float]:
+    """Returns the differential of the polynomial factors for the value x."""
+    ret = []
+    for i in range(1, len(args)):
+        ret.append(args[i] * i)
+    return ret
+
+
 def polynomial_3(x, a, b, c, d):
     """Polynomial order 3 where f(x) = a + b * x + c * x**2 + d * x**3"""
     return polynomial(x, a, b, c, d)

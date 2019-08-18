@@ -54,9 +54,8 @@ def plot_all(directory: str) -> None:
 
 
 #======== Video B ========
-def _get_video_b_v_array() -> np.ndarray:
+def _get_video_b_v_array(x_array: np.ndarray) -> np.ndarray:
     """Returns an array of the speed and plus, minus from video B on a timebase of video A."""
-    x_array = data.video_b.aircraft_x_array()
     x_fits = list(
         curve_fit(polynomial.polynomial_3, x_array[:, 0], x_array[:, i])[0]
         for i in range(1, 4)
@@ -71,11 +70,11 @@ def _get_video_b_v_array() -> np.ndarray:
     return v_array
 
 
-def write_video_b_results(stream: typing.TextIO=sys.stdout):
+def write_video_b_results_from_bearings(stream: typing.TextIO=sys.stdout):
     # x_array is in video B time
-    x_array = data.video_b.aircraft_x_array()
+    x_array = data.video_b.aircraft_x_array_from_bearings()
     # v_array is in video A time
-    v_array = _get_video_b_v_array()
+    v_array = _get_video_b_v_array(x_array)
     stream.write(f'# Columns: t, d, d+, d-, v, v+, v- (m/s), v, v+, v- (knots)\n')
     for i in range(len(v_array)):
         t = v_array[i, 0]
@@ -87,6 +86,44 @@ def write_video_b_results(stream: typing.TextIO=sys.stdout):
         row.extend([f'{map_funcs.metres_per_second_to_knots(v):8.1f}' for v in v_array[i, 1:]])
         stream.write(' '.join((row)))
         stream.write('\n')
+
+
+def write_video_b_results_from_tail_height(stream: typing.TextIO=sys.stdout):
+    # x_array is in video B time
+    x_array = data.video_b.aircraft_x_array_from_tail_height()
+    # v_array is in video A time
+    v_array = _get_video_b_v_array(x_array)
+    stream.write(f'# Columns: t, d, d+, d-, v, v+, v- (m/s), v, v+, v- (knots)\n')
+    for i in range(len(v_array)):
+        t = v_array[i, 0]
+        row = [
+            f'{t:<6.2f}',
+        ]
+        row.extend([f'{v:8.1f}' for v in x_array[i, 1:]])
+        row.extend([f'{v:8.1f}' for v in v_array[i, 1:]])
+        row.extend([f'{map_funcs.metres_per_second_to_knots(v):8.1f}' for v in v_array[i, 1:]])
+        stream.write(' '.join((row)))
+        stream.write('\n')
+
+
+def write_video_b_results_from_span(stream: typing.TextIO=sys.stdout):
+    # x_array is in video B time
+    x_array = data.video_b.aircraft_x_array_from_span()
+    # v_array is in video A time
+    v_array = _get_video_b_v_array(x_array)
+    stream.write(f'# Columns: t, d, d+, d-, v, v+, v- (m/s), v, v+, v- (knots)\n')
+    for i in range(len(v_array)):
+        t = v_array[i, 0]
+        row = [
+            f'{t:<6.2f}',
+        ]
+        row.extend([f'{v:8.1f}' for v in x_array[i, 1:]])
+        row.extend([f'{v:8.1f}' for v in v_array[i, 1:]])
+        row.extend([f'{map_funcs.metres_per_second_to_knots(v):8.1f}' for v in v_array[i, 1:]])
+        stream.write(' '.join((row)))
+        stream.write('\n')
+
+
 #======== END: Video B ========
 
 
@@ -97,9 +134,15 @@ def main() -> int:
     with open('plots/slab_speed_data.dat', 'w') as ostream:
         print('Writing data.video_a slab results...')
         data.video_a.write_slab_results(ostream)
-    with open('plots/video_b.dat', 'w') as ostream:
-        print('Writing video B results...')
-        write_video_b_results(ostream)
+    with open('plots/video_b_bearings.dat', 'w') as ostream:
+        print('Writing video B bearings results...')
+        write_video_b_results_from_bearings(ostream)
+    with open('plots/video_b_tail_height.dat', 'w') as ostream:
+        print('Writing video B tail results...')
+        write_video_b_results_from_tail_height(ostream)
+    with open('plots/video_b_span.dat', 'w') as ostream:
+        print('Writing video B span results...')
+        write_video_b_results_from_span(ostream)
     plot_dir = os.path.join(os.path.dirname(__file__), 'plots')
     print(f'Looking for plot files in "{plot_dir}"')
     plot_all(plot_dir)

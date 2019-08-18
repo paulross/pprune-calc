@@ -1,11 +1,10 @@
 # set logscale x
 set colorsequence classic
 set grid
-set title "Comparison of Ground Speed by Two Methods."
+set title "Comparison of Ground Speed From Landmarks and Slab Count."
 set xlabel "Video Time (s)"
 set xtics
-#set xrange [27:31.5]
-set xrange [25:50]
+set xrange [27:31.5]
 #set format x ""
 
 # set logscale y
@@ -45,9 +44,9 @@ plot "tile_distance_data.dat" using 2:6:7:8 title "Video A, Aerial data" w yerro
     "tile_distance_data.dat" using 2:(tile_speed($2)) title "Video A, Aerial data fitted to mid values" lw 2 w line smooth csplines, \
     "slab_speed_data.dat" using 2:3:4:5 title "Video A, Slab data" w yerrorbars, \
     "slab_speed_data.dat" using 2:(slab_speed($2)) title "Video A, Slab data fitted to mid values" lw 2 w line smooth csplines, \
-    "slab_speed_data.dat" using 2:(slab_speed($2) - tile_speed($2)) title "Video A, Difference (right)" axes x1y2 lw 2 dt 4 w line smooth csplines, \
-    "video_b.dat" using 1:5:6:7 title "Video B, Speed" w yerrorbars, \
-    "video_b.dat" using 1:5 title "Video B,  Speed fitted to mid values" lw 2 w line smooth csplines
+    "slab_speed_data.dat" using 2:(slab_speed($2) - tile_speed($2)) title "Video A, Difference (right)" axes x1y2 lw 2 dt 4 w line smooth csplines#, \
+    "video_b_bearings.dat" using 1:5:6:7 title "Video B, Speed" w yerrorbars, \
+    "video_b_bearings.dat" using 1:5 title "Video B,  Speed fitted to mid values" lw 2 w line smooth csplines
 
 # linespoints
 #plot "tile_distance_data.dat" using 1:2 title "-10 knots" lt 1 lw 0.5 w lines, \

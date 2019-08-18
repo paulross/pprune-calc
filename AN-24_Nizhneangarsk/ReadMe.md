@@ -1,6 +1,6 @@
 # AN-24 Accident at Nizhneangarsk, Russia
 
-On Thursday 27 June 2019 an AN-24 of Angara Airlines, flight number 2G200, flying from Ulan-Ude Airport was destroyed whilst landing at Nizhneangarsk Airport. Reportedly, the left engine had failed in flight. A video of the landing taken by a passenger sitting on the right hand side under the wing was posted online.
+On Thursday 27 June 2019 an AN-24 of Angara Airlines, flight number 2G200, flying from Ulan-Ude Airport was destroyed whilst landing at Nizhneangarsk Airport. Reportedly, the left engine had failed in flight. A video of the landing (video 'A') was taken by a passenger sitting on the right hand side under the wing was posted online.
 
 <center>
 
@@ -9,6 +9,8 @@ On Thursday 27 June 2019 an AN-24 of Angara Airlines, flight number 2G200, flyin
 </center>
 
 The aircraft approaches at high speed and after touchdown it veers off the runway to the right eventually colliding with a series of obstructions. Here is some analysis of that video to give a picture of the speed, position and acceleration forces experienced by the aircraft.
+
+A second video (video 'B') emerged that was taken from a fixed security camera overlooking the airfield. This was also used in the analysis but played a minor role other than confirming the events of video 'A'. 
 
 ## Summary of Observations
 
@@ -27,12 +29,13 @@ The aircraft approaches at high speed and after touchdown it veers off the runwa
 Apart from the video, there is:
 
 * Wikipedia on [Angara Airlines Flight 200](https://en.wikipedia.org/wiki/Angara_Airlines_Flight_200) and on [Nizhneangarsk Airport](https://en.wikipedia.org/wiki/Nizhneangarsk_Airport)
-* [AV Hearald](http://avherald.com/h?article=4c9b1ac2&opt=0)
+* [AV Herald](http://avherald.com/h?article=4c9b1ac2&opt=0)
 * [Aviation Safety Network](https://aviation-safety.net/database/record.php?id=20190627-0)
 * Videos from [RT](https://www.rt.com/news/462775-russia-nizhneangarsk-crash-landing/)
 * Hi resolution (~0.6m per pixel) imagery of the area, for example from [google maps](https://www.google.com/maps/@55.8088004,109.6072157,835m/data=!3m1!1e3).
 
-# Methodology
+
+# Data From Video A
 
 The following techniques are used to calculate the position of the aircraft:
 
@@ -119,61 +122,114 @@ A second video was posted on YouTube that showed images from a security camera o
 
 </center>
 
-This video was recorded at 30 f.p.s.
+This video was recorded at 25 f.p.s.
 
 ## Camera Position
 
-## Camera Resolution, Heading and Focal Length
+The distinctive foreground means the camera position is fairly easily identified on aerial imagery from Google Earth at a position x=491m down runway 22 and y=-161m to the left off the runway centreline.
+
+## Camera Heading and Resolution
+
+The first calculation is to find the camera heading (degrees) and the resolution (pixels per degree). To do this elements in view are identified on aerial imagery:
+
+* A Mi-2 helicopter near the centre of the frame. The length and height of this can also be used to calibrate the camera.
+* Towards the right of the frame is a pale smudge where tarmac meets grass.
+* Slightly left of centre is a bright roofed house beyond the tree-line.
+* There are some structures on the extreme left of the frame.
+* The red building identified as the scene of the final impact can be determined by the base of the column of smoke that starts at round frame 850.
+
+Comparing the relative frame positions of these with the actual bearings gives a camera resolution of 21.6 ±1.9 (pixels/degree). For a video that is 640 pixels wide this corresponds to an equivalent focal length for a 35mm camera of 68±6mm.
+
+This also means that the centreline of the camera is pointing at a bearing of 238.7±2.1 degrees.
 
 ## Matching TimeLines
 
-## Observed Events
+Several events can be seen in video B that can be correlated with video A and this correlation can be used to match the timelines of the two videos:
 
-## Aircraft Position and Speed
+| Video B Event | Video B Time (s) | Video A Event | Video A Time (s) | Difference (s) |
+| :-- | --: | :-- | --: | ---: |
+| First appearance, bearing 253.5˚ from camera |    1.4 | First appearance in video B, x=752 m     |   35.5 |   34.1 |
+| Tyre smoke and dust                      |    1.6 | Start of drift to the right.             |   36.0 |   34.4 |
+| Start of large dust plume                |   11.6 | Runway disappears                        |   46.1 |   34.5 |
+| Start of smoke plume                     |   23.0 | Final impact?                            |   57.0 |   34.0 |
 
-## Equation of Motion
-
-## Comparison with Video A
-
-| Video Time A (s) | Event Video A | Video Time B (s) | Event Video B | Difference (s) |
-| --: | :--- | ---: | :--- | ---: |
-|   35.5 | x=752 m from video B in video A time     |    1.4 | First appearance, x=752 m |   34.1 |
-|   36.0 | Start of drift to the right.             |    1.6 | Tyre smoke and dust                     |   34.4 |
-|   46.1 | Runway disappears                        |   11.6 | Start of large dust plume               |   34.5 |
-|   57.0 | Final impact?                            |   23.0 | Start of smoke plume                    |   34.0 |
-
-
+This gives a mean time difference of video A and B of 34.25±0.3 (s).
 
 # Computed Data
 
-## Position
+## Video A
 
+### Aircraft Position and Speed
 
-TODO
+Analysis of video A gives:
+
+* The aircraft position from overflying landmarks.
+* The aircraft's passage over the runway slabs that gives the aircrafts speed, integrating this gives the distance that the aircraft has covered.
+
+Here is a plot of distance from the start of runway 22 over time from video A:
 
 <center>
 <img src="plots/tile_distance.svg" width="500" />&nbsp;
 </center>
 
-TODO
-
+Where the two techniques overlap a comparison can be made:
 
 <center>
 <img src="plots/tile_distance_cmp.svg" width="500" />&nbsp;
 </center>
 
+The difference between the two techniques is 5m or less.
 
-## Ground Speed
+### Aircraft Ground Speed
 
+The aircraft's ground speed can be calculated from video A by:
+
+*  Taking the differential of the aircraft position when overflying landmarks.
+* The aircraft's rate of passage over the runway slabs.
+
+Here is the ground speed by the two techniques:
 
 <center>
 <img src="plots/speed.svg" width="500" />&nbsp;
 </center>
 
+Here is the difference where the two techniques overlap:
+
 <center>
 <img src="plots/speed_cmp.svg" width="500" />&nbsp;
 </center>
 
+The difference is 1.4 to 2.2 m/s over this interval.
+
+## Video B
+
+Various attempts were made to identify the aircraft position and speed from video B, the security camera video. These measurements were made:
+
+* The bearing of the aircraft from the camera.
+* The range of the aircraft from the apparent height of the tail above ground.
+* The range of the aircraft from the apparent span of the wings.
+
+A problem for the latter two is that the measurements are often only a few pixels wide with a correspondingly large uncertainty. Beyond t=40.2 the data from the latter two is regarded as unreliable. Computing the distance down the runway by these methods leads to the following data:
+
+<center>
+<img src="plots/video_b_distance.svg" width="500" />&nbsp;
+</center>
+
+The three agree rather roughly in magnitude but when differentiated to obtain ground speed the results are implausible except for the bearing data.
+
+<center>
+<img src="plots/video_b_speed.svg" width="500" />&nbsp;
+</center>
+
+The poor results from this analysis could be for many reasons; the poor resolution of the video, non-linear camera field and so on. Even the bearing data does not make sense giving a de-acceleration of around -5m/s, if this were true the aircraft woudl have stopped well before the boundary fence which was not the case. This graph compares the ground speed from the slab speed data of video A to the bearing data of video B:
+
+<center>
+<img src="plots/speed_cmp_slab_video_b.svg" width="500" />&nbsp;
+</center>
+
+### Conclusion For Data From Video B
+
+TODO: Here
 
 ## Acceleration
 
@@ -186,22 +242,7 @@ TODO
 
 TODO
 
-## Equations of Motion
-
-The data fitting is done with a third order polynomial. The fit of the landmark data to 3 S.F. is:
-
-d(t) = -2.481e+03 + 8.276e+01 * t + 5.914e-01 * t^2 + -1.173e-02 * t^3
-
-This is valid for 0 <= t <= 31.3 seconds.
-
-The fit to the slab data is, to 3 S.F.:
-
-v(t) = 2.843e+02 + -1.645e+01 * t + 4.789e-01 * t^2 + -4.952e-03 * t^3
-
-This is valid for 28.0 <= t <= 45.7 seconds.
-
-
-## After t=45.7 Seconds
+# Motion After t=45.7 Seconds
 
 The last compute postion at t=45.7 seconds is:
 
@@ -233,8 +274,6 @@ The impact point is 1853m from the start of runway 22 and at 10.4 seconds after 
 
 The mid point data computed acceleration of -3.9 m/s^2 agrees very well with the last observed acceleration of -3.7 ±0.3 m/s^2
 
-
-
 ## Final Impact
 
 36m beyond the boundary fence is a building that is where the aircraft finally stopped. *Assuming* the acceleration is the same as before the boundary fence impact and *ignoring* any speed reduction caused by the boundary fence impact the final impact speed would be:
@@ -247,21 +286,32 @@ The mid point data computed acceleration of -3.9 m/s^2 agrees very well with the
 
 Images of the aftermath suggest that the mid-point calculation is probably correct.
 
-
 # Summary of Events
 
 TODO
+
+| Video B Event | Video B Time (s) | Video A Event | Video A Time (s) | Difference (s) |
+| :-- | --: | :-- | --: | ---: |
+| First appearance, bearing 253.5˚ from camera |    1.4 | First appearance in video B, x=752 m     |   35.5 |   34.1 |
+| Tyre smoke and dust                      |    1.6 | Start of drift to the right.             |   36.0 |   34.4 |
+| Start of large dust plume                |   11.6 | Runway disappears                        |   46.1 |   34.5 |
+| Start of smoke plume                     |   23.0 | Final impact?                            |   57.0 |   34.0 |
+
+This gives a mean time difference of video A and B of 34.25±0.3 (s).
 
 <center>
 
 | Time (s) | Position (m) | Ground Speed (knots) | Acceleration (m/s^2 ) | Description |
 | ---: | ---: | ---: | ---: | :--- |
-| 0.0 | -2482 ±98 | 161 ±4 | N/A | Start of video. |
+| 0.0 | -2482 ±98 | 161 ±4 | N/A | Start of video A. |
 | 17.0 | -964 ± 44 | 180 ±7 | 0 |  Maximum ground speed. |
 | 27.0 | 0 ±10 | 172 ±4 | N/A | Start of runway 22. |
 | 33.8 | 572 ±15 | 163 ±2 | -1.1 | Touchdown. |
+| 34.3 |  |  |  | Start of video B. |
+| 35.7 | 752 ±15 |  |  | First appearance in video B. |
+| 36.0 | est. TODO |  |  | Tyre smoke and dust appears in video B, start of drift to right. |
 | 45.6 | 1438 ±40 | 116 ±10 | -3.7 ±0.3 | Last calculated speed and 	position. |
-| TODO | est. TODO | est. TODO | est. TODO | Departure from runway. |
+| 46.1 | est. TODO | est. TODO | est. TODO | Departure from runway. |
 | TODO | est. TODO | est. TODO | est. TODO | Impact with airfield perimeter, undercarriage collapses. |
 | est. TODO | est. TODO | est. TODO | est. TODO | Final impact. |
 

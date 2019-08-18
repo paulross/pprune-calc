@@ -96,6 +96,11 @@ def mid_point(a: Point, b: Point) -> Point:
     return Point((a.x + b.x) / 2, (a.y + b.y) / 2)
 
 
+def distance_between_points(a: Point, b: Point) -> float:
+    """The distance between two points."""
+    return math.sqrt((a.x - b.x)**2 + (a.y - b.y)**2)
+
+
 def tile_extended_centreline_crossing_points(tile: int,
                                              runway_heading: float,
                                              threshold_on_each_tile: typing.Dict[int, Point],

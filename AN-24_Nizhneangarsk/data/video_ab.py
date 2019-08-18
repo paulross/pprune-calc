@@ -68,12 +68,12 @@ def print_video_a_video_b_ties_markdown():
 | 45.7 s | 1442 ±48 m | 60.0 ±3.7 m/s, 117 ±12 knots | -3.7 ±0.3 m/s^2 |
 """
     ties = create_time_ties()
-    print('| Video Time A (s) | Event Video A | Video Time B (s) | Event Video B | Difference (s) |')
-    print('| --: | :--- | ---: | :--- | ---: |')
+    print('| Video B Event | Video B Time (s) | Video A Event | Video A Time (s) | Difference (s) |')
+    print('| :-- | --: | :-- | --: | ---: |')
     for tie in ties:
         # print(tie, tie[0].time - tie[1].time)
         print(
-            f'| {tie[0].time:6.1f} | {tie[0].comment:40} | {tie[1].time:6.1f} | {tie[1].comment:40}| {tie[0].time - tie[1].time:6.1f} |'
+            f'| {tie[1].comment:40} | {tie[1].time:6.1f} | {tie[0].comment:40} | {tie[0].time:6.1f} | {tie[0].time - tie[1].time:6.1f} |'
         )
     # mid_max_min = time_difference_mid_max_min()
     # print(f'Mean (Ta - Tb): {mid_max_min.mid:.2f} ±{mid_max_min.tolerance:.1f} (s)')

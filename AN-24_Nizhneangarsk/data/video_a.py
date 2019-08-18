@@ -118,7 +118,7 @@ FRAME_EVENTS: typing.Dict[int, str] = {
     510: 'Maximum ground speed',
     827: 'Threshold',
     1015: 'Touchdown',
-    1065: 'First appearance in video B, x=??? m',
+    1065: 'First appearance in video B, x=752 m',
     1081: 'Start of drift to the right.',
     LAST_MEASURED_FRAME: 'Last speed measurement',
     # At about 46s the starboard undercarriage leg meets the grass.

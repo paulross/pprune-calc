@@ -1,7 +1,7 @@
 # set logscale x
 set colorsequence classic
 set grid
-set title "Comparison of Distance From Runway Start by Two Methods."
+set title "Comparison of Distance From Runway Start From Landmarks and Slab Count."
 set xlabel "Video Time (s)"
 set xtics
 set xrange [27:31.5]

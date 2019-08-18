@@ -2,9 +2,9 @@
 set colorsequence classic
 set grid
 set title "Speed from video B."
-set xlabel "Video Time (s)"
+set xlabel "Video A Time [Video B time + 34.25] (s)"
 set xtics
-set xrange [35:50]
+set xrange [35:47]
 #set format x ""
 
 # set logscale y
@@ -24,7 +24,7 @@ set terminal svg size 700,500           # choose the file format
 
 set output "video_b_speed.svg"   # choose the output device
 #set key title "Window Length"
-set key left top
+# set key left top
 #  lw 2 pointsize 2
 
 # Start distance arrows and labels
@@ -37,11 +37,24 @@ set key left top
 # With offset of 4217.960402389347
 #slab_distance(t) = -4218.0 + t * (2.843e+02 + t * (-1.645e+01 / 2.0 + t * (4.789e-01 / 3.0 + t * -4.952e-03 / 4.0)))
 
+video_b_speed_from_bearings              (t) = 8.230e+01 + 1.544e+00 * t + -3.663e-01 * t**2
+video_b_speed_from_tail_height           (t) = 2.454e+02 + -9.307e+01 * t + 1.141e+01 * t**2
+video_b_speed_from_span                  (t) = 1.504e+02 + -5.507e+01 * t + 9.666e+00 * t**2
 
-plot "video_b.dat" using 1:5:6:7 title "Speed data" w yerrorbars, \
-    "video_b.dat" using 1:5 title "Speed fitted to mid values" lw 2 w line smooth csplines#, \
-    "video_b.dat" using 2:6:7:8 title "Slab data" w yerrorbars, \
-    "video_b.dat" using 2:(slab_distance($2)) title "Slab data fitted to mid values" lw 2 w line
+
+# plot "video_b_bearings.dat" using 1:5:6:7 title "Bearing data" w yerrorbars, \
+    "video_b_bearings.dat" using 1:5 title "Bearings fitted to mid values" lw 2 w line smooth csplines, \
+    "video_b_tail_height.dat" using 1:5:6:7 title "Tail height data" w yerrorbars, \
+    "video_b_tail_height.dat" using 1:5 title "Tail height fitted to mid values" lw 2 w line smooth csplines, \
+    "video_b_span.dat" using 1:5:6:7 title "Span data" w yerrorbars, \
+    "video_b_span.dat" using 1:5 title "Span fitted to mid values" lw 2 w line smooth csplines
+
+plot "video_b_bearings.dat" using 1:5:6:7 title "Bearing data" w yerrorbars, \
+    "video_b_bearings.dat" using 1:(video_b_speed_from_bearings($1-34.25)) title "Bearings fitted to mid values" lw 2 w line smooth csplines, \
+    "video_b_tail_height.dat" using 1:5:6:7 title "Tail height data" w yerrorbars, \
+    "video_b_tail_height.dat" using 1:(video_b_speed_from_tail_height($1-34.25)) title "Tail height fitted to mid values" lw 2 w line smooth csplines, \
+    "video_b_span.dat" using 1:5:6:7 title "Span data" w yerrorbars, \
+    "video_b_span.dat" using 1:(video_b_speed_from_span($1-34.25)) title "Span fitted to mid values" lw 2 w line smooth csplines
 
 # linespoints
 #plot "video_b.dat" using 1:2 title "-10 knots" lt 1 lw 0.5 w lines, \
