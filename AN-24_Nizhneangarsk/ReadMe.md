@@ -43,7 +43,7 @@ The following techniques are used to calculate the position of the aircraft:
 * Examining runway details in the video to estimate the aircrafts ground speed.
 * Calculating the likely progress of a ballistic body.
 
-Video metadata shows the video was shot at 30 frames per second and this will be confirmed in these calculations.
+Video metadata shows the video was shot at 30 frames per second.
 
 ## Landmarks in the Video
 
@@ -146,12 +146,18 @@ This also means that the centreline of the camera is pointing at a bearing of 23
 
 Several events can be seen in video B that can be correlated with video A and this correlation can be used to match the timelines of the two videos:
 
+<center>
+
 | Video B Event | Video B Time (s) | Video A Event | Video A Time (s) | Difference (s) |
 | :-- | --: | :-- | --: | ---: |
-| First appearance, bearing 253.5˚ from camera |    1.4 | First appearance in video B, x=752 m     |   35.5 |   34.1 |
+| First appearance, bearing 253.5˚ from camera |    1.4 | First appearance in video B, x=688±19 m     |   35.5 |   34.1 |
 | Tyre smoke and dust                      |    1.6 | Start of drift to the right.             |   36.0 |   34.4 |
 | Start of large dust plume                |   11.6 | Runway disappears                        |   46.1 |   34.5 |
 | Start of smoke plume                     |   23.0 | Final impact?                            |   57.0 |   34.0 |
+
+Table 1: Matching timelines of video A and B.
+
+</center>
 
 This gives a mean time difference of video A and B of 34.25±0.3 (s).
 
@@ -209,7 +215,9 @@ Various attempts were made to identify the aircraft position and speed from vide
 * The range of the aircraft from the apparent height of the tail above ground.
 * The range of the aircraft from the apparent span of the wings.
 
-A problem for the latter two is that the measurements are often only a few pixels wide with a correspondingly large uncertainty. Beyond t=40.2 the data from the latter two is regarded as unreliable. Computing the distance down the runway by these methods leads to the following data:
+A problem for the latter two is that the measurements are often only a few pixels wide with a correspondingly large uncertainty. Beyond t=40.2 the data from the latter two techniques is deemed unreliable due to the low resolution of the camera and the large range to the aircraft.
+
+Computing the distance down the runway by these methods leads to the following data:
 
 <center>
 <img src="plots/video_b_distance.svg" width="500" />&nbsp;
@@ -221,40 +229,45 @@ The three agree rather roughly in magnitude but when differentiated to obtain gr
 <img src="plots/video_b_speed.svg" width="500" />&nbsp;
 </center>
 
-The poor results from this analysis could be for many reasons; the poor resolution of the video, non-linear camera field and so on. Even the bearing data does not make sense giving a de-acceleration of around -5m/s, if this were true the aircraft woudl have stopped well before the boundary fence which was not the case. This graph compares the ground speed from the slab speed data of video A to the bearing data of video B:
+The poor results from this analysis could be for many reasons; the poor resolution of the video, non-linear camera field and so on. Even the bearing data does not make sense giving a de-acceleration of around -5m/s, if this were true the aircraft would have stopped well before the boundary fence which was not the case. This graph compares the ground speed from the slab speed data of video A to the bearing data of video B:
 
 <center>
 <img src="plots/speed_cmp_slab_video_b.svg" width="500" />&nbsp;
 </center>
 
-### Conclusion For Data From Video B
+### Conclusion for the Data From Video B
 
-TODO: Here
+The data obtained from video B is not useful for calculating the position or speed of the aircraft. The data from video B is useful in that it can tie visible events to the motion of the aircraft seen in video A, for example the smoke and dust appearing from the tyres and the start of the aircraft swinging to the right.
 
 ## Acceleration
 
-
-TODO
+The ground speed if the aircraft computed from video A can be differentiated to give the longitudinal acceleration:
 
 <center>
 <img src="plots/acceleration.svg" width="500" />&nbsp;
 </center>
 
-TODO
+There are no visible discontinuities giving sudden changes of acceleration such as might be caused by a tyre burst or running onto the grass. Probably this is because of the smoothing caused by the curve fitting process.
 
 # Motion After t=45.7 Seconds
 
-The last compute postion at t=45.7 seconds is:
+The last computed position at t=45.7 seconds is:
+
+<center>
 
 | Time | Position | Ground Speed | Acceleration |
 | :--: | :--: | :--: | :--: |
 | 45.7 s | 1442 ±48 m | 60.0 ±3.7 m/s, 117 ±12 knots | -3.7 ±0.3 m/s^2 |
 
-There are no landmarks or visible features after t=45.7 seconds that can be used to give speed or position but there is an event that can be used to estimate this.
+Table 2: Last computed position.
+
+</center>
+
+There are no landmarks or visible features in video A after t=45.7 seconds that can be used to give speed or position but there is a collision with the boundary fence that can be used to quantify these values.
 
 ### The Boundary Fence Impact
 
-At t=56.1s the aircraft collides with the boundary fence and this fence is readily identifiable on the aerial imagary as being 1853m from the satr of runway 22. The sequence below shows four consecutive frames from the video of the starboard undercarriage collapse as the aircraft goes through the airfield boundary. 
+At t=56.1s the aircraft collides with the boundary fence and this fence is readily identifiable on the aerial imagery as being 1853m from the start of runway 22. The sequence below shows four consecutive frames from the video of the starboard undercarriage collapse as the aircraft goes through the airfield boundary. 
 
 <center>
 <img src="img/frame1684.png" width="120" alt="frame 1684"/>&nbsp;<img src="img/frame1685.png" width="120" />&nbsp;<img src="img/frame1686.png" width="120" />&nbsp;<img src="img/frame1687.png" width="120" />
@@ -264,58 +277,60 @@ The first frame [1684] shows the moment before impact, the obstruction is on the
 
 ### Boundary Fence Impact Speed and Acceleration
 
-The impact point is 1853m from the start of runway 22 and at 10.4 seconds after the last known position. Given the initial speed and initial position the mean speed can be calculated. Assumming constant deacceleration the impact speed, and acceleration can be calculated.
+The impact point is 1853m from the start of runway 22 and at 10.4 seconds after the last known position. Given the initial speed and initial position the mean speed can be calculated. Assuming constant deceleration the impact speed, and acceleration can be calculated.
 
-| Calculation | v initial (m/s) | d initial (m) | a (m/s^2) | v impact (m/s) |
+<center>
+
+| Calculation | v initial in m/s (knots) | d initial (m) | a (m/s^2) | v impact in m/s (knots) |
 | :--: | :--: | :--: | :--: | :--: |
-| Mid point | 60.0 | 1441.5 | -3.9 | 19.1 |
-| +ve error | 63.8 | 1489.3 | -5.5 | 6.2 |
-| -ve error | 56.3 | 1393.8 | -2.3 | 32.0 |
+| Mid point | 60.0 (117) | 1442 | -3.9 | 19.1 (37) |
+| +ve error | 63.8 (124) | 1489 | -5.5 | 6.2 (12) |
+| -ve error | 56.3 (109) | 1394 | -2.3 | 32.0 (62) |
+
+Table 3: Estimated boundary fence impact speed.
+
+</center>
 
 The mid point data computed acceleration of -3.9 m/s^2 agrees very well with the last observed acceleration of -3.7 ±0.3 m/s^2
 
 ## Final Impact
 
-36m beyond the boundary fence is a building that is where the aircraft finally stopped. *Assuming* the acceleration is the same as before the boundary fence impact and *ignoring* any speed reduction caused by the boundary fence impact the final impact speed would be:
+36m beyond the boundary fence is a building that is where the aircraft finally stopped. Assuming the acceleration is the same as before the boundary fence impact and *ignoring* any speed reduction caused by the boundary fence impact the final impact speed would be:
 
-| Calculation | v final |
-| :--: | :--: |
-| Mid point | 9.1 m/s (18 knots) |
-| +ve error | No impact |
-| -ve error | 29.3 m/s (57 knots) |
+<center>
+
+| Calculation | v boundary fence, from table 3  in m/s (knots) | a, from table 3 (m/s^2) | Distance to full stop (m) | v impact (m/s, knots) |
+| :--: | :--: | :--: | :--: | :--: |
+| Mid point | 19.1 (37) | -3.9 | 46.4 | 9.1 (18) |
+| +ve error | 6.2 (12) | -5.5 | 3.5 | No impact |
+| -ve error | 32.0 (62) | -2.3 | 219| 29.3 (57) |
+
+Table 4: Estimated final impact speed.
+
+</center>
 
 Images of the aftermath suggest that the mid-point calculation is probably correct.
 
 # Summary of Events
 
-TODO
-
-| Video B Event | Video B Time (s) | Video A Event | Video A Time (s) | Difference (s) |
-| :-- | --: | :-- | --: | ---: |
-| First appearance, bearing 253.5˚ from camera |    1.4 | First appearance in video B, x=752 m     |   35.5 |   34.1 |
-| Tyre smoke and dust                      |    1.6 | Start of drift to the right.             |   36.0 |   34.4 |
-| Start of large dust plume                |   11.6 | Runway disappears                        |   46.1 |   34.5 |
-| Start of smoke plume                     |   23.0 | Final impact?                            |   57.0 |   34.0 |
-
-This gives a mean time difference of video A and B of 34.25±0.3 (s).
+Combining all the data gives the following summary of events:
 
 <center>
 
-| Time (s) | Position (m) | Ground Speed (knots) | Acceleration (m/s^2 ) | Description |
+| Time (s) | Position (m) | Ground Speed (m/s, knots) | Acceleration (m/s^2 ) | Description |
 | ---: | ---: | ---: | ---: | :--- |
-| 0.0 | -2482 ±98 | 161 ±4 | N/A | Start of video A. |
-| 17.0 | -964 ± 44 | 180 ±7 | 0 |  Maximum ground speed. |
-| 27.0 | 0 ±10 | 172 ±4 | N/A | Start of runway 22. |
-| 33.8 | 572 ±15 | 163 ±2 | -1.1 | Touchdown. |
-| 34.3 |  |  |  | Start of video B. |
-| 35.7 | 752 ±15 |  |  | First appearance in video B. |
-| 36.0 | est. TODO |  |  | Tyre smoke and dust appears in video B, start of drift to right. |
-| 45.6 | 1438 ±40 | 116 ±10 | -3.7 ±0.3 | Last calculated speed and 	position. |
-| 46.1 | est. TODO | est. TODO | est. TODO | Departure from runway. |
-| TODO | est. TODO | est. TODO | est. TODO | Impact with airfield perimeter, undercarriage collapses. |
-| est. TODO | est. TODO | est. TODO | est. TODO | Final impact. |
+|  0.0 |    -2481±98 |     82.8±2.0,   161±4 |      1.2±0.2 |  Video start |
+| 17.0 |     -964±44 |     92.7±3.5,   180±7 |     0.0±0.1 |  Maximum ground speed |
+| 27.5 |        1±14 |     88.6±1.9,   172±4 |     -0.7±0.1 |  Threshold |
+| 33.8 |      549±17 |     84.3±0.8,   164±2 |     -1.0±0.1 |  Touchdown |
+| 35.5 |      688±19 |     82.4±1.0,   160±2 |     -1.2±0.2 |  First appearance in video B, x=688±19 m |
+| 36.0 |      731±19 |     81.8±1.1,   159±2 |     -1.2±0.3 |  Start of drift to the right. |
+| 45.7 |     1442±48 |     60.0±3.7,   117±7 |     -3.7±0.3 |  Last speed measurement |
+| 46.1 |     1463±49 |     ~58.7±3.6,   114±7 |     -3.9±0.4 |  Runway disappears, data is extrapolated. |
+| 56.1 |     ~1853 |     ~19, 37 |     ~ -3.9 |  Impact with fence |
+| 57.0 |     ~1889 |    ~9, 18 |    N/A |  Final impact? |
 
-Table 7: Selected Events
+Table 5: Selected Events
 
 </center>
 

@@ -118,12 +118,12 @@ FRAME_EVENTS: typing.Dict[int, str] = {
     510: 'Maximum ground speed',
     827: 'Threshold',
     1015: 'Touchdown',
-    1065: 'First appearance in video B, x=752 m',
+    1065: 'First appearance in video B, x=688±19 m',
     1081: 'Start of drift to the right.',
     LAST_MEASURED_FRAME: 'Last speed measurement',
     # At about 46s the starboard undercarriage leg meets the grass.
     # So frame 1 + 30 * 46 = 1381
-    1384: 'Runway disappears',
+    1384: 'Runway disappears, data is extrapolated',
     1685: 'Impact with fence',
     1712: 'Final impact?',
     1819: 'Last frame',
@@ -340,6 +340,19 @@ def _compute_speed(
             )
 
 
+def _compute_acceleration(
+        frame: int,
+        tile_d_fits: typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]],
+        slab_v_fits: typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]) -> typing.Tuple[float, float, float]:
+    """Returns acceleration by looking at frame to frame speed change."""
+    v_0_triple: typing.Tuple[float, float, float] = _compute_speed(frame - 1, tile_d_fits, slab_v_fits)
+    v_1_triple: typing.Tuple[float, float, float] = _compute_speed(frame + 1, tile_d_fits, slab_v_fits)
+    ret = tuple(
+        [(v1 - v0) / (2 / FRAME_RATE) for v0, v1 in zip(v_0_triple, v_1_triple)]
+    )
+    return ret
+
+
 def _terminal_speed_and_mean_acceleration(
         v_initial: float, d_initial: float, dt: float, d_terminal: float
 ) -> typing.Tuple[float, float]:
@@ -446,15 +459,45 @@ def print_events() -> None:
         print(
             f'{frame_number:4d}',
             f'{t:4.1f}',
-            f'{d:7.0f} ±{d_tol:.0f} m',
-            f'{v:7.1f} ±{v_tol:.1f} m/s',
+            f'{d:7.0f}±{d_tol:.0f} m',
+            f'{v:7.1f}±{v_tol:.1f} m/s',
             f'{map_funcs.metres_per_second_to_knots(v):7.0f} ±{map_funcs.metres_per_second_to_knots(v_tol):.0f} knots',
             FRAME_EVENTS[frame_number]
         )
 
 
+def print_table_of_events() -> None:
+    tile_d_fits = get_tile_d_fits()[1]
+    slab_v_fits = get_slab_v_fits()
+    print('| Time (s) | Position (m) | Ground Speed (m/s, knots) | Acceleration (m/s^2 ) | Description |')
+    print('| ---: | ---: | ---: | ---: | :--- |')
+    for frame_number in sorted(FRAME_EVENTS.keys()):
+        t = map_funcs.frame_to_time(frame_number, FRAME_RATE)
+        d, d_plus, d_minus = _compute_distance(frame_number, tile_d_fits, slab_v_fits)
+        d_tol = max(abs(d - d_plus), abs(d - d_minus))
+        v, v_plus, v_minus = _compute_speed(frame_number, tile_d_fits, slab_v_fits)
+        v_tol = max(abs(v - v_plus), abs(v - v_minus))
+        a, a_plus, a_minus = _compute_acceleration(frame_number, tile_d_fits, slab_v_fits)
+        a_tol = max(abs(a - a_plus), abs(a - a_minus))
+        print(
+            f'| {t:4.1f} |',
+            f' {d:7.0f}±{d_tol:.0f} |',
+            f' {v:7.1f}±{v_tol:.1f}, ',
+            f' {map_funcs.metres_per_second_to_knots(v):.0f}±{map_funcs.metres_per_second_to_knots(v_tol):.0f} |',
+            f' {a:7.1f}±{a_tol:.1f} |',
+            f' {FRAME_EVENTS[frame_number]} |'
+        )
+    print('# Edit the above:')
+    print('# Line 2: Remove -ve signe from acceleration.')
+    print('# Line 3: Set position to 0, set acceleration to -0.7±0.1 (hand calculated).')
+    print('# Line 9: change to | 56.1 |     ~1853 |     ~19, 37 |     ~ -3.9 |  Impact with fence |')
+    print('# Line 9: | 57.0 |     ~1889 |    ~9, 18 |    N/A |  Final impact? |')
+    print('# Line 10: remove.')
+
+
 def main() -> int:
     print_events()
+    print_table_of_events()
     compute_impacts()
     return 0
 
