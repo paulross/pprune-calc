@@ -8,6 +8,7 @@ from scipy.optimize import curve_fit
 import data.tiles
 import map_funcs
 from cmn import polynomial
+from data import google_earth
 
 URL = 'https://youtu.be/LtJcgdU5MUk'
 FRAME_RATE = 30
@@ -495,10 +496,34 @@ def print_table_of_events() -> None:
     print('# Line 10: remove.')
 
 
+def print_events_on_GoogleEarth_C_Annotated() -> None:
+    print('print_events_on_GoogleEarth_C_Annotated():')
+    # File: GoogleEarth_C_Annotated.png
+    runway_22_start = map_funcs.Point(687, 44)
+    runway_22_end = map_funcs.Point(285, 556)
+    m_per_px = google_earth.RUNWAY_LENGTH_M / map_funcs.distance_between_points(runway_22_start, runway_22_end)
+    tile_d_fits = get_tile_d_fits()[1]
+    slab_v_fits = get_slab_v_fits()
+    for frame_number in sorted(FRAME_EVENTS.keys()):
+        d, _d_plus, _d_minus = _compute_distance(frame_number, tile_d_fits, slab_v_fits)
+        d_px = d / m_per_px
+        new_pt = map_funcs.point_translate(runway_22_start, google_earth.RUNWAY_HEADING_DEG, d_px)
+        # print(frame_number, d, d_px, new_pt)
+        print(f'{frame_number:4d} {d:8.0f} {d_px:8.1f} x={new_pt.x:6.1f} y={new_pt.y:6.1f} {FRAME_EVENTS[frame_number]}')
+    name_pt_xy = google_earth.measurements_relative_to_runway()
+    for name in name_pt_xy:
+        x_px = name_pt_xy[name].x / m_per_px
+        new_pt = map_funcs.point_translate(runway_22_start, google_earth.RUNWAY_HEADING_DEG, x_px)
+        # print(frame_number, d, d_px, new_pt)
+        print(f'{name_pt_xy[name].x:8.0f} {x_px:8.1f} x={new_pt.x:6.1f} y={new_pt.y:6.1f} {name}')
+
+
+
 def main() -> int:
     print_events()
     print_table_of_events()
     compute_impacts()
+    print_events_on_GoogleEarth_C_Annotated()
     return 0
 
 

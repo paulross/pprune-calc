@@ -47,6 +47,7 @@ RELATIVE_POSITION_ERROR_BASELINE_M = 1000.0
 
 RELATIVE_BEARING_ERROR_DEG = 0.5
 
+
 def relative_position_error(distance_between: float) -> float:
     """This returns a relative position error estimate of two points separated by distance_between.
     It holds the idea that it is extremely unlikely that two points close together have extreme errors
@@ -68,7 +69,7 @@ RUNWAY_HEADING_DEG = map_funcs.bearing(
 
 
 def measurements_relative_to_runway() -> typing.Dict[str, map_funcs.Point]:
-    """Returns a dict of measurements in meres that are reduced to the runway axis."""
+    """Returns a dict of measurements in metres that are reduced to the runway axis."""
     ret: typing.Dict[str, map_funcs.Point] = {}
     datum_name = GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['datum']
     origin = GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['measurements'][datum_name]

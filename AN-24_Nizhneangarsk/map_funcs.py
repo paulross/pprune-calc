@@ -79,6 +79,14 @@ def translate_rotate(pt: Point, rotation_degrees: float, origin: Point=Point(0, 
     return ret
 
 
+def point_translate(pt: Point, bearing_degrees: float, length: float) -> Point:
+    ret = Point(
+        pt.x + length * math.sin(math.radians(bearing_degrees)),
+        pt.y - length * math.cos(math.radians(bearing_degrees)),
+    )
+    return ret
+
+
 def distance_bearing(a: Point, b: Point, scale: float) -> typing.Tuple[float, float]:
     """Returns distance in metres and angle in degrees between two points at a scale in m / pixel."""
     return distance(a, b, scale), bearing(a, b)
