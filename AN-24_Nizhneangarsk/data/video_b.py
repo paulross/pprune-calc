@@ -35,9 +35,9 @@ CAMERA_POSITION_ON_GOOGLE_EARTH = (
     google_earth.GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['measurements']['camera_B']
 )
 
-# Camera position relative ot runway, x is metres from runway 22 start, y is metres from runway centreline (+ve right)
+# Camera position relative ot runway, x is metres from runway 23 start, y is metres from runway centreline (+ve right)
 CAMERA_POSITION_XY = map_funcs.xy_from_two_points_and_axis(
-    google_earth.GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['measurements']['runway_22_start'],
+    google_earth.GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['measurements']['runway_23_start'],
     CAMERA_POSITION_ON_GOOGLE_EARTH,
     google_earth.RUNWAY_HEADING_DEG,
     google_earth.GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['m_per_px'],

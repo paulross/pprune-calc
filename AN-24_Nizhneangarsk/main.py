@@ -14,8 +14,9 @@ That is 55.80166666666666, 109.58666666666666
 
 IATA: none ICAO: UIUN
 Runway is 04/22, 1653m long
+Markings on the runway show it is actually 05/23
 
-Threshold of 22 on google maps: https://www.google.com/maps/@55.807288,109.6034312,757m/data=!3m1!1e3
+Threshold of 23 on google maps: https://www.google.com/maps/@55.807288,109.6034312,757m/data=!3m1!1e3
 
 RT videos: https://www.rt.com/news/462775-russia-nizhneangarsk-crash-landing/
 

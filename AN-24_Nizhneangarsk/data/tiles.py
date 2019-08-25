@@ -53,23 +53,23 @@ def init_tile_offsets():
 TILE_OFFSETS = init_tile_offsets()
 
 
-RUNWAY_22_THRESHOLD_TILE_5 = map_funcs.Point(1597, 197)
-RUNWAY_22_END_TILE_6 = map_funcs.Point((736 + 774) / 2, (1276 + 1306) / 2)
-RUNWAY_22_END_TILE_7 = map_funcs.Point((1279 + 1319) / 2, (532 + 564) / 2)
+RUNWAY_23_THRESHOLD_TILE_5 = map_funcs.Point(1597, 197)
+RUNWAY_23_END_TILE_6 = map_funcs.Point((736 + 774) / 2, (1276 + 1306) / 2)
+RUNWAY_23_END_TILE_7 = map_funcs.Point((1279 + 1319) / 2, (532 + 564) / 2)
 THRESHOLD_ON_EACH_TILE: typing.Dict[int, map_funcs.Point] = {
-    k: map_funcs.point_tile_to_tile(5, RUNWAY_22_THRESHOLD_TILE_5, k, TILE_OFFSETS) for k in TILE_FILES.keys()
+    k: map_funcs.point_tile_to_tile(5, RUNWAY_23_THRESHOLD_TILE_5, k, TILE_OFFSETS) for k in TILE_FILES.keys()
 }
 RUNWAY_WIDTH_PX = math.sqrt((1431 - 1473)**2 + (338 - 371)**2)
 RUNWAY_LENGTH_HEADING = map_funcs.distance_bearing(
-    RUNWAY_22_THRESHOLD_TILE_5,
-    map_funcs.point_tile_to_tile(7, RUNWAY_22_END_TILE_7, 5, TILE_OFFSETS),
+    RUNWAY_23_THRESHOLD_TILE_5,
+    map_funcs.point_tile_to_tile(7, RUNWAY_23_END_TILE_7, 5, TILE_OFFSETS),
     TILE_SCALE_M_PER_PIXEL,
 )
 
 
 RUNWAY_LENGTH_HEADING = map_funcs.distance_bearing(
-    RUNWAY_22_THRESHOLD_TILE_5,
-    map_funcs.point_tile_to_tile(6, RUNWAY_22_END_TILE_6, 5, TILE_OFFSETS),
+    RUNWAY_23_THRESHOLD_TILE_5,
+    map_funcs.point_tile_to_tile(6, RUNWAY_23_END_TILE_6, 5, TILE_OFFSETS),
     TILE_SCALE_M_PER_PIXEL,
 )
 

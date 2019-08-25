@@ -1,6 +1,6 @@
 # AN-24 Accident at Nizhneangarsk, Russia
 
-On Thursday 27 June 2019 an AN-24 of Angara Airlines, flight number 2G-200, flying from Ulan-Ude Airport was destroyed whilst landing at Nizhneangarsk Airport. Reportedly, the left engine had failed in flight. A video of the landing was posted online apparently taken by a passenger sitting on the right hand side under the wing (called here video 'A').
+On Thursday 27 June 2019 an AN-24 of Angara Airlines, flight number 2G-200, flying from Ulan-Ude Airport was destroyed whilst landing at Nizhneangarsk Airport. Reportedly, the left engine had failed in flight. A video of the landing was posted online apparently taken by a passenger sitting on the right hand side under the wing (this video is called here video 'A').
 
 <center>
 
@@ -8,20 +8,20 @@ On Thursday 27 June 2019 an AN-24 of Angara Airlines, flight number 2G-200, flyi
 
 </center>
 
-The aircraft approaches at high speed and after touchdown it veers off the runway to the right eventually colliding with a series of obstructions. Here is some analysis of that video to give a picture of the speed, position and acceleration forces experienced by the aircraft.
+The aircraft approaches at high speed and after touchdown it veers off the runway to the right eventually colliding with a series of obstructions. This is some analysis of that video to give a picture of the speed, position and acceleration forces experienced by the aircraft.
 
-A second video (video 'B') emerged that was taken from a fixed security camera overlooking the airfield. This was also used in the analysis but only a minor role that confirms the events of video 'A'.
+A second video (video 'B') emerged that was taken from a fixed security camera overlooking the airfield. This was also used in the analysis but in only a minor role to confirm the events of video 'A'.
 
 ## Summary of Observations
 
-* At the start of the video the aircraft is on the extended centreline of Nizhneangarsk runway 22 at a distance of 2482±98 m from the start of the runway. Ground speed is 82.8±2.0 m/s, (161±4 knots).
-* The ground speed slowly increases to a maximum of 92.7±3.5 m/s (180±7 knots) at around t=17.0 seconds when the aircraft is 964±44 m from runway 22.
-* The aircraft crosses the start of runway 22 at t=27.5 travelling at 88.6±2 m/s (172±4 knots).
+* At the start of the video the aircraft is on the extended centreline of Nizhneangarsk runway 23 at a distance of 2482±98 m from the start of the runway. Ground speed is 82.8±2.0 m/s, (161±4 knots).
+* The ground speed slowly increases to a maximum of 92.7±3.5 m/s (180±7 knots) at around t=17.0 seconds when the aircraft is 964±44 m from runway 23.
+* The aircraft crosses the start of runway 23 at t=27.5 travelling at 88.6±2 m/s (172±4 knots).
 * Touchdown is at t=33.8 s, 549±14 m (about 1/3rd down the 1653m runway) at 84.3±2 m/s (164±4 knots). Acceleration is -1.1 m/s^2 .
 * At t=36.0 the aircraft starts drifting to the right, possibly due to a burst tyre. The aircraft is 731±16 m down the runway travelling at 81.8±2 m/s (159±4 knots).
 * The aircraft departs the runway at t=46.1 s, 1463±41 m down the runway at 58.7±3.0 m/s (114±6 knots). Acceleration is -3.9 m/s^2 .
 * At t=56.1 there is an impact with the boundary fence 1853m from the start of the runway. This collapses the starboard undercarriage (and probably the port one as well). Impact speed is around 19 m/s (37 knots). 
-* The aircraft would have slid to a stop roughly 45m later unfortunately there was a building 36m from the boundary fence which is the site of the final impact. Time is about t=58.0 and speed is somewhere less than 9 m/s (18 knots).
+* The aircraft would have slid to a stop roughly 45m later unfortunately there was a building 36m from the boundary fence which is the site of the final impact. Time is about t=58.0 and speed is somewhat less than 9 m/s (18 knots).
 * The video ends at t=60.6 seconds.
 
 The annotated image below shows the estimated ground path of the aircraft in dotted red with significant events in yellow:
@@ -54,30 +54,37 @@ Video metadata shows the video was shot at 30 frames per second.
 ## Landmarks in the Video
 
 The video shows some distinct landmarks, in particular some colourful and readily identifiable buildings.
-These can be seen on aerial imagery and used to find the aircraft position on the extended centreline of runway 22 (the aircraft appears to make a straight in approach with little lateral deviation).
+These can be seen on aerial imagery and used to find the aircraft position on the extended centreline of runway 23 (the aircraft appears to make a straight in approach with little lateral deviation).
 
 Here are two examples.
 Frame 1 (t=0s) shows the line up of the edge of a settlement with a dark smudge on a sandy part of an island.
-The magenta line shows the estimated ground line the aircraft is flying across, the red line is the extended centreline of runway 22:
+The magenta line shows the estimated ground line the aircraft is flying across, the red line is the extended centreline of runway 23:
+
+<center>
 
 | Camera View | Aerial View |
 | :--: | :--: |
 | <img src="img/frame0001.jpg" width="140" /> | <img src="img/frame0001_map.png" width="400" /> |
 
+</center>
 
-This puts the aircraft 2490±98m from the start of runway 22.
+This puts the aircraft 2490±98m from the start of runway 23.
 
 The second example is frame 483 (t=16.0s) where a two distinctive buildings are lined up:
+
+<center>
 
 | Camera View | Aerial View |
 | :--: | :--: |
 | <img src="img/frame0483.png" width="140" /> | <img src="img/frame0483_map.png" width="400" /> |
 
-This puts the aircraft at 1041 ±49m from the start of runway 22.
+</center>
+
+This puts the aircraft at 1041 ±49m from the start of runway 23.
 
 There are numerous opportunities here but around 15 measurements are sufficient to establish the flight path. This measurement is of distance and this can be differentiated to give velocity. Errors in this method is estimated to be ±100m when 2500m from the runway, reducing to ±10m at the runway edge.
 
-This technique is useful but it requires identifiable ground features and few exist after the aircraft crosses the threshold, and none once 330m beyond the start of runway 22 (the runway markings are useful). Fortunately another technique exists due to the particular construction of this runway which is typical of Siberian airports. Even better, these two (independent) techniques overlap for about four seconds so that the analysis can be cross checked.
+This technique is useful but it requires identifiable ground features and few exist after the aircraft crosses the threshold, and none once 330m beyond the start of runway 23 (the runway markings are useful). Fortunately another technique exists due to the particular construction of this runway which is typical of Siberian airports. Even better, these two (independent) techniques overlap for about four seconds so that the analysis can be cross checked.
 
 
 ## Counting Slabs
@@ -128,7 +135,7 @@ A second video was posted on YouTube that showed images from a security camera o
 
 ## Camera Position
 
-The distinctive foreground means the camera position is fairly easily identified on aerial imagery from Google Earth at a position x=491m down runway 22 and y=-161m to the left off the runway centreline.
+The distinctive foreground means the camera position is fairly easily identified on aerial imagery from Google Earth at a position x=491m down runway 23 and y=-161m to the left off the runway centreline.
 
 ## Camera Heading and Resolution
 
@@ -159,7 +166,7 @@ Table 1: Matching timelines of video A and B.
 
 </center>
 
-This gives a mean time difference of video A and B of 34.25±0.3 (s).
+This gives a mean time difference of video A and B of 34.25±0.3 (s). The consistent match over 21 seconds show that the two videos are on the same timeline and that one has not been speeded up. See "Reliability of the Video Timebase" below.
 
 # Computed Results
 
@@ -172,16 +179,11 @@ Analysis of video A gives:
 * The aircraft position from overflying landmarks, differentiating this give the aircraft's ground speed.
 * The aircraft's passage over the runway slabs gives the aircrafts ground speed, integrating this gives the distance that the aircraft has covered.
 
-Here is a plot of distance from the start of runway 22 over time from video A, the mid points are fitted to a third order polynomial:
+Here is a plot of distance from the start of runway 23 over time from video A, the mid points are fitted to a third order polynomial. The right hand graph shows the comparison where the two measurements overlap:
 
 <center>
-<img src="plots/tile_distance.svg" width="500" />&nbsp;
-</center>
-
-Where the two techniques overlap a comparison can be made:
-
-<center>
-<img src="plots/tile_distance_cmp.svg" width="500" />&nbsp;
+<img src="plots/tile_distance.svg" width="300" />&nbsp;
+<img src="plots/tile_distance_cmp.svg" width="300" />&nbsp;
 </center>
 
 The difference between the two techniques is 5m or less.
@@ -193,16 +195,11 @@ The aircraft's ground speed can be calculated from video A by:
 * Taking the differential of the aircraft position when overflying landmarks.
 * Directly from the aircraft's rate of passage over the runway slabs.
 
-Here is the ground speed by the two techniques:
+Here is the ground speed by the two techniques. The right hand graph shows the comparison where the two measurements overlap:
 
 <center>
-<img src="plots/speed.svg" width="500" />&nbsp;
-</center>
-
-Here is the difference where the two techniques overlap:
-
-<center>
-<img src="plots/speed_cmp.svg" width="500" />&nbsp;
+<img src="plots/speed.svg" width="300" />&nbsp;
+<img src="plots/speed_cmp.svg" width="300" />&nbsp;
 </center>
 
 The difference is 1.4 to 2.2 m/s over this interval with the fitted data which is just about within the error terms of each if centred on the respective fitted data.
@@ -219,32 +216,31 @@ A problem for the latter two is that the measurements are often only a few pixel
 
 Computing the distance down the runway by these methods leads to the following data:
 
-<center>
-<img src="plots/video_b_distance.svg" width="500" />&nbsp;
-</center>
-
-The three agree rather roughly in magnitude. However when differentiated to obtain ground speed the results are implausible except for the bearing data.
+The distance down the runway by these three methods agree rather roughly in magnitude as shown on the left (the distance data from the slab measurements is alos shown for comparison). However when differentiated to obtain ground speed the results are implausible except for the bearing data as seen on the right.
 
 <center>
-<img src="plots/video_b_speed.svg" width="500" />&nbsp;
+<img src="plots/video_b_distance.svg" width="300" />&nbsp;
+<img src="plots/video_b_speed.svg" width="300" />&nbsp;
 </center>
 
 The poor results from this analysis could be for many reasons; the low resolution of the video, non-linear camera field and so on. Even the bearing data does not make sense giving a de-acceleration of around -5m/s, if this were true the aircraft would have stopped well before the boundary fence and this was not the case. The following graph compares the ground speed from the slab speed data of video A to the bearing data of video B:
 
 <center>
-<img src="plots/speed_cmp_slab_video_b.svg" width="500" />&nbsp;
+<img src="plots/speed_cmp_slab_video_b.svg" width="300" />&nbsp;
 </center>
 
 ### Conclusion for the Data From Video B
 
 The data obtained from video B is not useful for calculating the position or speed of the aircraft. The data from video B is useful in that it can tie visible events to the motion of the aircraft seen in video A, for example the smoke and dust appearing from the tyres and the start of the aircraft swinging to the right.
 
+The video A data is used to compute the trajectory of the aircraft.
+
 ## Acceleration
 
 The ground speed if the aircraft computed from video A can be differentiated to give the longitudinal acceleration:
 
 <center>
-<img src="plots/acceleration.svg" width="500" />&nbsp;
+<img src="plots/acceleration.svg" width="300" />&nbsp;
 </center>
 
 There are no visible discontinuities giving sudden changes of acceleration such as might be caused by a tyre burst or running onto the grass. Probably this is because of the smoothing caused by the curve fitting process.
@@ -267,7 +263,7 @@ There are no landmarks or visible features in video A after t=45.7 seconds that 
 
 ### The Boundary Fence Impact
 
-At t=56.1s the aircraft collides with the boundary fence and this fence is readily identifiable on the aerial imagery as being 1853m from the start of runway 22. The sequence below shows four consecutive frames from the video of the starboard undercarriage collapse as the aircraft goes through the airfield boundary. 
+At t=56.1s the aircraft collides with the boundary fence and this fence is readily identifiable on the aerial imagery as being 1853m from the start of runway 23. The sequence below shows four consecutive frames from the video of the starboard undercarriage collapse as the aircraft goes through the airfield boundary. 
 
 <center>
 <img src="img/frame1684.png" width="120" alt="frame 1684"/>&nbsp;<img src="img/frame1685.png" width="120" />&nbsp;<img src="img/frame1686.png" width="120" />&nbsp;<img src="img/frame1687.png" width="120" />
@@ -277,7 +273,7 @@ The first frame [1684] shows the moment before impact, the obstruction is on the
 
 ### Boundary Fence Impact Speed and Acceleration
 
-The impact point is 1853m from the start of runway 22 and 10.4 seconds after the last known position. Given the initial speed and initial position the mean speed can be calculated. Assuming constant deceleration the impact speed and acceleration can be calculated.
+The impact point is 1853m from the start of runway 23 and 10.4 seconds after the last known position. Given the initial speed and initial position the mean speed can be calculated. Assuming constant deceleration the impact speed and acceleration can be calculated.
 
 <center>
 
@@ -311,6 +307,12 @@ Table 4: Estimated final impact speed.
 
 Images of the aftermath suggest that the mid-point calculation is probably correct and that the final impact occurred at roughly 9 m/s (18 knots). This can be regarded as an upper bound as it ignores the speed lost by the collision with the boundary fence and the likely increase of deceleration after the undercarridge collapse.
 
+# Reliability of the Video Timebase
+
+Of course it is possible that video A has been speeded up, say having been recorded at 25 f.p.s. then uploaded as a 30 f.p.s. video. This would affect the speed calculation by exaggerating it by a factor of 30 / 25 = 1.2. This would also exaggerate the accelerations by the square of that, 1.44 so the assumed acceleration after the runway departure would be 2.7 m/s^2 instead of 3.9 m/s^2. This is more like firm braking in a car rather than severe to hard braking. This seems unlikely given that the aircraft has lost a tyre and is on the grass.
+
+Another reason for believing that video A was recorded at 30 f.p.s is the correspondence with video B for over 21 seconds. If video A was recorded at 25 f.p.s. then video B would also have to be speeded up from 25 / 1.2 = 20.8 f.p.s., an implausible figure.
+
 # Summary of Events
 
 Combining all the data gives the following summary of events, time is in video A time:
@@ -319,16 +321,16 @@ Combining all the data gives the following summary of events, time is in video A
 
 | Time (s) | Position (m) | Ground Speed (m/s, knots) | Acceleration (m/s^2 ) | Description |
 | ---: | ---: | ---: | ---: | :--- |
-|  0.0 |    -2481±98 |     82.8±2.0,   161±4 |      1.2±0.2 |  Video start |
-| 17.0 |     -964±44 |     92.7±3.5,   180±7 |     0.0±0.1 |  Maximum ground speed |
-| 27.5 |        0±14 |     88.6±1.9,   172±4 |     -0.7±0.1 |  Threshold |
-| 33.8 |      549±17 |     84.3±0.8,   164±2 |     -1.0±0.1 |  Touchdown |
-| 35.5 |      688±19 |     82.4±1.0,   160±2 |     -1.2±0.2 |  First appearance in video B, x=688±19 m |
+|  0.0 |    -2481±98 |     82.8±2.0,   161±4 |      1.2±0.2 |  Video start. |
+| 17.0 |     -964±44 |     92.7±3.5,   180±7 |     0.0±0.1 |  Maximum ground speed. |
+| 27.5 |        0±14 |     88.6±1.9,   172±4 |     -0.7±0.1 |  Threshold. |
+| 33.8 |      549±17 |     84.3±0.8,   164±2 |     -1.0±0.1 |  Touchdown. |
+| 35.5 |      688±19 |     82.4±1.0,   160±2 |     -1.2±0.2 |  First appearance in video B. |
 | 36.0 |      731±19 |     81.8±1.1,   159±2 |     -1.2±0.3 |  Start of drift to the right. |
-| 45.7 |     1442±48 |     60.0±3.7,   117±7 |     -3.7±0.3 |  Last speed measurement |
-| 46.1 |     1463±49 |     ~58.7±3.6,   114±7 |     -3.9±0.4 |  Runway disappears. Speed and distance data is estimated. |
-| 56.1 |     ~1853 |     Around 19, 37 |     Around -3.9 |  Impact with boundary fence |
-| 57.0 |     ~1889 |    Less than 9, 18 |  |  Final impact |
+| 45.7 |     1442±48 |     60.0±3.7,   117±7 |     -3.7±0.3 |  Last speed measurement. |
+| 46.1 |     1463±49 |     ~58.7±3.6,   114±7 |     -3.9±0.4 |  Runway disappears. Speed and distance data are estimated. |
+| 56.1 |     ~1853 |     Around 19, 37 |     Around -3.9 |  Impact with boundary fence. |
+| 57.0 |     ~1889 |    Less than 9, 18 |  |  Final impact. |
 
 Table 5: Selected Events
 

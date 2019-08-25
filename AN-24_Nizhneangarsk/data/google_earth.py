@@ -15,11 +15,11 @@ GOOGLE_EARTH_AIRPORT_IMAGES = {
         # 'm_per_px': 100 / (4786 - 4605),
         # Corrected to 185 to give runway length of 1650.5 m
         'm_per_px': 100 / (4786 - 4601),
-        'datum': 'runway_22_start',
+        'datum': 'runway_23_start',
         'measurements': {
-            # 'datum_1': 'runway_22_end',
-            'runway_22_start': map_funcs.Point(3217, 204),
-            'runway_22_end': map_funcs.Point((1310 + 1356) / 2, (2589 + 2625) / 2),
+            # 'datum_1': 'runway_23_end',
+            'runway_23_start': map_funcs.Point(3217, 204),
+            'runway_23_end': map_funcs.Point((1310 + 1356) / 2, (2589 + 2625) / 2),
             'perimeter_fence': map_funcs.Point(967, 2788),
             'red_building': map_funcs.Point(914, 2827),
             'helicopter': map_funcs.Point(2630, 1236),
@@ -57,14 +57,14 @@ def relative_position_error(distance_between: float) -> float:
 
 
 RUNWAY_LENGTH_M = map_funcs.distance(
-    GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['measurements']['runway_22_start'],
-    GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['measurements']['runway_22_end'],
+    GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['measurements']['runway_23_start'],
+    GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['measurements']['runway_23_end'],
     GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['m_per_px'],
 )
 
 RUNWAY_HEADING_DEG = map_funcs.bearing(
-    GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['measurements']['runway_22_start'],
-    GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['measurements']['runway_22_end'],
+    GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['measurements']['runway_23_start'],
+    GOOGLE_EARTH_AIRPORT_IMAGES['GoogleEarth_AirportCamera_C.jpg']['measurements']['runway_23_end'],
 )
 
 
