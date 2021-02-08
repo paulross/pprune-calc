@@ -42,7 +42,7 @@ Apart from the videos, there is:
 
 # Data From Video A
 
-Video A is taken from inside the aircraft.
+Video A [https://youtu.be/LtJcgdU5MUk](https://youtu.be/LtJcgdU5MUk) is taken from inside the aircraft.
 
 <center>
 
@@ -127,7 +127,7 @@ This gives a ground speed of 90 m/s (175 knots). The error term is how confident
 
 # Data From Video B
 
-A second video was posted on YouTube that showed images from a security camera overlooking the airport, here referred to as video 'B'. The camera is facing roughly south west and was recorded at 25 frames per second.
+A second video [https://youtu.be/BQ8ujmRhLH0](https://youtu.be/BQ8ujmRhLH0) was posted on YouTube that showed images from a security camera overlooking the airport, here referred to as video 'B'. The camera is facing roughly south west and was recorded at 25 frames per second.
 
 <center>
 
@@ -271,6 +271,12 @@ At t=56.1s the aircraft collides with the boundary fence and this fence is readi
 
 The first frame [1684] shows the moment before impact, the obstruction is on the left which looks like as substantial concrete block, the dark disc at the bottom is the tyre and the silver vertical is the undercarriage leg. The second frame (t=56.1s) shows the moment of impact and the last two frames show progressive collapse of the starboard landing leg. The last frame is rotated somewhat to right, most likely due to the forces on the person filming which would naturally rotate a hand held camera to the left.
 
+Here are those frames as a composite image adjusting, approximately, for alignment and tilt:
+
+<center>
+<img src="img/frame1684-1687_composite.png" width=600"  alt="Composite of frames 1684-1687" />
+</center>
+
 ### Boundary Fence Impact Speed and Acceleration
 
 The impact point is 1853m from the start of runway 23 and 10.4 seconds after the last known position. Given the initial speed and initial position the mean speed can be calculated. Assuming constant acceleration the impact speed and the acceleration can be calculated. For example, given v initial as 60.0 m/s at 1442 m:
@@ -336,6 +342,14 @@ Table 5: Selected Events
 
 </center>
 
+# Sources of information Subsequently Discovered
+
+These sources of information were discovered after this initial investigation ended on 2019-08-26:
+
+* The Russian Accident Investigation:
+[https://mak-iac.org/en/rassledovaniya/an-24rv-ra-47366-27-06-2019/](https://mak-iac.org/en/rassledovaniya/an-24rv-ra-47366-27-06-2019/)
+* Preliminary Accident Report (in Russian) Created 1 Aug 2019 at 10:16, modified 11 Oct 2019 at 13:30:
+[https://mak-iac.org/upload/iblock/870/report_ra-47366_pr.pdf](https://mak-iac.org/upload/iblock/870/report_ra-47366_pr.pdf)
 
 
 
