@@ -7,7 +7,7 @@
 >
 
 <title>Gnuplot</title>
-<desc>Produced by GNUPLOT 5.2 patchlevel 4 </desc>
+<desc>Produced by GNUPLOT 5.4 patchlevel 0 </desc>
 
 <g id="gnuplot_canvas">
 
@@ -263,13 +263,13 @@
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='red'  d='M142.2,360.4 L146.8,377.7 L151.4,360.4 M146.8,313.0 L146.8,377.7  '/></g>
+	<path stroke='red'  d='M142.3,360.3 L146.9,377.6 L151.5,360.3 M146.9,312.9 L146.9,377.6  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='green'  d='M121.4,360.4 L126.0,377.7 L130.6,360.4 M126.0,280.6 L126.0,377.7  '/></g>
+	<path stroke='green'  d='M121.5,360.3 L126.1,377.6 L130.7,360.3 M126.1,280.5 L126.1,377.6  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='blue'  d='M100.7,360.4 L105.3,377.7 L109.9,360.4 M105.3,248.2 L105.3,377.7  '/></g>
+	<path stroke='blue'  d='M100.8,360.3 L105.4,377.6 L110.0,360.3 M105.4,248.1 L105.4,377.6  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<g transform="translate(16.3,248.3) rotate(270)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+	<g transform="translate(19.0,248.3) rotate(270)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
 		<text><tspan font-family="Arial" >Ground Speed (knots)</tspan></text>
 	</g>
 </g>
@@ -279,9 +279,6 @@
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<g transform="translate(373.4,31.0)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
-		<text><tspan font-family="Arial" >Ground Speed.</tspan></text>
-	</g>
 </g>
 	<g id="gnuplot_plot_1" ><title>Raw data</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
@@ -368,7 +365,9 @@
 		M572.6,165.5 L572.6,156.5 M575.1,165.5 L575.1,156.5 M583.4,150.5 L585.9,150.5 M583.4,155.0 L583.4,146.0
 		M585.9,155.0 L585.9,146.0 M591.4,150.7 L594.0,150.7 M591.4,155.2 L591.4,146.2 M594.0,155.2 L594.0,146.2
 		M614.2,140.9 L616.7,140.9 M614.2,145.4 L614.2,136.4 M616.7,145.4 L616.7,136.4 M616.4,140.9 L619.0,140.9
-		M616.4,145.4 L616.4,136.4 M619.0,145.4 L619.0,136.4  '/>	<use xlink:href='#gpPt0' transform='translate(382.5,232.4) scale(4.50)' color='red'/>
+		M616.4,145.4 L616.4,136.4 M619.0,145.4 L619.0,136.4  '/></g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<use xlink:href='#gpPt0' transform='translate(382.5,232.4) scale(4.50)' color='red'/>
 	<use xlink:href='#gpPt0' transform='translate(391.5,227.8) scale(4.50)' color='red'/>
 	<use xlink:href='#gpPt0' transform='translate(395.3,227.8) scale(4.50)' color='red'/>
 	<use xlink:href='#gpPt0' transform='translate(399.1,227.8) scale(4.50)' color='red'/>
@@ -492,6 +491,11 @@
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<path stroke='black'  d='M71.9,54.1 L71.9,442.4 L675.0,442.4 L675.0,54.1 L71.9,54.1 Z  '/></g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<g transform="translate(373.4,31.0)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" >Ground Speed.</tspan></text>
+	</g>
+</g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
 </g>

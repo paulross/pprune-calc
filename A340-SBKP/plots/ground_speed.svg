@@ -7,7 +7,7 @@
 >
 
 <title>Gnuplot</title>
-<desc>Produced by GNUPLOT 5.2 patchlevel 4 </desc>
+<desc>Produced by GNUPLOT 5.4 patchlevel 0 </desc>
 
 <g id="gnuplot_canvas">
 
@@ -293,7 +293,7 @@
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<path stroke='black'  d='M71.9,54.1 L71.9,442.4 L675.0,442.4 L675.0,54.1 L71.9,54.1 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<g transform="translate(16.3,248.3) rotate(270)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+	<g transform="translate(19.0,248.3) rotate(270)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
 		<text><tspan font-family="Arial" >Ground Speed (knots)</tspan></text>
 	</g>
 </g>
@@ -303,9 +303,6 @@
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<g transform="translate(373.4,31.0)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
-		<text><tspan font-family="Arial" >Ground Speed.</tspan></text>
-	</g>
 </g>
 	<g id="gnuplot_plot_1" ><title>Raw data</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
@@ -392,7 +389,9 @@
 		M527.1,185.2 L527.1,176.2 M532.8,185.2 L532.8,176.2 M551.8,149.2 L557.5,149.2 M551.8,153.7 L551.8,144.7
 		M557.5,153.7 L557.5,144.7 M570.2,149.8 L575.9,149.8 M570.2,154.3 L570.2,145.3 M575.9,154.3 L575.9,145.3
 		M622.2,120.3 L627.9,120.3 M622.2,124.8 L622.2,115.8 M627.9,124.8 L627.9,115.8 M627.3,120.3 L633.1,120.3
-		M627.3,124.8 L627.3,115.8 M633.1,124.8 L633.1,115.8  '/>	<use xlink:href='#gpPt0' transform='translate(92.6,394.8) scale(4.50)' color='red'/>
+		M627.3,124.8 L627.3,115.8 M633.1,124.8 L633.1,115.8  '/></g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<use xlink:href='#gpPt0' transform='translate(92.6,394.8) scale(4.50)' color='red'/>
 	<use xlink:href='#gpPt0' transform='translate(113.3,381.2) scale(4.50)' color='red'/>
 	<use xlink:href='#gpPt0' transform='translate(121.9,381.1) scale(4.50)' color='red'/>
 	<use xlink:href='#gpPt0' transform='translate(130.5,381.1) scale(4.50)' color='red'/>
@@ -470,6 +469,11 @@
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<path stroke='black'  d='M71.9,54.1 L71.9,442.4 L675.0,442.4 L675.0,54.1 L71.9,54.1 Z  '/></g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<g transform="translate(373.4,31.0)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" >Ground Speed.</tspan></text>
+	</g>
+</g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
 </g>
