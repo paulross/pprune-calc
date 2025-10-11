@@ -8,13 +8,8 @@ Generated file from analysis.readme.py:main()
 
 I came across a video of an A340 taking off where the aircraft becomes airborne only just
 before before the end of the runway.
-You can see the video here, it starts part way through the takeoff:
-
-<center>
-
-[![A-340](https://img.youtube.com/vi/Y6PNFzVvlWo/0.jpg)](https://www.youtube.com/watch?v=Y6PNFzVvlWo "A-340 at SBKP")
-
-</center>
+You can see the [video here](https://github.com/paulross/pprune-calc/blob/master/A340-SBKP/Sobre_o_A340_em_viracopos.mp4),
+it starts part way through the takeoff.
 
 It looked an unusual takeoff to me and I was curious about what objective information such as
 speed and distance data, and to what accuracy, could be extracted from the video by looking at

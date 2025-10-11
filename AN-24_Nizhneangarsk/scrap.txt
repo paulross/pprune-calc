@@ -1,0 +1,34 @@
+
+
+Some analysis of these videos over here: https://github.com/paulross/pprune-calc/tree/master/AN-24_Nizhneangarsk
+
+Summary:
+
+* The aircraft approachs at a ground speed that varies between 161 and 180 knots, slowing to 172±4 knots crossing the threshold.
+* It touches down at 164±4 knots, 549±14 m down the 1653m runway. Acceleration is -1.1 m/s^2 .
+* At t=36.0 the aircraft starts drifting to the right, possibly due to a burst tyre. The aircraft is 731±16 m down the runway travelling at 159±4 knots.
+* The aircraft departs the runway at t=46.1 s, 1463±41 m down the runway at 114±6 knots. Acceleration is -3.9 m/s^2 .
+* At t=56.1 the aircraft hits the boundary fence 200m beyond the end of the runway at around 37 knots. This collapses the starboard undercarriage (and probably the port one as well).
+* The aircraft would have slid to a stop roughly 45m later unfortunately there was a building 36m beyond the boundary fence which it hit at somewhat less than 18 knots.
+
+
+
+
+
+At the start of the video the aircraft is on the extended centreline of Nizhneangarsk runway 22 at a distance of 2482±98 m from the start of the runway. Ground speed is 82.8±2.0 m/s, (161±4 knots).
+
+The ground speed slowly increases to a maximum of 92.7±3.5 m/s (180±7 knots) at around t=17.0 seconds when the aircraft is 964±44 m from runway 22.
+
+The aircraft crosses the start of runway 22 at t=27.5 travelling at 88.6±2 m/s (172±4 knots).
+
+Touchdown is at t=33.8 s, 549±14 m (about 1/3rd down the 1653m runway) at 84.3±2 m/s (164±4 knots). Acceleration is -1.1 m/s2 .
+
+At t=36.0 the aircraft starts drifting to the right, possibly due to a burst tyre. The aircraft is 731±16 m down the runway travelling at 81.8±2 m/s (159±4 knots).
+
+The aircraft departs the runway at t=46.1 s, 1463±41 m down the runway at 58.7±3.0 m/s (114±6 knots). Acceleration is -3.9 m/s2 .
+
+At t= 56.1 there is an impact with the boundary fence 1853m from the start of the runway. This collapses the starboard undercarriage (and probably the port one as well). Impact speed is around 19 m/s (37 knots).
+
+The aircraft would have slid to a stop roughly 45m later unfortunately there was a building 36m from the boundary fence which is the site of the final impact. Time is about t=58.0 and speed is somewhere around 9 m/s (18 knots).
+
+The video ends at t=60.6 seconds.

@@ -35,4 +35,19 @@ plot "ground_speed.dat" using 1:2:3:4:5:6 title "Raw data" w xyerrorbars, \
 
 #    "ground_speed.dat" using 1:8 title "Fitted to extreme minimum values" lw 1 w line, \
 #    "ground_speed.dat" using 1:9 title "Fitted to extreme maximum values" lw 1 w line
+#reset
+
+set terminal png size 1000,600           # choose the file format
+
+set output "ground_speed.png"   # choose the output device
+#set key title "Window Length"
+#  lw 2 pointsize 2
+
+# linespoints
+plot "ground_speed.dat" using 1:2:3:4:5:6 title "Raw data" w xyerrorbars, \
+    "ground_speed.dat" using 1:7 title "Fitted to mid values" lw 2 w line
+
+#    "ground_speed.dat" using 1:8 title "Fitted to extreme minimum values" lw 1 w line, \
+#    "ground_speed.dat" using 1:9 title "Fitted to extreme maximum values" lw 1 w line
 reset
+
