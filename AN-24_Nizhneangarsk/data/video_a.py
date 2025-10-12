@@ -163,10 +163,12 @@ TILE_D_ORDER = ('d', 'd+', 'd-')
 
 def get_tile_d_fits() -> typing.Tuple[typing.Dict[str, np.ndarray], typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]]:
     array_dict = create_distance_array_of_tile_data()
-    fits = {
-        d: curve_fit(polynomial.polynomial_3, array_dict['Time'][:, 0], array_dict[d][:, 0])
-        for d in TILE_D_ORDER
-    }
+    fits = {}
+    for d in TILE_D_ORDER:
+        x = array_dict['Time'][:, 0]
+        y = array_dict[d][:, 0]
+        fit = curve_fit(polynomial.polynomial_3, x, y)
+        fits[d] = fit
     return array_dict, fits
 
 
