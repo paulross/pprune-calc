@@ -59,7 +59,7 @@ POSITIONS_FROM_TILES: typing.Dict[int, typing.Tuple[int, map_funcs.Point, str]] 
     940: (5, map_funcs.Point(1266, 615), 'End of the second set of white marker pairs.'),
 }
 
-#======== Slab meaasurements ========
+# ======== Slab meaasurements ========
 
 # The estimated error when counting slabs, 10% of slab length
 SLAB_LENGTH = 6.0  # Width is 1.8
@@ -74,7 +74,7 @@ SLAB_TRANSITS: typing.Dict[int, typing.Tuple[int, float]] = {
     895: (8, 4.0),
     918: (12, 5.9),
     # Frames 932-940 is 4 slabs across the bars, as above.
-    964: (979-964, 7.0),
+    964: (979 - 964, 7.0),
     # Touchdown is 1015
     1016: (1031 - 1016, 7.0),
     1053: (1064 - 1053, 5.0),
@@ -137,12 +137,12 @@ FRAME_EVENTS_STR_KEY = {v: k for k, v in FRAME_EVENTS.items()}
 VIDEO_A_MAX_SPEED_ACCURACY = 2.0
 
 
-def create_distance_array_of_tile_data() -> typing.Dict[str, np.ndarray]:
+def create_distance_array_of_tile_data(time_offset: float = 0.0) -> typing.Dict[str, np.ndarray]:
     """Returns a numpy array of time, position from the tile position data."""
     columns = ('Frame', 'Time', 'd', 'd+', 'd-')
     ret = {k: np.empty((len(POSITIONS_FROM_TILES), 1)) for k in columns}
     for f, frame_number in enumerate(sorted(POSITIONS_FROM_TILES.keys())):
-        t = map_funcs.frame_to_time(frame_number, FRAME_RATE)
+        t = map_funcs.frame_to_time(frame_number, FRAME_RATE) + time_offset
         dx = POSITIONS_FROM_TILES[frame_number][1].x \
              - data.tiles.THRESHOLD_ON_EACH_TILE[POSITIONS_FROM_TILES[frame_number][0]].x
         dy = POSITIONS_FROM_TILES[frame_number][1].y \
@@ -161,18 +161,28 @@ def create_distance_array_of_tile_data() -> typing.Dict[str, np.ndarray]:
 TILE_D_ORDER = ('d', 'd+', 'd-')
 
 
-def get_tile_d_fits() -> typing.Tuple[typing.Dict[str, np.ndarray], typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]]:
-    array_dict = create_distance_array_of_tile_data()
+def get_tile_d_fits(time_offset: float = 0.0) -> typing.Tuple[
+    typing.Dict[str, np.ndarray],
+    typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]
+]:
+    """Gets the data from the Google map tiles and returns the tile data and the dictionary of polynomial fits.
+    time_offset is added to the time axis, so a value of -1 * FRAME_THRESHOLD / FRAME_RATE (-827 / 30 = -27.566)
+    would base the fit on t = 0.0 crossing the threshold."""
+    array_dict = create_distance_array_of_tile_data(time_offset)
+    print(f'Time range: {array_dict["Time"].min():.3f} to {array_dict["Time"].max():.3f} (s)')
     fits = {}
     for d in TILE_D_ORDER:
         x = array_dict['Time'][:, 0]
         y = array_dict[d][:, 0]
         fit = curve_fit(polynomial.polynomial_3, x, y)
+        poly_str = polynomial.polynomial_string(f'{d:2}', 't', '10.3e', *fit[0])
+        print(f'Polynomial for tile data: {poly_str}', end='')
+        print(f' Value(0) = {polynomial.polynomial_3(0.0, *fit[0]):10.3e}')
         fits[d] = fit
     return array_dict, fits
 
 
-def write_tile_results(stream: typing.TextIO=sys.stdout):
+def write_tile_results(stream: typing.TextIO = sys.stdout):
     array_dict = create_distance_array_of_tile_data()
     # Fit curve
     # print(array_dict['d'][:, 0])
@@ -220,15 +230,29 @@ def write_tile_results(stream: typing.TextIO=sys.stdout):
 SLAB_V_ORDER = ('v', 'v+', 'v-')
 
 
-def get_slab_v_fits() -> typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]:
-    v_fits = {
-        v_name: curve_fit(polynomial.polynomial_3, SLAB_SPEEDS[:, 1], SLAB_SPEEDS[:, v + 2])
-        for v, v_name in enumerate(SLAB_V_ORDER)
-    }
-    return v_fits
+def get_slab_v_fits(time_offset: float = 0.0) -> typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]:
+    """Gets the data from the the slab analysis and returns the dictionary of polynomial fits.
+    time_offset is added to the time axis, so a value of -1 * FRAME_THRESHOLD / FRAME_RATE (-827 / 30 = -27.566)
+    would base the fit on t = 0.0 crossing the threshold."""
+    # v_fits = {
+    #     v_name: curve_fit(polynomial.polynomial_3, SLAB_SPEEDS[:, 1], SLAB_SPEEDS[:, v + 2])
+    #     for v, v_name in enumerate(SLAB_V_ORDER)
+    # }
+    # return v_fits
+    fits = {}
+    x = SLAB_SPEEDS[:, 1] + time_offset
+    print(f'Time range: {x.min():.3f} to {x.max():.3f} (s)')
+    for v, v_name in enumerate(SLAB_V_ORDER):
+        y = SLAB_SPEEDS[:, v + 2]
+        fit = curve_fit(polynomial.polynomial_3, x, y)
+        poly_str = polynomial.polynomial_string(f'{v_name:2}', 't', '10.3e', *fit[0])
+        print(f'Polynomial for slab data: {poly_str}', end='')
+        print(f' Value(0) = {polynomial.polynomial_3(0.0, *fit[0]):10.3e}')
+        fits[v_name] = fit
+    return fits
 
 
-def write_slab_results(stream: typing.TextIO=sys.stdout):
+def write_slab_results(stream: typing.TextIO = sys.stdout):
     """Writes out the results from the slab data."""
     columns = ('Frame', 'Time', 'v', 'v+', 'v-', 'd', 'd+', 'd-', 'a', 'a+', 'a-')
     # Compute fits
@@ -281,7 +305,7 @@ def write_slab_results(stream: typing.TextIO=sys.stdout):
         stream.write('\n')
 
 
-def _compute_distance(
+def compute_distance(
         frame: int,
         tile_d_fits: typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]],
         slab_v_fits: typing.Dict[str, typing.Tuple[np.ndarray, np.ndarray]]) -> typing.Tuple[float, float, float]:
@@ -367,7 +391,7 @@ def _terminal_speed_and_mean_acceleration(
 
 
 def _quadratic_distance(d_0: float, v_0: float, a: float, t: float) -> float:
-    return d_0 + v_0 * t + a * t**2 / 2.0
+    return d_0 + v_0 * t + a * t ** 2 / 2.0
 
 
 def _quadratic_distance_solution(d_0: float, v_0: float, a: float, d: float) -> typing.Tuple[float, float]:
@@ -395,7 +419,7 @@ def _quadratic_distance_solution(d_0: float, v_0: float, a: float, d: float) -> 
 
     t = (-v_0 ± sqrt(v_0**2 - 2 * a * (d_0 - d)) / a
     """
-    part_two = math.sqrt(v_0**2 - 2 * a * (d_0 - d)) / a
+    part_two = math.sqrt(v_0 ** 2 - 2 * a * (d_0 - d)) / a
     part_one = v_0 / a
     return part_one + part_two, part_one - part_two
 
@@ -404,7 +428,7 @@ def compute_impacts():
     """Does the calculation of de-acceleration after departure from the runway."""
     tile_d_fits = get_tile_d_fits()[1]
     slab_v_fits = get_slab_v_fits()
-    d_data = _compute_distance(LAST_MEASURED_FRAME, tile_d_fits, slab_v_fits)
+    d_data = compute_distance(LAST_MEASURED_FRAME, tile_d_fits, slab_v_fits)
     v_data = _compute_speed(LAST_MEASURED_FRAME, tile_d_fits, slab_v_fits)
     dt = map_funcs.frames_to_dtime(LAST_MEASURED_FRAME, 1685, FRAME_RATE)
     d_fence = data.tiles.BOUNDARY_FENCE_DISTANCE_FROM_THRESHOLD_M
@@ -423,7 +447,8 @@ def compute_impacts():
         except ValueError as err:
             print(f'Initial v={v:.1f} d={d:.1f} ERROR: {err}')
             boundary_fence_data.append((d, v, None, None))
-    print(f'Final impact at fence +{data.tiles.FINAL_BUILDING_DISTANCE_FROM_THRESHOLD_M - data.tiles.BOUNDARY_FENCE_DISTANCE_FROM_THRESHOLD_M} (m):')
+    print(
+        f'Final impact at fence +{data.tiles.FINAL_BUILDING_DISTANCE_FROM_THRESHOLD_M - data.tiles.BOUNDARY_FENCE_DISTANCE_FROM_THRESHOLD_M} (m):')
     for d, v, v_terminal, accln in boundary_fence_data:
         if v_terminal is not None and accln is not None:
             t = v_terminal / -accln
@@ -455,7 +480,7 @@ def print_events() -> None:
     slab_v_fits = get_slab_v_fits()
     for frame_number in sorted(FRAME_EVENTS.keys()):
         t = map_funcs.frame_to_time(frame_number, FRAME_RATE)
-        d, d_plus, d_minus = _compute_distance(frame_number, tile_d_fits, slab_v_fits)
+        d, d_plus, d_minus = compute_distance(frame_number, tile_d_fits, slab_v_fits)
         d_tol = max(abs(d - d_plus), abs(d - d_minus))
         v, v_plus, v_minus = _compute_speed(frame_number, tile_d_fits, slab_v_fits)
         v_tol = max(abs(v - v_plus), abs(v - v_minus))
@@ -476,7 +501,7 @@ def print_table_of_events() -> None:
     print('| ---: | ---: | ---: | ---: | :--- |')
     for frame_number in sorted(FRAME_EVENTS.keys()):
         t = map_funcs.frame_to_time(frame_number, FRAME_RATE)
-        d, d_plus, d_minus = _compute_distance(frame_number, tile_d_fits, slab_v_fits)
+        d, d_plus, d_minus = compute_distance(frame_number, tile_d_fits, slab_v_fits)
         d_tol = max(abs(d - d_plus), abs(d - d_minus))
         v, v_plus, v_minus = _compute_speed(frame_number, tile_d_fits, slab_v_fits)
         v_tol = max(abs(v - v_plus), abs(v - v_minus))
@@ -507,11 +532,12 @@ def print_events_on_GoogleEarth_C_Annotated() -> None:
     tile_d_fits = get_tile_d_fits()[1]
     slab_v_fits = get_slab_v_fits()
     for frame_number in sorted(FRAME_EVENTS.keys()):
-        d, _d_plus, _d_minus = _compute_distance(frame_number, tile_d_fits, slab_v_fits)
+        d, _d_plus, _d_minus = compute_distance(frame_number, tile_d_fits, slab_v_fits)
         d_px = d / m_per_px
         new_pt = map_funcs.point_translate(runway_23_start, google_earth.RUNWAY_HEADING_DEG, d_px)
         # print(frame_number, d, d_px, new_pt)
-        print(f'{frame_number:4d} {d:8.0f} {d_px:8.1f} x={new_pt.x:6.1f} y={new_pt.y:6.1f} {FRAME_EVENTS[frame_number]}')
+        print(
+            f'{frame_number:4d} {d:8.0f} {d_px:8.1f} x={new_pt.x:6.1f} y={new_pt.y:6.1f} {FRAME_EVENTS[frame_number]}')
     name_pt_xy = google_earth.measurements_relative_to_runway()
     for name in name_pt_xy:
         x_px = name_pt_xy[name].x / m_per_px
@@ -520,8 +546,24 @@ def print_events_on_GoogleEarth_C_Annotated() -> None:
         print(f'{name_pt_xy[name].x:8.0f} {x_px:8.1f} x={new_pt.x:6.1f} y={new_pt.y:6.1f} {name}')
 
 
+def distance_from_threshold_time():
+    d_fits = get_tile_d_fits(time_offset=-FRAME_THRESHOLD / FRAME_RATE)[1]
+    v_fits = get_slab_v_fits(time_offset=-FRAME_THRESHOLD / FRAME_RATE)
+    for t in range(-30, 32, 1):
+        distance = compute_distance(t * FRAME_RATE, d_fits, v_fits)
+        print(f'Time {t:4d} d {distance[0]:8.1f} d+ {distance[1]:8.1f} d- {distance[2]:8.1f}')
+    print('Fractions of 27 (s):')
+    for t in (27.0, 27.1, 27.2, 27.3, 27.4, 27.5, 27.6, 27.7, 27.8, 27.9, 28,):
+        distance = compute_distance(int(t * FRAME_RATE + 0.5), d_fits, v_fits)
+        print(f'Time {t:4.1f} d {distance[0]:8.1f} d+ {distance[1]:8.1f} d- {distance[2]:8.1f}')
+    print('From figure 45:')
+    for t in (-29.3, -22.3, -9.3, -8.3, -7.3, -4.8, -2.3,):
+        distance = compute_distance(int(t * FRAME_RATE + 0.5), d_fits, v_fits)
+        print(f'Time {t:4.1f} d {distance[0]:8.1f} d+ {distance[1]:8.1f} d- {distance[2]:8.1f}')
+
 
 def main() -> int:
+    distance_from_threshold_time()
     print_events()
     print_table_of_events()
     compute_impacts()
