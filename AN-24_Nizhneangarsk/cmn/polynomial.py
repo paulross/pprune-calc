@@ -84,6 +84,9 @@ class Polynomial:
             ret.append(' '.join(sub_str))
         return ' '.join(ret)
 
+    def __str__(self) -> str:
+        return self.polynomial_string("Polynomial", 'x', '.3e')
+
 
 def polynomial(x: float, *args: typing.List[float]) -> float:
     """Returns the evaluation of the polynomial factors for the value x."""

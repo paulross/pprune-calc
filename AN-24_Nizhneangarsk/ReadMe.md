@@ -396,16 +396,20 @@ as the
 
 From the final report, page 9, "The investigation began on June 27, 2019.
 The investigation was completed on April 13, 2022".
-The final report metadata shows the modification date is
+The final report metadata shows that the final report modification date is
 "8 Oct 2025 at 11:23".
+
+For this analysis the time datum is the crossing of the runway threshold.
+This happens at frame 827 of Video A, 27.57 seconds after the start of that video.
+According to the final report this happened at 02:24:20.30 UTC.
 
 ## Comparison of Significant Events
 
-| Event         | Final (s) | Me (s) | Diff (s) | Final (m) | Me (m) | Diff (m) | Notes                             |
-|---------------|-----------|--------|----------|-----------|--------|----------|-----------------------------------|
-| Touchdown     | 7.8       | 6.2    | -1.6     | 661       | 549    | -112     | I can't explain this discrepancy. |
-| Depart Runway | 18.2      | 18.5   | 0.3      | 1494      | 1463   | -31.4    | Not a precise event.              |
-| Boundary Wall | N/A       | 28.5   | N/A      | 1844      | 1853   | 8.8      |                                   |
-| Final Impact  | 28.3      | 29.4   | 1.1      | 1898      | 1889   | -9.3     |                                   |
+| Event         | Final (s) | Me (s) | Diff (s) | Final (m) | Me (m) | Diff (m) | Notes                                                      |
+|---------------|-----------|--------|----------|-----------|--------|----------|------------------------------------------------------------|
+| Touchdown     | 7.8       | 6.2    | -1.6     | 661       | 549    | -112     | I can't explain this discrepancy. To me, Video A is clear. |
+| Depart Runway | 18.2      | 18.5   | 0.3      | 1494      | 1463   | -31.4    | Not a precise event.                                       |
+| Boundary Wall | N/A       | 28.5   | N/A      | 1844      | 1853   | 8.8      |                                                            |
+| Final Impact  | 28.3      | 29.4   | 1.1      | 1898      | 1889   | -9.3     |                                                            |
 
 

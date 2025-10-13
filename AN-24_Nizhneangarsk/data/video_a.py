@@ -1,4 +1,5 @@
 import math
+import pprint
 import sys
 import typing
 
@@ -260,6 +261,41 @@ def get_slab_v_fits(time_offset: float = 0.0) -> typing.Dict[str, typing.Tuple[n
 
         fits[v_name] = fit
     return fits
+
+
+def get_slab_v_and_d_polynomial(time_offset: float = 0.0) -> typing.Dict[str, polynomial.Polynomial]:
+    """Gets the data from the slab analysis and returns a dictionary of polynomial fits.
+    The dictionary has key prefixes ('v', 'd').
+    The dictionary has key suffixes ('', '+', '-') for the mid, upper and lower values.
+    time_offset is added to the time axis, so a value of -1 * FRAME_THRESHOLD / FRAME_RATE (-827 / 30 = -27.566)
+    would base the fit on t = 0.0 crossing the threshold.
+    """
+    # v_fits = {
+    #     v_name: curve_fit(polynomial.polynomial_3, SLAB_SPEEDS[:, 1], SLAB_SPEEDS[:, v + 2])
+    #     for v, v_name in enumerate(SLAB_V_ORDER)
+    # }
+    # return v_fits
+    polys = {}
+    x = SLAB_SPEEDS[:, 1] + time_offset
+    print(f'Time range: {x.min():.3f} to {x.max():.3f} (s)')
+    for v, suffix in enumerate(('', '+', '-')):
+        v_name = f'v{suffix}'
+        y = SLAB_SPEEDS[:, v + 2]
+        fit = curve_fit(polynomial.polynomial_3, x, y)
+        # poly_str = polynomial.polynomial_string(f'{v_name:2}', 't', '10.3e', *fit[0])
+        # print(f'Polynomial for slab data: {poly_str}', end='')
+        # print(f' Value(0) = {polynomial.polynomial_3(0.0, *fit[0]):10.3e}')
+
+        poly_v = polynomial.Polynomial(fit[0])
+        # THRESHOLD_TIME = map_funcs.frame_to_time(FRAME_THRESHOLD, FRAME_RATE)
+        # d_offset = polynomial.polynomial_3_integral(THRESHOLD_TIME, *fit[0])
+        d_offset = (0.0, 5.0, -5.0)[v]
+        poly_d = poly_v.integral_polynomial(d_offset)
+        # poly_str = poly_d.polynomial_string(f'd', 't', '10.3e')
+        # print(f'Integral polynomial: {poly_str}')
+        polys[f'v{suffix}'] = poly_v
+        polys[f'd{suffix}'] = poly_d
+    return polys
 
 
 def write_slab_results(stream: typing.TextIO = sys.stdout):
@@ -626,7 +662,12 @@ def main() -> int:
     # compute_impacts()
     # print_events_on_GoogleEarth_C_Annotated()
     # distance_from_threshold_time()
+    # write_slab_results()
     distance_from_mak_final_report()
+
+    slab_polys = get_slab_v_and_d_polynomial(-1 * FRAME_THRESHOLD / FRAME_RATE)
+    for k in sorted(slab_polys.keys()):
+        print(f'{k:3} : {slab_polys[k]}')
     return 0
 
 
