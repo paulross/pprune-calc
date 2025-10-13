@@ -5,6 +5,7 @@ import typing
 import numpy as np
 from scipy.optimize import curve_fit
 
+import data.mak
 import data.tiles
 import map_funcs
 from cmn import polynomial
@@ -572,12 +573,59 @@ def distance_from_threshold_time():
         print(f'Time {t:4.1f} d {distance[0]:8.1f} d+ {distance[1]:8.1f} d- {distance[2]:8.1f}')
 
 
+def distance_from_mak_final_report():
+    d_fits = get_tile_d_fits(time_offset=-FRAME_THRESHOLD / FRAME_RATE)[1]
+    v_fits = get_slab_v_fits(time_offset=-FRAME_THRESHOLD / FRAME_RATE)
+    print('Data from the MAK final Report')
+    print('Data from Figure 45')
+    print(
+        f'{"Time":>6}'
+        f' {"MAK d":>8} {"MAK d+":>8} {"MAK d-":>8}'
+        f' {"Me d":>8} {"Me d+":>8} {"Me d-":>8}'
+        f' {"∆d":>8} {"∆d+":>8} {"∆d-":>8}'
+    )
+    for t in sorted(data.mak.FIGURE_45_TIME_DISTANCE.keys()):
+        distance_me = compute_distance(t * FRAME_RATE, d_fits, v_fits)
+        distance_mak = (
+            data.mak.FIGURE_45_TIME_DISTANCE[t],
+            data.mak.FIGURE_45_TIME_DISTANCE[t] + data.mak.FIGURE_45_DISTANCE_ERROR,
+            data.mak.FIGURE_45_TIME_DISTANCE[t] - data.mak.FIGURE_45_DISTANCE_ERROR,
+        )
+        print(
+            f'{t:6.1f}'
+            f' {distance_mak[0]:8.1f} {distance_mak[1]:8.1f} {distance_mak[2]:8.1f}'
+            f' {distance_me[0]:8.1f} {distance_me[1]:8.1f} {distance_me[2]:8.1f}'
+            f' {distance_me[0] - distance_mak[0]:8.1f} {distance_me[1] - distance_mak[1]:8.1f} {distance_me[2] - distance_mak[2]:8.1f}'
+        )
+    print('Data from Figure 48')
+    print(
+        f'{"Time":>6}'
+        f' {"MAK d":>8} {"MAK d+":>8} {"MAK d-":>8}'
+        f' {"Me d":>8} {"Me d+":>8} {"Me d-":>8}'
+        f' {"∆d":>8} {"∆d+":>8} {"∆d-":>8}'
+    )
+    for t in sorted(data.mak.FIGURE_48_TIME_DISTANCE.keys()):
+        distance_me = compute_distance(t * FRAME_RATE, d_fits, v_fits)
+        distance_mak = (
+            data.mak.FIGURE_48_TIME_DISTANCE[t],
+            data.mak.FIGURE_48_TIME_DISTANCE[t] + data.mak.FIGURE_48_DISTANCE_ERROR,
+            data.mak.FIGURE_48_TIME_DISTANCE[t] - data.mak.FIGURE_48_DISTANCE_ERROR,
+        )
+        print(
+            f'{t:6.1f}'
+            f' {distance_mak[0]:8.1f} {distance_mak[1]:8.1f} {distance_mak[2]:8.1f}'
+            f' {distance_me[0]:8.1f} {distance_me[1]:8.1f} {distance_me[2]:8.1f}'
+            f' {distance_me[0] - distance_mak[0]:8.1f} {distance_me[1] - distance_mak[1]:8.1f} {distance_me[2] - distance_mak[2]:8.1f}'
+        )
+
+
 def main() -> int:
-    distance_from_threshold_time()
-    print_events()
-    print_table_of_events()
-    compute_impacts()
-    print_events_on_GoogleEarth_C_Annotated()
+    # print_events()
+    # print_table_of_events()
+    # compute_impacts()
+    # print_events_on_GoogleEarth_C_Annotated()
+    # distance_from_threshold_time()
+    distance_from_mak_final_report()
     return 0
 
 

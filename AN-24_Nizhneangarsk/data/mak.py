@@ -5,8 +5,9 @@ Data from the MAK preliminary report.
 # Data from the radar plot of image 3
 import datetime
 import math
-import pprint
 import sys
+
+import numpy as np
 
 IMAGE_3_SCALE = 20e3 / 143.0e-3
 
@@ -38,9 +39,9 @@ IMAGE_3_RAW_PLOTS = (
     (217.0, 3.5),
 )
 
-
 IMAGE_3_COMPUTED_BEARING_RANGE = {
-    IMAGE_3_RAW_PLOTS_TIME_START + datetime.timedelta(seconds=i * IMAGE_3_RAW_PLOTS_TIME_INTERVAL_SECONDS): (b, r * 1e-3 * IMAGE_3_SCALE)
+    IMAGE_3_RAW_PLOTS_TIME_START + datetime.timedelta(seconds=i * IMAGE_3_RAW_PLOTS_TIME_INTERVAL_SECONDS): (
+    b, r * 1e-3 * IMAGE_3_SCALE)
     for i, (b, r) in enumerate(IMAGE_3_RAW_PLOTS)
 }
 
@@ -52,6 +53,65 @@ IMAGE_3_COMPUTED_X_Y = {
     for k, (b, r) in IMAGE_3_COMPUTED_BEARING_RANGE.items()
 }
 
+# Final report
+# +/- 0.5 mm
+FIGURE_MEASURING_ERROR = 1 / 2
+
+FIGURE_45_SCALE_M_MM = 45.45
+FIGURE_45_TIME_DISTANCE = {
+    -29.3: -2909.09090909091,
+    -22.3: -2204.54545454545,
+    -9.3: -931.818181818182,
+    -8.3: -818.181818181818,
+    -7.3: -704.545454545455,
+    -4.8: -454.545454545455,
+    -2.0: -227.272727272727,
+}
+FIGURE_45_DISTANCE_ERROR = FIGURE_MEASURING_ERROR * FIGURE_45_SCALE_M_MM
+
+FIGURE_48_SCALE_M_MM = 9.83
+FIGURE_48_TIME_DISTANCE = {
+    -8.3: -580.056179775281,
+    -7.3: -511.23595505618,
+    -4.8: -329.35393258427,
+    -2.0: -147.47191011236,
+    0: 0,
+    0.7: 63.9044943820225,
+    4.2: 373.595505617978,
+    5.4: 471.910112359551,
+    6.2: 535.814606741573,
+    7.4: 634.129213483146,
+    7.8: 658.707865168539,
+    8.4: 707.865168539326,
+    10.2: 865.168539325843,
+    12.3: 1002.80898876404,
+    12.9: 1047.05056179775,
+    13.7: 1106.0393258427,
+    14.8: 1184.69101123595,
+    16.5: 1302.66853932584,
+    18.2: 1400.98314606742,
+    19.6: 1494.38202247191,
+    20.9: 1563.20224719101,
+    22.7: 1661.51685393258,
+    28.3: 1892.55617977528,
+}
+FIGURE_48_DISTANCE_ERROR = FIGURE_MEASURING_ERROR * FIGURE_48_SCALE_M_MM
+
+FIGURE_48_TIME_DISTANCE_SORTED_TIMES = sorted(FIGURE_48_TIME_DISTANCE.keys())
+FIGURE_48_TIME_DISTANCE_SORTED_DISTANCES = []
+for t in FIGURE_48_TIME_DISTANCE_SORTED_TIMES:
+    FIGURE_48_TIME_DISTANCE_SORTED_DISTANCES.append(FIGURE_48_TIME_DISTANCE[t])
+
+
+def interpolate_figure_48(t: float) -> float:
+    return np.interp([t,], FIGURE_48_TIME_DISTANCE_SORTED_TIMES, FIGURE_48_TIME_DISTANCE_SORTED_DISTANCES)[0]
+
+
+# 	Figure 48	My estimate		Difference (m)
+# Touchdown	535.8	549		-13.2
+# Boundary Fence	1844.2	1853		-8.8
+# Final Impact	1898.3	1889		9.3
+
 
 def main():
     # print(IMAGE_3_SCALE)
@@ -59,9 +119,9 @@ def main():
 
     keys = sorted(IMAGE_3_COMPUTED_X_Y.keys())
     for i in range(1, len(keys)):
-        dx = IMAGE_3_COMPUTED_X_Y[keys[i]][0] - IMAGE_3_COMPUTED_X_Y[keys[i-1]][0]
-        dy = IMAGE_3_COMPUTED_X_Y[keys[i]][1] - IMAGE_3_COMPUTED_X_Y[keys[i-1]][1]
-        dd = math.sqrt(dx**2 + dy**2)
+        dx = IMAGE_3_COMPUTED_X_Y[keys[i]][0] - IMAGE_3_COMPUTED_X_Y[keys[i - 1]][0]
+        dy = IMAGE_3_COMPUTED_X_Y[keys[i]][1] - IMAGE_3_COMPUTED_X_Y[keys[i - 1]][1]
+        dd = math.sqrt(dx ** 2 + dy ** 2)
         print(
             f'{i:4d} {keys[i]}'
             f' {IMAGE_3_COMPUTED_BEARING_RANGE[keys[i]][0]:8.1f} {IMAGE_3_COMPUTED_BEARING_RANGE[keys[i]][1]:8.1f}'
@@ -72,4 +132,3 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
-

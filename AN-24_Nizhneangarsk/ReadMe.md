@@ -184,8 +184,13 @@ Analysis of video A gives:
 Here is a plot of distance from the start of runway 23 over time from video A, the mid points are fitted to a third order polynomial. The right hand graph shows the comparison where the two measurements overlap:
 
 <center>
-<img src="plots/tile_distance.svg" width="300" />&nbsp;
-<img src="plots/tile_distance_cmp.svg" width="300" />&nbsp;
+<img src="plots/tile_distance.svg" width="600" />&nbsp;
+</center>
+
+The errors are:
+
+<center>
+<img src="plots/tile_distance_cmp.svg" width="600" />&nbsp;
 </center>
 
 The difference between the two techniques is 5m or less.
@@ -200,8 +205,13 @@ The aircraft's ground speed can be calculated from video A by:
 Here is the ground speed by the two techniques. The right hand graph shows the comparison where the two measurements overlap:
 
 <center>
-<img src="plots/speed.svg" width="300" />&nbsp;
-<img src="plots/speed_cmp.svg" width="300" />&nbsp;
+<img src="plots/speed.svg" width="600" />&nbsp;
+</center>
+
+The errors are:
+
+<center>
+<img src="plots/speed_cmp.svg" width="600" />&nbsp;
 </center>
 
 The difference is 1.4 to 2.2 m/s over this interval with the fitted data which is just about within the error terms of each if centred on the respective fitted data.
@@ -219,14 +229,19 @@ A problem for the latter two is that the measurements are often only a few pixel
 The calculated distance down the runway by these three methods agree rather roughly in magnitude as shown below on the left (the distance data from the slab measurements is also shown for comparison). However when differentiated to obtain ground speed the results are implausible except for the bearing data, as seen on the right.
 
 <center>
-<img src="plots/video_b_distance.svg" width="300" />&nbsp;
-<img src="plots/video_b_speed.svg" width="300" />&nbsp;
+<img src="plots/video_b_distance.svg" width="600" />&nbsp;
+</center>
+
+The errors are:
+
+<center>
+<img src="plots/video_b_speed.svg" width="600" />&nbsp;
 </center>
 
 The poor results from this analysis could be for many reasons; the low resolution of the video, measurement error, non-linear camera field and so on. Even the bearing data does not make sense giving a de-acceleration of around -5m/s, if this were true the aircraft would have stopped well before the boundary fence which was not the case. The following graph compares the ground speed from the slab speed data of video A to the bearing data of video B:
 
 <center>
-<img src="plots/speed_cmp_slab_video_b.svg" width="300" />&nbsp;
+<img src="plots/speed_cmp_slab_video_b.svg" width="600" />&nbsp;
 </center>
 
 ### Conclusion for the Data From Video B
@@ -240,7 +255,7 @@ The video A data is used henceforth to compute the trajectory of the aircraft.
 The ground speed if the aircraft computed from video A can be differentiated to give the longitudinal acceleration:
 
 <center>
-<img src="plots/acceleration.svg" width="300" />&nbsp;
+<img src="plots/acceleration.svg" width="600" />&nbsp;
 </center>
 
 There are no visible discontinuities of sudden changes of acceleration such as might be caused by a tyre burst or running of the runway. Possibly this is because of the smoothing caused by the curve fitting process.
@@ -326,19 +341,40 @@ Combining all the data gives the following summary of events, time is in video A
 <center>
 
 | Time (s) | Position (m) | Ground Speed (m/s, knots) | Acceleration (m/s^2 ) | Description |
-| ---: | ---: | ---: | ---: | :--- |
-|  0.0 |    -2481±98 |     82.8±2.0,   161±4 |      1.2±0.2 |  Video start. |
-| 17.0 |     -964±44 |     92.7±3.5,   180±7 |     0.0±0.1 |  Maximum ground speed. |
-| 27.5 |        0±14 |     88.6±1.9,   172±4 |     -0.7±0.1 |  Threshold. |
-| 33.8 |      549±17 |     84.3±0.8,   164±2 |     -1.0±0.1 |  Touchdown. |
-| 35.5 |      688±19 |     82.4±1.0,   160±2 |     -1.2±0.2 |  First appearance in video B. |
-| 36.0 |      731±19 |     81.8±1.1,   159±2 |     -1.2±0.3 |  Start of drift to the right. Tyre smoke and dust observed in video B. |
-| 45.7 |     1442±48 |     60.0±3.7,   117±7 |     -3.7±0.3 |  Last speed measurement. |
-| 46.1 |     1463±49 |     ~58.7±3.6,   114±7 |     -3.9±0.4 |  Runway disappears. Dust plume observed in video B. Speed and distance are extrapolated. |
-| 56.1 |     1853±10 |     Around: 19, 37 |     Around -3.9 |  Impact with boundary fence. |
-| ~57 |     1889±10 |    Less than: 9, 18 |  |  Final impact. Smoke column starts in video B. |
+|---------:| ---: | ---: | ---: | :--- |
+|      0.0 |    -2481±98 |     82.8±2.0,   161±4 |      1.2±0.2 |  Video start. |
+|     17.0 |     -964±44 |     92.7±3.5,   180±7 |     0.0±0.1 |  Maximum ground speed. |
+|     27.6 |        0±14 |     88.6±1.9,   172±4 |     -0.7±0.1 |  Threshold. |
+|     33.8 |      549±17 |     84.3±0.8,   164±2 |     -1.0±0.1 |  Touchdown. |
+|     35.5 |      688±19 |     82.4±1.0,   160±2 |     -1.2±0.2 |  First appearance in video B. |
+|     36.0 |      731±19 |     81.8±1.1,   159±2 |     -1.2±0.3 |  Start of drift to the right. Tyre smoke and dust observed in video B. |
+|     45.7 |     1442±48 |     60.0±3.7,   117±7 |     -3.7±0.3 |  Last speed measurement. |
+|     46.1 |     1463±49 |     ~58.7±3.6,   114±7 |     -3.9±0.4 |  Runway disappears. Dust plume observed in video B. Speed and distance are extrapolated. |
+|     56.1 |     1853±10 |     Around: 19, 37 |     Around -3.9 |  Impact with boundary fence. |
+|      ~57 |     1889±10 |    Less than: 9, 18 |  |  Final impact. Smoke column starts in video B. |
 
 Table 5: Selected Events
+
+</center>
+
+Given that the aircraft crosses the threshold at video time of 27.6
+then these are the tme relative to that.
+<center>
+
+| Time (s) | Position (m) | Ground Speed (m/s, knots) | Acceleration (m/s^2 ) | Description |
+|---------:| ---: | ---: | ---: | :--- |
+|    -27.6 |    -2481±98 |     82.8±2.0,   161±4 |      1.2±0.2 |  Video start. |
+|     -8.6 |     -964±44 |     92.7±3.5,   180±7 |     0.0±0.1 |  Maximum ground speed. |
+|      0.0 |        0±14 |     88.6±1.9,   172±4 |     -0.7±0.1 |  Threshold. |
+|      6.2 |      549±17 |     84.3±0.8,   164±2 |     -1.0±0.1 |  Touchdown. |
+|      7.9 |      688±19 |     82.4±1.0,   160±2 |     -1.2±0.2 |  First appearance in video B. |
+|      8.4 |      731±19 |     81.8±1.1,   159±2 |     -1.2±0.3 |  Start of drift to the right. Tyre smoke and dust observed in video B. |
+|     18.1 |     1442±48 |     60.0±3.7,   117±7 |     -3.7±0.3 |  Last speed measurement. |
+|     18.5 |     1463±49 |     ~58.7±3.6,   114±7 |     -3.9±0.4 |  Runway disappears. Dust plume observed in video B. Speed and distance are extrapolated. |
+|     28.5 |     1853±10 |     Around: 19, 37 |     Around -3.9 |  Impact with boundary fence. |
+|    ~29.4 |     1889±10 |    Less than: 9, 18 |  |  Final impact. Smoke column starts in video B. |
+
+Table 6: Selected Events with Datum Time at the Runway Threshold
 
 </center>
 
@@ -351,6 +387,25 @@ These sources of information were discovered after this initial investigation en
 * Preliminary Accident Report (in Russian) Created 1 Aug 2019 at 10:16, modified 11 Oct 2019 at 13:30:
 [https://mak-iac.org/upload/iblock/870/report_ra-47366_pr.pdf](https://mak-iac.org/upload/iblock/870/report_ra-47366_pr.pdf)
 
+# Comparison with the Final Report
 
+Thi final report was published in October 2025 on the
+[MAK website for RA-47366]([https://mak-iac.org/en/rassledovaniya/an-24rv-ra-47366-27-06-2019/](https://mak-iac.org/en/rassledovaniya/an-24rv-ra-47366-27-06-2019/)) 
+as the
+[final report](https://mak-iac.org/upload/iblock/e92/archrallez2n9bnfz4j504zuep8m5hev/report_ra-47366.pdf).
+
+From the final report, page 9, "The investigation began on June 27, 2019.
+The investigation was completed on April 13, 2022".
+The final report metadata shows the modification date is
+"8 Oct 2025 at 11:23".
+
+## Comparison of Significant Events
+
+| Event         | Final (s) | Me (s) | Diff (s) | Final (m) | Me (m) | Diff (m) | Notes                             |
+|---------------|-----------|--------|----------|-----------|--------|----------|-----------------------------------|
+| Touchdown     | 7.8       | 6.2    | -1.6     | 661       | 549    | -112     | I can't explain this discrepancy. |
+| Depart Runway | 18.2      | 18.5   | 0.3      | 1494      | 1463   | -31.4    | Not a precise event.              |
+| Boundary Wall | N/A       | 28.5   | N/A      | 1844      | 1853   | 8.8      |                                   |
+| Final Impact  | 28.3      | 29.4   | 1.1      | 1898      | 1889   | -9.3     |                                   |
 
 
