@@ -252,7 +252,8 @@ def get_slab_v_fits(time_offset: float = 0.0) -> typing.Dict[str, typing.Tuple[n
 
         poly_v = polynomial.Polynomial(fit[0])
         THRESHOLD_TIME = map_funcs.frame_to_time(FRAME_THRESHOLD, FRAME_RATE)
-        d_offset = polynomial.polynomial_3_integral(THRESHOLD_TIME, *fit[0])
+        # d_offset = polynomial.polynomial_3_integral(THRESHOLD_TIME, *fit[0])
+        d_offset = 0.0
         poly_d = poly_v.integral_polynomial(d_offset)
         poly_str = poly_d.polynomial_string(f'd', 't', '10.3e')
         print(f'Integral polynomial: {poly_str}')
