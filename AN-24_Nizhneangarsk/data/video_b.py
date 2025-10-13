@@ -780,7 +780,8 @@ def print_gnuplot_formulae(t_offfset_to_add: float=0.0) -> None:
         # print('TRACE:', name)
         # print(x_array)
         x_fits = curve_fit(polynomial.polynomial_3, x_array[:, 0], x_array[:, 1])[0]
-        x_fitted = [polynomial.polynomial(t, *x_fits) for t in x_array[:, 0]]
+        x_poly = polynomial.Polynomial(x_fits)
+        x_fitted = [x_poly.evaluate(t) for t in x_array[:, 0]]
         v_fits = polynomial.polynomial_differential_factors(*x_fits)
         v_formulae = polynomial.polynomial_string('', 't', '.3e', *v_fits)
         print('{:40} {}'.format(name.format('speed'), v_formulae))

@@ -327,11 +327,13 @@ def compute_distance(
             polynomial.polynomial_3_integral(t, *slab_v_fits["v+"][0]) - d_offsets[1],
             polynomial.polynomial_3_integral(t, *slab_v_fits["v-"][0]) - d_offsets[2],
         )
+        # print(f'TRACE: d_offsets {d_offsets}')
+        # print(f'TRACE: slab_d {slab_d}')
         if frame > max(POSITIONS_FROM_TILES.keys()):
             # Only use the slab_v_fits
             return slab_d
         else:
-            # Use both
+            # Use mean of both
             return (
                 (polynomial.polynomial_3(t, *tile_d_fits['d'][0]) + slab_d[0]) / 2.0,
                 (polynomial.polynomial_3(t, *tile_d_fits['d+'][0]) + slab_d[1]) / 2.0,
