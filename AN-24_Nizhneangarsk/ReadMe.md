@@ -184,13 +184,13 @@ Analysis of video A gives:
 Here is a plot of distance from the start of runway 23 over time from video A, the mid points are fitted to a third order polynomial. The right hand graph shows the comparison where the two measurements overlap:
 
 <center>
-<img src="plots/tile_distance.svg" width="600" />&nbsp;
+<img src="plots/images/tile_distance.png" width="600" />&nbsp;
 </center>
 
 The errors are:
 
 <center>
-<img src="plots/tile_distance_cmp.svg" width="600" />&nbsp;
+<img src="plots/images/tile_distance_cmp.png" width="600" />&nbsp;
 </center>
 
 The difference between the two techniques is 5m or less.
@@ -205,13 +205,13 @@ The aircraft's ground speed can be calculated from video A by:
 Here is the ground speed by the two techniques. The right hand graph shows the comparison where the two measurements overlap:
 
 <center>
-<img src="plots/speed.svg" width="600" />&nbsp;
+<img src="plots/images/speed.png" width="600" />&nbsp;
 </center>
 
 The errors are:
 
 <center>
-<img src="plots/speed_cmp.svg" width="600" />&nbsp;
+<img src="plots/images/speed_cmp.png" width="600" />&nbsp;
 </center>
 
 The difference is 1.4 to 2.2 m/s over this interval with the fitted data which is just about within the error terms of each if centred on the respective fitted data.
@@ -229,19 +229,19 @@ A problem for the latter two is that the measurements are often only a few pixel
 The calculated distance down the runway by these three methods agree rather roughly in magnitude as shown below on the left (the distance data from the slab measurements is also shown for comparison). However when differentiated to obtain ground speed the results are implausible except for the bearing data, as seen on the right.
 
 <center>
-<img src="plots/video_b_distance.svg" width="600" />&nbsp;
+<img src="plots/images/video_b_distance.png" width="600" />&nbsp;
 </center>
 
 The errors are:
 
 <center>
-<img src="plots/video_b_speed.svg" width="600" />&nbsp;
+<img src="plots/images/video_b_speed.png" width="600" />&nbsp;
 </center>
 
 The poor results from this analysis could be for many reasons; the low resolution of the video, measurement error, non-linear camera field and so on. Even the bearing data does not make sense giving a de-acceleration of around -5m/s, if this were true the aircraft would have stopped well before the boundary fence which was not the case. The following graph compares the ground speed from the slab speed data of video A to the bearing data of video B:
 
 <center>
-<img src="plots/speed_cmp_slab_video_b.svg" width="600" />&nbsp;
+<img src="plots/images/speed_cmp_slab_video_b.png" width="600" />&nbsp;
 </center>
 
 ### Conclusion for the Data From Video B
@@ -255,7 +255,7 @@ The video A data is used henceforth to compute the trajectory of the aircraft.
 The ground speed if the aircraft computed from video A can be differentiated to give the longitudinal acceleration:
 
 <center>
-<img src="plots/acceleration.svg" width="600" />&nbsp;
+<img src="plots/images/acceleration.png" width="600" />&nbsp;
 </center>
 
 There are no visible discontinuities of sudden changes of acceleration such as might be caused by a tyre burst or running of the runway. Possibly this is because of the smoothing caused by the curve fitting process.

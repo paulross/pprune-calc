@@ -20,9 +20,9 @@ set pointsize 1
 set datafile separator whitespace#"	"
 set datafile missing "NaN"
 
-set terminal svg size 700,500           # choose the file format
+set terminal svg size 600,400           # choose the file format
+set output "images/speed.svg"   # choose the output device
 
-set output "speed.svg"   # choose the output device
 #set key title "Window Length"
 #  lw 2 pointsize 2
 
@@ -38,14 +38,27 @@ tile_speed(t) = 8.276e+01 + 5.914e-01 * t * 2.0 + -1.173e-02 * t**2 * 3.0
 slab_speed(t) = 2.843e+02 + -1.645e+01 * t + 4.789e-01 * t**2 + -4.952e-03 * t**3
 #slab_speed_plus(t) = 5.831e+02 + -3.996e+01 * t + 1.089e+00 * t**2 + -1.015e-02 * t**3
 
-
-plot "tile_distance_data.dat" using 2:6:7:8 title "Aerial data" w yerrorbars, \
-    "tile_distance_data.dat" using 2:(tile_speed($2)) title "Aerial data fitted to mid values" lw 2 w line smooth csplines, \
-    "slab_speed_data.dat" using 2:3:4:5 title "Slab data" w yerrorbars, \
-    "slab_speed_data.dat" using 2:(slab_speed($2)) title "Slab data fitted to mid values" lw 2 w line smooth csplines
+plot "data/tile_distance_data.dat" using 2:6:7:8 title "Aerial data" w yerrorbars, \
+    "data/tile_distance_data.dat" using 2:(tile_speed($2)) title "Aerial data fitted to mid values" lw 2 w line smooth csplines, \
+    "data/slab_speed_data.dat" using 2:3:4:5 title "Slab data" w yerrorbars, \
+    "data/slab_speed_data.dat" using 2:(slab_speed($2)) title "Slab data fitted to mid values" lw 2 w line smooth csplines
 
 # linespoints
-#plot "tile_distance_data.dat" using 1:2 title "-10 knots" lt 1 lw 0.5 w lines, \
-    "tile_distance_data.dat" using 1:3 title "Mid values" lt 2 lw 2 w lines, \
-    "tile_distance_data.dat" using 1:4 title "+10 knots" lt 3 lw 0.5 w lines
+#plot "data/tile_distance_data.dat" using 1:2 title "-10 knots" lt 1 lw 0.5 w lines, \
+    "data/tile_distance_data.dat" using 1:3 title "Mid values" lt 2 lw 2 w lines, \
+    "data/tile_distance_data.dat" using 1:4 title "+10 knots" lt 3 lw 0.5 w lines
+
+set terminal png size 600,400           # choose the file format
+set output "images/speed.png"   # choose the output device
+
+plot "data/tile_distance_data.dat" using 2:6:7:8 title "Aerial data" w yerrorbars, \
+    "data/tile_distance_data.dat" using 2:(tile_speed($2)) title "Aerial data fitted to mid values" lw 2 w line smooth csplines, \
+    "data/slab_speed_data.dat" using 2:3:4:5 title "Slab data" w yerrorbars, \
+    "data/slab_speed_data.dat" using 2:(slab_speed($2)) title "Slab data fitted to mid values" lw 2 w line smooth csplines
+
+# linespoints
+#plot "data/tile_distance_data.dat" using 1:2 title "-10 knots" lt 1 lw 0.5 w lines, \
+    "data/tile_distance_data.dat" using 1:3 title "Mid values" lt 2 lw 2 w lines, \
+    "data/tile_distance_data.dat" using 1:4 title "+10 knots" lt 3 lw 0.5 w lines
+
 reset

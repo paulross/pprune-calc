@@ -47,7 +47,7 @@ def plot_all(directory: str) -> None:
                 cwd=directory,
             )
             try:
-                outs, errs = proc.communicate(timeout=1)
+                outs, errs = proc.communicate(timeout=4)
             except subprocess.TimeoutExpired as err:
                 print('ERROR:', err)
                 proc.kill()
@@ -129,19 +129,19 @@ def write_video_b_results_from_span(stream: typing.TextIO=sys.stdout):
 
 
 def main() -> int:
-    with open('plots/tile_distance_data.dat', 'w') as ostream:
+    with open('plots/data/tile_distance_data.dat', 'w') as ostream:
         print('Writing data.video_a tile results...')
         data.video_a.write_tile_results(ostream)
-    with open('plots/slab_speed_data.dat', 'w') as ostream:
+    with open('plots/data/slab_speed_data.dat', 'w') as ostream:
         print('Writing data.video_a slab results...')
         data.video_a.write_slab_results(ostream)
-    with open('plots/video_b_bearings.dat', 'w') as ostream:
+    with open('plots/data/video_b_bearings.dat', 'w') as ostream:
         print('Writing video B bearings results...')
         write_video_b_results_from_bearings(ostream)
-    with open('plots/video_b_tail_height.dat', 'w') as ostream:
+    with open('plots/data/video_b_tail_height.dat', 'w') as ostream:
         print('Writing video B tail results...')
         write_video_b_results_from_tail_height(ostream)
-    with open('plots/video_b_span.dat', 'w') as ostream:
+    with open('plots/data/video_b_span.dat', 'w') as ostream:
         print('Writing video B span results...')
         write_video_b_results_from_span(ostream)
     plot_dir = os.path.join(os.path.dirname(__file__), 'plots')

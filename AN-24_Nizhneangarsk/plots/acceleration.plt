@@ -20,11 +20,8 @@ set pointsize 1
 set datafile separator whitespace#"	"
 set datafile missing "NaN"
 
-set terminal svg size 700,500           # choose the file format
-
-set output "acceleration.svg"   # choose the output device
-#set key title "Window Length"
-#  lw 2 pointsize 2
+set terminal svg size 600,400           # choose the file format
+set output "images/acceleration.svg"   # choose the output device
 
 # arrows and labels
 set arrow from 27.57,-3 to 27.57,-2 lt 2
@@ -35,7 +32,13 @@ set label "Touchdown\nt=33.8s" at 33.83,-3.1 center font ",12"
 # Differential of v coefficients: 2.843e+02, -1.645e+01, 4.789e-01, -4.952e-03
 slab_acceleration(t) = -1.645e+01 + 4.789e-01 * t * 2 + -4.952e-03 * t**2 * 3.0
 
-plot "slab_speed_data.dat" using 2:9:10:11 title "Acceleration" w yerrorbars, \
-    "slab_speed_data.dat" using 2:(slab_acceleration($2)) title "Fitted to mid values" lw 2 w line# smooth csplines
+plot "data/slab_speed_data.dat" using 2:9:10:11 title "Acceleration" w yerrorbars, \
+    "data/slab_speed_data.dat" using 2:(slab_acceleration($2)) title "Fitted to mid values" lw 2 w line# smooth csplines
+
+set terminal png size 600,400           # choose the file format
+set output "images/acceleration.png"   # choose the output device
+
+plot "data/slab_speed_data.dat" using 2:9:10:11 title "Acceleration" w yerrorbars, \
+    "data/slab_speed_data.dat" using 2:(slab_acceleration($2)) title "Fitted to mid values" lw 2 w line# smooth csplines
 
 reset

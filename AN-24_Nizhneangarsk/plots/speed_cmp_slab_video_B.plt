@@ -22,9 +22,9 @@ set pointsize 1
 set datafile separator whitespace#"	"
 set datafile missing "NaN"
 
-set terminal svg size 700,500           # choose the file format
+set terminal svg size 600,400           # choose the file format
+set output "images/speed_cmp_slab_video_b.svg"   # choose the output device
 
-set output "speed_cmp_slab_video_b.svg"   # choose the output device
 #set key title "Window Length"
 #  lw 2 pointsize 2
 
@@ -39,15 +39,29 @@ set output "speed_cmp_slab_video_b.svg"   # choose the output device
 slab_speed(t) = 2.843e+02 + -1.645e+01 * t + 4.789e-01 * t**2 + -4.952e-03 * t**3
 video_b_speed_from_bearings              (t) = 8.230e+01 + 1.544e+00 * t + -3.663e-01 * t**2
 
-
-plot "slab_speed_data.dat" using 2:3:4:5 title "Video A, Slab data" w yerrorbars, \
-    "slab_speed_data.dat" using 2:(slab_speed($2)) title "Video A, fitted to mid" lw 2 w line smooth csplines, \
-    "video_b_bearings.dat" using 1:5:6:7 title "Video B, from Bearings" w yerrorbars, \
-    "video_b_bearings.dat" using 1:(video_b_speed_from_bearings($1-34.25)) title "Video B, fitted to mid" lw 2 w line smooth csplines, \
-    "video_b_bearings.dat" using 1:(video_b_speed_from_bearings($1-34.25) - slab_speed($1)) title "Difference (right)" axes x1y2 lw 2 dt 4 w line smooth csplines
+plot "data/slab_speed_data.dat" using 2:3:4:5 title "Video A, Slab data" w yerrorbars, \
+    "data/slab_speed_data.dat" using 2:(slab_speed($2)) title "Video A, fitted to mid" lw 2 w line smooth csplines, \
+    "data/video_b_bearings.dat" using 1:5:6:7 title "Video B, from Bearings" w yerrorbars, \
+    "data/video_b_bearings.dat" using 1:(video_b_speed_from_bearings($1-34.25)) title "Video B, fitted to mid" lw 2 w line smooth csplines, \
+    "data/video_b_bearings.dat" using 1:(video_b_speed_from_bearings($1-34.25) - slab_speed($1)) title "Difference (right)" axes x1y2 lw 2 dt 4 w line smooth csplines
 
 # linespoints
-#plot "tile_distance_data.dat" using 1:2 title "-10 knots" lt 1 lw 0.5 w lines, \
-    "tile_distance_data.dat" using 1:3 title "Mid values" lt 2 lw 2 w lines, \
-    "tile_distance_data.dat" using 1:4 title "+10 knots" lt 3 lw 0.5 w lines
+#plot "data/tile_distance_data.dat" using 1:2 title "-10 knots" lt 1 lw 0.5 w lines, \
+    "data/tile_distance_data.dat" using 1:3 title "Mid values" lt 2 lw 2 w lines, \
+    "data/tile_distance_data.dat" using 1:4 title "+10 knots" lt 3 lw 0.5 w lines
+
+set terminal png size 600,400           # choose the file format
+set output "images/speed_cmp_slab_video_b.png"   # choose the output device
+
+plot "data/slab_speed_data.dat" using 2:3:4:5 title "Video A, Slab data" w yerrorbars, \
+    "data/slab_speed_data.dat" using 2:(slab_speed($2)) title "Video A, fitted to mid" lw 2 w line smooth csplines, \
+    "data/video_b_bearings.dat" using 1:5:6:7 title "Video B, from Bearings" w yerrorbars, \
+    "data/video_b_bearings.dat" using 1:(video_b_speed_from_bearings($1-34.25)) title "Video B, fitted to mid" lw 2 w line smooth csplines, \
+    "data/video_b_bearings.dat" using 1:(video_b_speed_from_bearings($1-34.25) - slab_speed($1)) title "Difference (right)" axes x1y2 lw 2 dt 4 w line smooth csplines
+
+# linespoints
+#plot "data/tile_distance_data.dat" using 1:2 title "-10 knots" lt 1 lw 0.5 w lines, \
+    "data/tile_distance_data.dat" using 1:3 title "Mid values" lt 2 lw 2 w lines, \
+    "data/tile_distance_data.dat" using 1:4 title "+10 knots" lt 3 lw 0.5 w lines
+
 reset
