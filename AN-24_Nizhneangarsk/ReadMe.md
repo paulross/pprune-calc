@@ -1,3 +1,12 @@
+# Update: October 2025
+
+In October 2025 [MAK](https://mak-iac.org/en) published their
+[final report](https://mak-iac.org/upload/iblock/e92/archrallez2n9bnfz4j504zuep8m5hev/report_ra-47366.pdf)
+(in Russian) on this accident.
+This added great deal of data to our knowledge of the dynamics of this accident.
+
+I have added a section below comparing that data with my model that predates the investigation conclusion.
+
 # AN-24 Accident at Nizhneangarsk, Russia
 
 On Thursday 27 June 2019 an AN-24 of Angara Airlines, flight number 2G-200, flying from Ulan-Ude Airport was destroyed whilst landing at Nizhneangarsk Airport. Reportedly, the left engine had failed in flight.
@@ -7,8 +16,6 @@ A second video (video 'B') emerged that was taken from a fixed security camera o
 In both videos the aircraft approaches at high speed and after touchdown it veers off the runway to the right eventually colliding with a series of obstructions. 
 
 This is an analysis of these videos that gives a picture of the speed, position and acceleration forces experienced by the aircraft.
-
-
 
 ## Summary of Observations
 
@@ -375,8 +382,24 @@ then these are the tme relative to that.
 |    ~29.4 |     1889±10 |    Less than: 9, 18 |  |  Final impact. Smoke column starts in video B. |
 
 Table 6: Selected Events with Datum Time at the Runway Threshold
-
 </center>
+
+## Note on Sources and Accuracy
+
+Video 'A' is the main source of data.
+There are two data sources from that video:
+
+- The 'tile' data from that video is in time range: -27.6 to 3.7 (s).
+  That data is based on locating the aircraft position and working out its ground-speed from that data.
+- The 'slab' data from that video is in time range: 0.467 to 18.1 (s).
+  That data is based on measuring the aircraft speed and working out its position by integrating that data.
+
+Several points:
+
+- The two data sources overlap in the range 0.467 to 3.733 (s) and this can be used to cross-check the computation (as above).
+- Any position prior to -27.6 (s) is an extrapolation.
+- Any position after to 18.1 (s) is an extrapolation.
+  Since integration is involved then errors will increase markedly over time.  
 
 # Sources of information Subsequently Discovered
 
@@ -405,11 +428,58 @@ According to the final report this happened at 02:24:20.30 UTC.
 
 ## Comparison of Significant Events
 
-| Event         | Final (s) | Me (s) | Diff (s) | Final (m) | Me (m) | Diff (m) | Notes                                                      |
-|---------------|-----------|--------|----------|-----------|--------|----------|------------------------------------------------------------|
-| Touchdown     | 7.8       | 6.2    | -1.6     | 661       | 549    | -112     | I can't explain this discrepancy. To me, Video A is clear. |
-| Depart Runway | 18.2      | 18.5   | 0.3      | 1494      | 1463   | -31.4    | Not a precise event.                                       |
-| Boundary Wall | N/A       | 28.5   | N/A      | 1844      | 1853   | 8.8      |                                                            |
-| Final Impact  | 28.3      | 29.4   | 1.1      | 1898      | 1889   | -9.3     |                                                            |
+| Event         | Final (s) | Me (s) | Diff (s) | Final (m) | Me (m) | Diff (m) | Notes                       |
+|---------------|-----------|--------|----------|-----------|--------|----------|-----------------------------|
+| Touchdown     | 7.8       | 6.2    | -1.6     | 661       | 549    | -112     | See "Touchdown Time" below. |
+| Depart Runway | 18.2      | 18.5   | 0.3      | 1494      | 1463   | -31.4    | Not a precise event.        |
+| Boundary Wall | N/A       | 28.5   | N/A      | 1844      | 1853   | 8.8      |                             |
+| Final Impact  | 28.3      | 29.4   | 1.1      | 1898      | 1889   | -9.3     |                             |
 
+### Touchdown Time
 
+I can't explain this discrepancy.
+To me, Video A is clear with the jolt to the passenger in frame 1015.
+
+Another anomaly is that in the Flight Data Recorder data presented in
+Figure 46 on page 111 of the final report there is a clear 'g[y]'
+event (which continues) starting at +12 (s) after the datum.
+It is the purple curve.
+Is this a record of the touchdown?
+
+## Comparing the Aircraft Position with my Model
+
+In the report are two figures of interest that plot the aircraft's position
+over the ground.
+On page 110 is Figure 45 that shows the initial approach.
+On page 116 is Figure 48 that shows the landing.
+The aircraft movement described in these figures can be compared with my calculations. 
+
+Here is the comparison, on the x-axis is time relative to the threshold crossing time.
+The y-axis shows the difference between my calculations and the positions shown in the two figures. 
+
+My model is only valid from -27.6 to 18.1 (s) but can be
+extrapolated with some confidence.
+
+<center>
+<img src="plots/images/final_report_fig_45_and_48.png" width="600" />
+</center>
+
+What is clear from this is that the
+
+- Prior to touchdown there is significant divergence from my model and the final report.
+- After touchdown my model agrees very closely with the final report.
+  The increased error range over time is a natural consequence of integrating velocity data to determine position.
+- There is an unexplained anomaly in the final report;
+  the two figures 45 and 48 do not agree with their plots of the aircraft positions in
+  five places in the 10 seconds before touchdown.
+  I checked these carefully with two different methods and obtained
+  substantially the same results so I suspect that this is a minor plotting error in the final report.
+  This is why there is a divergence between the green and red graphs in the range
+  -10 to 0 (s) as we a comparing two different values against a single one (mine).
+
+Otherwise there is a satisfying correlation between my data and the final report.
+In particular the use of 'slab' data to extrapolate the aircraft's position worked
+far better than I dared hope.
+
+This work was completed in July and August 2019, well ahead of the
+investigation which was completed on April 13, 2022.
