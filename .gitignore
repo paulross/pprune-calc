@@ -111,3 +111,6 @@ A340-SBKP/tmp
 
 AN-24_Nizhneangarsk/video_images
 AN-24_Nizhneangarsk/*.gcimgd
+
+# LibreOffice lock files
+.~lock.*.ods#
