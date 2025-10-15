@@ -148,8 +148,6 @@ A second video [https://youtu.be/BQ8ujmRhLH0](https://youtu.be/BQ8ujmRhLH0) was 
 
 </center>
 
-Video metadata shows the video was shot at 30 frames per second.
-
 ## Camera Position
 
 The distinctive foreground means the camera position is fairly easily identified on aerial imagery from Google Earth at a position x=491m down runway 23 and y=-161m to the left of the runway centreline.
