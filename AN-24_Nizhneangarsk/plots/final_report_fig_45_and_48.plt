@@ -21,7 +21,7 @@ set datafile separator whitespace#"	"
 set datafile missing "NaN"
 
 #set key title "Window Length"
-set key left top
+set key right top
 #  lw 2 pointsize 2
 
 # Start distance arrows and labels

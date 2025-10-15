@@ -114,3 +114,5 @@ AN-24_Nizhneangarsk/*.gcimgd
 
 # LibreOffice lock files
 .~lock.*.ods#
+
+**/private/

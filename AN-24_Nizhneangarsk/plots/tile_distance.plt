@@ -24,7 +24,7 @@ set terminal svg size 600,400           # choose the file format
 set output "images/tile_distance.svg"   # choose the output device
 
 #set key title "Window Length"
-set key left top
+set key bottom right
 #  lw 2 pointsize 2
 
 # Start distance arrows and labels

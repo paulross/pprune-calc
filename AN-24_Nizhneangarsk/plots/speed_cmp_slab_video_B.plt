@@ -26,6 +26,7 @@ set terminal svg size 600,400           # choose the file format
 set output "images/speed_cmp_slab_video_b.svg"   # choose the output device
 
 #set key title "Window Length"
+set key bottom left
 #  lw 2 pointsize 2
 
 # arrows and labels

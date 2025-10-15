@@ -24,11 +24,12 @@ set terminal svg size 600,400           # choose the file format
 set output "images/speed.svg"   # choose the output device
 
 #set key title "Window Length"
+set key bottom left
 #  lw 2 pointsize 2
 
 # arrows and labels
-set arrow from 27.57,70 to 27.57,85 lt 1
-set label "Threshold\nt=27.6s" at 27.57,69 center font ",12"
+set arrow from 27.57,78 to 27.57,85 lt 1
+set label "Threshold\nt=27.6s" at 27.57,77 center font ",12"
 set arrow from 33.83,70 to 33.83,82 lt 1
 set label "Touchdown\nt=33.8s" at 33.83,69 center font ",12"
 

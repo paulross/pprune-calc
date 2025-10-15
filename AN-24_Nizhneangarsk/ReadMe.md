@@ -1,6 +1,6 @@
 # Update: October 2025
 
-In October 2025 [MAK](https://mak-iac.org/en) published their
+In October 2025 [Interstate Aviation Comittee (MAK)](https://mak-iac.org/en) published their
 [final report](https://mak-iac.org/upload/iblock/e92/archrallez2n9bnfz4j504zuep8m5hev/report_ra-47366.pdf)
 (in Russian) on this accident.
 This added great deal of data to our knowledge of the dynamics of this accident.
@@ -23,7 +23,7 @@ Times are video 'A' unless stated otherwise.
 
 * At the start of the video A the aircraft is on the extended centreline of Nizhneangarsk runway 23 (length 1653 m) at a distance of 2482±98 m from the start of the runway. Ground speed is 82.8±2.0 m/s, (161±4 knots).
 * The ground speed slowly increases to a maximum of 92.7±3.5 m/s (180±7 knots) at around t=17.0 seconds when the aircraft is 964±44 m from runway 23.
-* The aircraft crosses the start of runway 23 at t=27.5 travelling at 88.6±2 m/s (172±4 knots).
+* The aircraft crosses the start of runway 23 at t=27.6 travelling at 88.6±2 m/s (172±4 knots).
 * Touchdown is at t=33.8 s, 549±14 m from the runway start (about 1/3rd of the way down) at 84.3±2 m/s (164±4 knots). Acceleration is -1.1 m/s^2 .
 * At t=36.0 the aircraft starts drifting to the right, possibly due to a burst tyre. The aircraft is 731±16 m down the runway travelling at 81.8±2 m/s (159±4 knots).
 * The aircraft departs the runway at t=46.1 s, 1463±41 m down the runway at 58.7±3.0 m/s (114±6 knots). Acceleration is -3.9 m/s^2 .
@@ -34,6 +34,12 @@ The annotated image below shows the estimated ground path of the aircraft in dot
 
 <center>
 <img src="img/GoogleEarth_C_Annotated.png" />
+</center>
+
+This can be compared with figure 48 of the final report:
+
+<center>
+<img src="img/FinalReportFig48.png" />
 </center>
 
 ## Resources
@@ -49,11 +55,11 @@ Apart from the videos, there is:
 
 # Data From Video A
 
-Video A [https://youtu.be/LtJcgdU5MUk](https://youtu.be/LtJcgdU5MUk) is taken from inside the aircraft.
+Video A [https://www.youtube.com/watch?v=ue8GSSQxEMg](https://www.youtube.com/watch?v=ue8GSSQxEMg) is taken from inside the aircraft.
 
 <center>
 
-[![AN-24 at Nizhneangarsk](https://img.youtube.com/vi/LtJcgdU5MUk/0.jpg)](https://youtu.be/LtJcgdU5MUk "AN-24 at Nizhneangarsk")
+[![AN-24 at Nizhneangarsk](https://img.youtube.com/vi/ue8GSSQxEMg/0.jpg)](https://www.youtube.com/watch?v=ue8GSSQxEMg "AN-24 at Nizhneangarsk")
 
 </center>
 
@@ -142,6 +148,8 @@ A second video [https://youtu.be/BQ8ujmRhLH0](https://youtu.be/BQ8ujmRhLH0) was 
 
 </center>
 
+Video metadata shows the video was shot at 30 frames per second.
+
 ## Camera Position
 
 The distinctive foreground means the camera position is fairly easily identified on aerial imagery from Google Earth at a position x=491m down runway 23 and y=-161m to the left of the runway centreline.
@@ -188,13 +196,15 @@ Analysis of video A gives:
 * The aircraft position from overflying landmarks, differentiating this give the aircraft's ground speed.
 * The aircraft's passage over the runway slabs gives the aircrafts ground speed, integrating this gives the distance that the aircraft has covered.
 
-Here is a plot of distance from the start of runway 23 over time from video A, the mid points are fitted to a third order polynomial. The right hand graph shows the comparison where the two measurements overlap:
-
+Here is a plot of distance from the start of runway 23 over time from video A,
+the mid points are fitted to a third order polynomial.
 <center>
 <img src="plots/images/tile_distance.png" width="600" />&nbsp;
 </center>
 
-The errors are:
+This graph shows the comparison where the two measurements
+overlap, the difference is positive when the 'slab' data is greater
+than the 'tile' data:
 
 <center>
 <img src="plots/images/tile_distance_cmp.png" width="600" />&nbsp;
@@ -209,13 +219,17 @@ The aircraft's ground speed can be calculated from video A by:
 * The differential of the aircraft's position when overflying landmarks.
 * Directly from the aircraft's rate of passage over the runway slabs.
 
-Here is the ground speed by the two techniques. The right hand graph shows the comparison where the two measurements overlap:
+Here is the ground speed by the two techniques.
+The right hand graph shows the comparison where the two measurements
+overlap:
 
 <center>
 <img src="plots/images/speed.png" width="600" />&nbsp;
 </center>
 
-The errors are:
+The errors are here.
+Difference is positive when the 'slab' computed value is greater than
+the 'tile' computed value:
 
 <center>
 <img src="plots/images/speed_cmp.png" width="600" />&nbsp;
@@ -305,7 +319,7 @@ The impact point is 1853m from the start of runway 23 and 10.4 seconds after the
 
 * Then v mean is distance over time; (1853 - 1442) / 10.4 = 39.5 m/s.
 * So v final is 39.5 - (60.0 - 39.5) = 19.1 m/s
-* Giving an average acceleration of (19.0 - 60.0) / 10.4 = -3.9 m/s^2 . 
+* Giving an average acceleration of (19.0 - 60.0) / 10.4 = -3.9 m/s^2 (-0.4 g). 
 
 Here is that calculation for the mid point and the +/- error estimates.
 
@@ -321,7 +335,16 @@ Table 3: Estimated boundary fence impact speed.
 
 </center>
 
-The mid point data computed acceleration of -3.9 m/s^2 agrees very well with the last computed acceleration of -3.7 ±0.3 m/s^2 . That the mid estimate is correct is further supported by the ballistic (i.e. uncontrolled) trajectory of the aircraft to the final impact.
+The mid point data computed acceleration of -3.9 m/s^2 agrees very well with the last computed acceleration of
+-3.7 ±0.3 m/s^2.
+That the mid estimate is correct is further supported by the ballistic (i.e. uncontrolled) trajectory of the aircraft
+to the final impact.
+
+It is possible to estimate how this collision affected the speed of the aircraft.
+Suppose the barrier was 1m wide, at 19.1 m/s this would be crossed in 0.052 s.
+If we assume an impact g force of 2g then that would give a speed reduction
+of 0.052 * 2 * 9.81 = 1.0 m/s.
+This has many assumptions so it is not included in this analysis. 
 
 ## Final Impact
 
@@ -423,7 +446,7 @@ The final report metadata shows that the final report modification date is
 "8 Oct 2025 at 11:23".
 
 For this analysis the time datum is the crossing of the runway threshold.
-This happens at frame 827 of Video A, 27.57 seconds after the start of that video.
+This happens at frame 827 of Video A, 27.6 seconds after the start of that video.
 According to the final report this happened at 02:24:20.30 UTC.
 
 ## Comparison of Significant Events
@@ -438,7 +461,7 @@ According to the final report this happened at 02:24:20.30 UTC.
 ### Touchdown Time
 
 I can't explain this discrepancy.
-To me, Video A is clear with the jolt to the passenger in frame 1015.
+To me, Video A is clear with the jolt to the passenger around frame 1015.
 
 Another anomaly is that in the Flight Data Recorder data presented in
 Figure 46 on page 111 of the final report there is a clear 'g[y]'
@@ -459,6 +482,7 @@ The y-axis shows the difference between my calculations and the positions shown 
 
 My model is only valid from -27.6 to 18.1 (s) but can be
 extrapolated with some confidence.
+The error is calculated as (my_value - final_report_value) in meters.
 
 <center>
 <img src="plots/images/final_report_fig_45_and_48.png" width="600" />
@@ -473,7 +497,7 @@ What is clear from this is that the
   the two figures 45 and 48 do not agree with their plots of the aircraft positions in
   five places in the 10 seconds before touchdown.
   I checked these carefully with two different methods and obtained
-  substantially the same results so I suspect that this is a minor plotting error in the final report.
+  substantially the same results so I suspect that this is a plotting error in the final report.
   This is why there is a divergence between the green and red graphs in the range
   -10 to 0 (s) as we a comparing two different values against a single one (mine).
 
@@ -481,5 +505,5 @@ Otherwise there is a satisfying correlation between my data and the final report
 In particular the use of 'slab' data to extrapolate the aircraft's position worked
 far better than I dared hope.
 
-This work was completed in July and August 2019, well ahead of the
-investigation which was completed on April 13, 2022.
+This initial work was completed in July and published in August 2019,
+well ahead of the investigation which was completed on April 13, 2022.
